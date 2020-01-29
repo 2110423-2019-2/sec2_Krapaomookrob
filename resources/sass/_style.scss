@@ -1,0 +1,28 @@
+body{background-color: $body-bg !important}
+
+::-moz-selection{
+    background-color:$purple;
+    color:#ffffff;
+}
+::selection{
+    background-color:$purple;
+    color:#ffffff;
+}
+
+#header{
+  background-color:$white;
+}
+
+.card{
+  margin-top: 1rem;
+}
+
+.dash{
+  border: dashed 1px #b7b7b7;
+}
+
+.ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
