@@ -11388,3 +11388,27 @@ body {
   text-overflow: ellipsis;
 }
 
+.ownbtn {
+  color: #fff;
+  background-image: -webkit-gradient(linear, left top, right top, from(#74D4D8), to(#55B3E0));
+  background-image: linear-gradient(to right, #74D4D8, #55B3E0);
+}
+
+.ownbtn:hover {
+  color: #fff;
+  background-image: -webkit-gradient(linear, left top, right top, from(#6BC7CB), to(#48A4D0));
+  background-image: linear-gradient(to right, #6BC7CB, #48A4D0);
+}
+
+.ownbtn:focus {
+  border-color: #65C4DB;
+}
+
+.nav-item {
+  margin-left: 0.5rem;
+}
+
+.theme {
+  color: #59B7DF;
+}
+

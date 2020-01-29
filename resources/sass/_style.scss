@@ -26,3 +26,25 @@ body{background-color: $body-bg !important}
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.ownbtn{
+  color: #fff;
+  background-image: linear-gradient(to right, #74D4D8 , #55B3E0);
+}
+
+.ownbtn:hover{
+  color: #fff;
+  background-image: linear-gradient(to right, #6BC7CB , #48A4D0);
+}
+
+.ownbtn:focus{
+  border-color:#65C4DB;
+}
+
+.nav-item{
+  margin-left: 0.5rem;
+}
+
+.theme{
+  color: $theme;
+}

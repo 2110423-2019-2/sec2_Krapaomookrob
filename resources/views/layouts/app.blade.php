@@ -6,7 +6,7 @@
         <meta name="keywords" content="@yield('keywords')">
         <meta name="description" content="@yield('description')">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="shortcut icon" href="{{asset('img/favicon.png')}}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{asset('img/favicon.png')}}">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="{{mix('css/app.css')}}" rel="stylesheet">
         @yield('head')
@@ -16,7 +16,7 @@
       <header id="header">
         <div class="container">
           <nav class="navbar navbar-expand-lg navbar-light px-0">
-            <a class="navbar-brand" href="#"><img src="https://getbootstrap.com/docs/4.4/assets/brand/bootstrap-solid.svg" width="30" height="30" alt=""></a>
+            <a class="navbar-brand" href="#"><img src="{{asset('img/logo.png')}}" height="50" alt=""></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -25,25 +25,34 @@
               <span class="navbar-text mr-auto"></span>
               <ul class="navbar-nav">
                 <li class="nav-item active">
-                  <a class="btn btn-outline-primary" href="#">Dashboard</a>
+                  <small class="d-block">Hello, <span class="theme">P'Taan</span></small>
+                  <small class="d-block">You have <span class="theme">1023 Available Credits</span></small>
                 </li>
                 <li class="nav-item">
-                  <a class="btn btn-outline-primary" href="#">My Courses</a>
+
+                    <a class="btn ownbtn" href="#">Request Payment</a>
+
+                </li>
+                <li class="nav-item active">
+                  <a class="btn btn-light" href="#">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="btn btn-light" href="#">My Courses</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="btn btn-outline-primary" href="#">My Calendar</a>
+                  <a class="btn btn-light" href="#">My Calendar</a>
                 </li>
                 <li class="nav-item">
-                  <a class="btn btn-outline-primary" href="#">Messages</a>
+                  <a class="btn btn-light" href="#">Messages</a>
                 </li>
                 <li class="nav-item">
-                  <a class="btn btn-outline-primary" href="#">My Account</a>
+                  <a class="btn btn-light" href="#">My Account</a>
                 </li>
                 <li class="nav-item">
-                  <a class="btn btn-outline-primary" href="#">🔔</a>
+                  <a class="btn btn-light" href="#">🔔</a>
                 </li>
                 <li class="nav-item">
-                  <a class="btn btn-outline-primary" href="#">🛒 Cart</a>
+                  <a class="btn ownbtn" href="#">🛒 Cart</a>
                 </li>
               </ul>
             </div>

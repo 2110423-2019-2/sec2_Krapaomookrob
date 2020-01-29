@@ -5,8 +5,8 @@
 @section('topic', 'Dashboard')
 
 @section('menu')
-<a class="btn btn-outline-primary" href="#">Search Courses</a>
-<a class="btn btn-outline-primary" href="#">New Course Request</a>
+<a class="btn ownbtn" href="#">Search Courses</a>
+<a class="btn ownbtn" href="#">New Course Request</a>
 @endsection
 
 @section('content')
@@ -20,7 +20,7 @@
               <h5>P'Taan</h5>
               <span>Saturday, 23 Nov 2019</span>
               <span>13:00-15:00 (2hrs)</span>
-              <a class="btn btn-outline-primary" href="#">Start Attendance Checking</a>
+              <a class="btn ownbtn" href="#">Start Attendance Checking</a>
           </div>
         </div>
       </div>
