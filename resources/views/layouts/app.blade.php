@@ -29,9 +29,7 @@
                   <small class="d-block">You have <span class="theme">1023 Available Credits</span></small>
                 </li>
                 <li class="nav-item">
-
-                    <a class="btn ownbtn" href="#">Request Payment</a>
-
+                  <a class="btn ownbtn" href="#">Request Payment</a>
                 </li>
                 <li class="nav-item active">
                   <a class="btn btn-light" href="#">Dashboard</a>
