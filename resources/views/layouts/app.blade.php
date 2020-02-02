@@ -52,6 +52,13 @@
                 <li class="nav-item">
                   <a class="btn ownbtn" href="#">🛒 Cart</a>
                 </li>
+                <li class="nav-item">
+                  @if(Auth::check())
+                    <a class="btn btn-light" href="/logout">Logout</a>
+                  @else
+                  <a class="btn btn-light" href="/login">Login</a>
+                  @endif
+                </li>
               </ul>
             </div>
           </nav>

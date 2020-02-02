@@ -1,3 +1,30 @@
+<script src="https://kit.fontawesome.com/544fc5cc4f.js" crossorigin="anonymous"></script>
+<style>
+    #boostrap-override .btn {
+    width: 225px;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    margin: 5px 0;
+    opacity: 0.85;
+    display: inline-block;
+    font-size: 17px;
+    line-height: 20px;
+    text-decoration: none;
+    }
+    #boostrap-override .btn:hover {
+    opacity: 1;
+    }
+    #boostrap-override .fb {
+    background-color: #3B5998;
+    color: white;
+    }
+
+    #boostrap-override i.fab {
+    margin-right: 4px;
+    }
+</style>
+
 @extends('layouts.app')
 
 @section('title', 'Login - Even Die I am The Tutor')
@@ -8,11 +35,10 @@
 @endsection
 
 @section('content')
-<div class="d-flex flex-column align-items-center">
+<div id=boostrap-override class="d-flex flex-column align-items-center">
     <div class='m-5'><img src="{{asset('img/logo.png')}}" height="150" alt=""></a></div>
-    <a href="/login/facebook"><div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="true"></div></a>  
+    <a href='/login/facebook' class="fb btn">
+        <i class="fab fa-facebook-f fa-sm"></i> Login with Facebook
+    </a>
 </div>
 @endsection
-
-<div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v5.0&appId=575154483212413&autoLogAppEvents=1"></script>
