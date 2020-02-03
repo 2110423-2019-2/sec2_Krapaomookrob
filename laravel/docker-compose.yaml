@@ -1,0 +1,14 @@
+version: '3'
+services:
+  web:
+    image: hitalos/laravel:latest 
+    container_name: laravel
+    ports:
+        - 8000:80
+    volumes:
+        - ./:/var/www
+    # working_dir: /laravel/
+    # context: ./laravel
+
+    # If you don't want to use default 'artisan serve' command, edit and uncomment the line below.
+    # command: php -S 0.0.0.0:80 -t public public/index.php
