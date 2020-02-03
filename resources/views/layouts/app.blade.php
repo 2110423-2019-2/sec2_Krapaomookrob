@@ -16,7 +16,8 @@
       <header id="header">
         <div class="container">
           <nav class="navbar navbar-expand-lg navbar-light px-0">
-            <a class="navbar-brand" href="#"><img src="{{asset('img/logo.png')}}" height="50" alt=""></a>
+            {{-- add link to home, for convenience --}}
+            <a class="navbar-brand" href="/"><img src="{{asset('img/logo.png')}}" height="50" alt=""></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -50,7 +51,8 @@
                   <a class="btn btn-light" href="#">🔔</a>
                 </li>
                 <li class="nav-item">
-                  <a class="btn ownbtn" href="#">🛒 Cart</a>
+                  {{-- add link to cart page --}}
+                  <a class="btn ownbtn" href="/cart">🛒 Cart</a>
                 </li>
               </ul>
             </div>

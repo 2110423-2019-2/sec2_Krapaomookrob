@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('dashboard');
 });
+
+Route::get('/cart', function(){ 
+    // route to cart oage
+    return view('cart');
+});

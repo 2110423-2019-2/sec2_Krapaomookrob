@@ -21,6 +21,12 @@ body{background-color: $body-bg !important}
   border: dashed 1px #b7b7b7;
 }
 
+.bline{
+  border-style: solid;
+  border-width: 0px 0px 1px 0px;
+  border-color: black;
+}
+
 .ellipsis{
   white-space: nowrap;
   overflow: hidden;
