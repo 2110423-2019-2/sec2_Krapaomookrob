@@ -1,5 +1,6 @@
 version: '3'
 services:
+
   web:
     image: hitalos/laravel:latest 
     container_name: laravel
@@ -7,8 +8,18 @@ services:
         - 8000:80
     volumes:
         - ./:/var/www
-    # working_dir: /laravel/
-    # context: ./laravel
-
-    # If you don't want to use default 'artisan serve' command, edit and uncomment the line below.
-    # command: php -S 0.0.0.0:80 -t public public/index.php
+    links:
+        - db
+    environment:
+        DB_HOST: db
+        DB_DATABASE: dbname
+        DB_USERNAME: username
+        DB_PASSWORD: p455w0rd
+        DB_CONNECTION: mysql
+        
+  db:
+    image: mysql
+    environment:
+        MYSQL_DATABASE: dbname
+        MYSQL_USER: username
+        MYSQL_ROOT_PASSWORD: p455w0rd
