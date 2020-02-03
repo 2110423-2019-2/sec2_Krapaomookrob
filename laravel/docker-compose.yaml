@@ -1,9 +1,8 @@
 version: '3'
 services:
 
-  web:
+  app:
     image: hitalos/laravel:latest 
-    container_name: laravel
     ports:
         - 8000:80
     volumes:
