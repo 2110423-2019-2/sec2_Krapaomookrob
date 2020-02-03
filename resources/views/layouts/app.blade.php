@@ -25,7 +25,7 @@
               <span class="navbar-text mr-auto"></span>
               <ul class="navbar-nav">
                 <li class="nav-item active">
-                  <small class="d-block">Hello, <span class="theme">P'Taan</span></small>
+                  <small class="d-block">Hello, <span class="theme">{{auth()->check()?auth()->user()->name:'Not Login yet'}}</span></small>
                   <small class="d-block">You have <span class="theme">1023 Available Credits</span></small>
                 </li>
                 <li class="nav-item">

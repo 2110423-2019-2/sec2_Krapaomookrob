@@ -15,19 +15,26 @@ Route::get('/', function () {
     return view('dashboard');
 });
 
+//Login for developers
+
+Route::get('/login-dev/{id}', 'Auth\LoginController@loginDeveloper');
+
+//Login View
+
 Route::get('/login', function () {
     return view('login');
 });
-
 Route::get('/user-role', function () {
-    return view('user_role');
+    if (Gate::allows('update-role')) return view('user_role');
+    abort(403, 'Unauthorized action.');
 });
 
-Route::get('/logout', 'Auth\LoginController@logout');
+//Login API
 
+Route::get('/logout', 'Auth\LoginController@logout');
 Route::prefix('login')->group(function () {
     Route::get('/{provider}', 'Auth\LoginController@redirectToProvider')->name('login.provider');
     Route::get('/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('login.provider.callback');
 });
+Route::post('/user-role', 'UserController@updateRole');
 
-Route::post('/user-role', 'UserController@role');

@@ -10,7 +10,7 @@ class UserController extends Controller
     {
     }
     
-    public function role(Request $request){
+    public function updateRole(Request $request){
         $user = auth()->user();
         $user->role = $request->role;
         $user->save();

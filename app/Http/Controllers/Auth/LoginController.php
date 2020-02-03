@@ -37,15 +37,28 @@ class LoginController extends Controller
      *
      * @return void
      */
+
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // $this->middleware('guest')->except('logout');
+        if(auth()->check()) return redirect()->to('/');
     }
 
     public function logout() {
         auth()->logout();
         return redirect('/login');
       }
+
+    /**
+    * Login for developer
+    */
+    public function loginDeveloper($id){
+        auth()->logout();
+        $user = User::findOrFail($id);
+        auth()->login($user);
+        return redirect('/');
+    }
+
 
     /**
      * Social Login
@@ -100,7 +113,6 @@ class LoginController extends Controller
                 $user = User::create([
                     'email' => $email,
                     'name' => $providerUser->getName(),
-                    'username' => $providerUser->getId(),
                     'image' => $providerUser->getAvatar(),
                     'password' => bcrypt(rand(1000, 9999)),
                 ]);
