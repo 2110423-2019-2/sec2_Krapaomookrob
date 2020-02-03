@@ -2,21 +2,19 @@
 
 ## Getting Started
 
-### First-Time Only 
-
-```shell
-cd <root>
-bash run-local.sh
-```
-
-### Running
+### Run Project
 
 ```shell
 cd <root>/laravel
+
+cp .env.example .env
 docker-compose up
+docker-compose exec app php artisan key:generate
 ```
 
-### Members
+Then, you can access the site in http://localhost:8000/
+
+## Members
 
 * Niti Assavaplakorn
 * Peeranuth Kehasukcharoen
