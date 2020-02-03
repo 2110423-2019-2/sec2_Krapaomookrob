@@ -8,8 +8,8 @@
 cd <root>/laravel
 
 cp .env.example .env
-docker-compose up
-docker-compose exec app php artisan key:generate
+php artisan key:generate
+docker-compose up -d
 ```
 
 Then, you can access the site in http://localhost:8000/
