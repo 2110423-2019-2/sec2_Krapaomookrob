@@ -67,5 +67,13 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt(rand(1000, 9999)),
             'role' => 'admin',
         ]);
+
+        User::create([
+            'email' => 'EDITT_Tutor' .'@gmail.com',
+            'name' => 'Superuser',
+            'image' => 'https://graph.facebook.com/v3.3/2685763254794575/picture?type=normal',
+            'password' => bcrypt(rand(1000, 9999)),
+            'role' => 'superuser',
+        ]);
     }
 }
