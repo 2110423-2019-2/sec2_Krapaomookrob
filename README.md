@@ -1,13 +1,21 @@
 # กะเพราหมูกรอบ
 
+### Start Project (First time only)
+
+``` shell
+cd <root>
+
+cp laravel/.env.example laravel/.env
+composer install -d laravel 
+php laravel/artisan config:clear
+php laravel/artisan key:generate
+```
+
 ### Run Project
 
 ``` shell
-cd <root>/laravel
+cd <root>
 
-cp laravel/.env.example laravel/.env
-composer install
-php artisan key:generate
 docker-compose up
 ```
 
