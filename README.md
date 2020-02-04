@@ -3,7 +3,7 @@
 ### Run Project
 
 ``` shell
-cd <root>/laravel
+cd <root>
 
 cp laravel/.env.example laravel/.env
 composer install
