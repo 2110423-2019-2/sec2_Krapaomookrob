@@ -38,3 +38,7 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+// Searching
+Route::get('/search', function () {
+    return view('search');
+});
