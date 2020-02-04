@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDaysTable extends Migration
+class CreateCoursesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,15 @@ class CreateDaysTable extends Migration
      */
     public function up()
     {
-        Schema::create('days', function (Blueprint $table) {
+        Schema::create('courses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('area');
+            $table->time('time');
+            $table->integer('hours');
+            $table->date('startDate');
+            $table->integer('studentCount');
+            $table->integer('price');
+            $table->string('noClasses')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +33,6 @@ class CreateDaysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('days');
+        Schema::dropIfExists('courses');
     }
 }
