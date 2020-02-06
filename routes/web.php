@@ -11,6 +11,33 @@
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
+Route::get('/payment', function () {
+    return view('payment');
 });
+//Login for developers
+
+Route::get('/login-dev/{id}', 'Auth\LoginController@loginDeveloper');
+
+//Login View
+
+Route::get('/login', function () {
+    return view('login');
+});
+Route::get('/user-role', function () {
+    if (Gate::allows('update-role')) return view('user_role');
+    abort(403, 'Unauthorized action.');
+});
+
+//Login API
+
+Route::get('/logout', 'Auth\LoginController@logout');
+Route::prefix('login')->group(function () {
+    Route::get('/{provider}', 'Auth\LoginController@redirectToProvider')->name('login.provider');
+    Route::get('/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('login.provider.callback');
+});
+Route::post('/user-role', 'UserController@updateRole');
+
+
+//post to payment
+//Route::post('/payment', 'paymentGatewayController@checkout');
+Route::post('/result', function(){return view('dashboard');});

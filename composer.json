@@ -57,5 +57,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
+    },
+    
+    
+     "require": {
+    "omise/omise-php": "dev-master"
     }
+    
 }
