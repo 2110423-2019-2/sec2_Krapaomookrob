@@ -11,6 +11,7 @@
 
 <div>
 <form name="checkoutForm" method="POST" action="result">
+  @csrf
   <script type="text/javascript" src="https://cdn.omise.co/omise.js"
     data-key="pkey_test_5irvp3eqbf7ybksdjlt"
     data-image="http://bit.ly/customer_image"
@@ -26,4 +27,3 @@
 
 <!-- data-key="YOUR_PUBLIC_KEY" -->
 </div>
-
