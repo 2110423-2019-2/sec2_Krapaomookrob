@@ -92,20 +92,20 @@
                 <div>Starts on 19/02/2020</div>
             </div>
             <div class="col-2 d-flex flex-column flex-wrap" style="justify-content: flex-end">
-                <div class="btn ownbtn" data-toggle="modal" data-target="#yourModal">Request to be Tutor</div>
-                    <div class="modal fade" id="yourModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="btn ownbtn" data-toggle="modal" data-target="#x{{$course->id}}">Request to be Tutor</div>
+                    <div class="modal fade" id="x{{$course->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
                             <h4 class="modal-title" id="myModalLabel">Comfirm Request?</h4>
                           </div>
                           <div class="modal-body">
-                            <div>Name: N'Plakim</div>
+                            <div>Name: {{$course->id}}</div>
                             <div>Subject: Math, Physics, Programming, English</div>
                             <div>Places: Siam, Bangkok, BTS Skytrain</div>
                             <div>Date/Time: Sat 13:00-15:00</div>
                             <div>Class: 2 hrs/class 4 Classes, Individual</div>
-                            <div>Price: 4000 THB</div>
+                            <div>Price: {{$course->price}} THB</div>
                             <div>Starts on 19/02/2020</div>
                           </div>
                           <div class="modal-footer">
@@ -113,6 +113,7 @@
                             <form class="icon-radiobtn" action="/tutor-request" method="POST">
                                 @csrf
                                 <input type="hidden" name="course_id" value=" {{$course->id}}">
+                                <input type="hidden" name="requester_id" value=" {{auth()->user()->id}}">
                                 <button id=1 type="submit" class="btn ownbtn" >Confirm</button>
                             </form>
                           </div>

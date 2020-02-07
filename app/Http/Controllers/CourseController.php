@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\DB;
 class CourseController extends Controller
 {
     public function requestCourse(Request $request) {
-        dd(request());
+        $data = array('course_id'=>$request->course_id,"requester_id"=>$request->requester_id);
+        DB::table("courses_requester")->insert($data);
+        //dd(request());
     }
 
     public function search(Request $request) {
