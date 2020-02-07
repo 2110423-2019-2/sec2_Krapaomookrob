@@ -39,7 +39,11 @@ Route::prefix('login')->group(function () {
 Route::post('/user-role', 'UserController@updateRole');
 
 //Tutor Search and Request
-Route::get('/tutor', function () {
-    return view('tutor_search_course');
+Route::get('/tutor-search', function () {
+    $courses = [];
+    return view('tutor_search_course',compact('courses'));
 });
+Route::post('/tutor-search','CourseController@search');
+
+Route::post('/tutor-request','CourseController@requestCourse');
 

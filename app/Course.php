@@ -17,4 +17,10 @@ class Course extends Model
     {
         return $this->belongsToMany(Day::class);
     }
+
+    public function requester()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
 }

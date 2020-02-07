@@ -54,4 +54,9 @@ class User extends Authenticatable
     public function isSuperuser(){
         return $this->role == 'superuser';
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
 }
