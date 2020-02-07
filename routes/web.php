@@ -38,3 +38,8 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+//Tutor Search and Request
+Route::get('/tutor', function () {
+    return view('tutor_search_course');
+});
+
