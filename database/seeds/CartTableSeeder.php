@@ -14,11 +14,11 @@ class CartTableSeeder extends Seeder
     {
         //
         Cart::create([
-            'user_id' => 1
+            // TODO: reference to User (need main dev branch)
         ]);
 
         Cart::create([
-            'user_id' => 2
+            // TODO: reference to User (need main dev branch)
         ]);
     }
 }

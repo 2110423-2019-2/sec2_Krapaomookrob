@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\CartItem;
+use App\Cart_item;
 
 class CartItemTableSeeder extends Seeder
 {
@@ -13,12 +13,12 @@ class CartItemTableSeeder extends Seeder
     public function run()
     {
         //
-        CartItem::create([
+        Cart_item::create([
             'cart_id' => 1,
             'course_id' => 1
         ]);
 
-        CartItem::create([
+        Cart_item::create([
             'cart_id' => 1,
             'course_id' => 2
         ]);
