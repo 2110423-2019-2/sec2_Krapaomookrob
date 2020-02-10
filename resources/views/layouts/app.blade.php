@@ -44,7 +44,7 @@
                   <a class="btn btn-light" href="#">Messages</a>
                 </li>
                 <li class="nav-item">
-                  <a class="btn btn-light" href="#">My Account</a>
+                  <a class="btn btn-light" href="/myaccount">My Account</a>
                 </li>
                 <li class="nav-item">
                   <a class="btn btn-light" href="#">🔔</a>

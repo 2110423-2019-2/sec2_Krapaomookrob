@@ -27,6 +27,11 @@ body{background-color: $body-bg !important}
   text-overflow: ellipsis;
 }
 
+.editt-bg{
+  color: #fff;
+  background-image: linear-gradient(to top, #74D4D8 , #55B3E0);
+}
+
 .ownbtn{
   color: #fff;
   background-image: linear-gradient(to right, #74D4D8 , #55B3E0);

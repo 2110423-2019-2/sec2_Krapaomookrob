@@ -11388,6 +11388,12 @@ body {
   text-overflow: ellipsis;
 }
 
+.editt-bg {
+  color: #fff;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(#74D4D8), to(#55B3E0));
+  background-image: linear-gradient(to top, #74D4D8, #55B3E0);
+}
+
 .ownbtn {
   color: #fff;
   background-image: -webkit-gradient(linear, left top, right top, from(#74D4D8), to(#55B3E0));
