@@ -10,8 +10,11 @@
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
+        "ixudra/curl": "^6.18",
         "laravel/framework": "^6.2",
-        "laravel/tinker": "^2.0"
+        "laravel/tinker": "^2.0",
+        "omise/omise-php": "dev-master",
+        "ixudra/curl": "6.*"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
@@ -57,11 +60,8 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    },
-    
-    
-     "require": {
-    "omise/omise-php": "dev-master"
     }
+    
+    
     
 }

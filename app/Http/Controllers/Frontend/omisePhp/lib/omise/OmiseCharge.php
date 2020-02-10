@@ -1,4 +1,7 @@
 <?php
+require_once dirname(__FILE__).'/res/obj/OmiseObject.php';
+require_once dirname(__FILE__).'/res/OmiseApiResource.php';
+
 
 class OmiseCharge extends OmiseApiResource
 {

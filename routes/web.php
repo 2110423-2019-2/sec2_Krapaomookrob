@@ -39,5 +39,23 @@ Route::post('/user-role', 'UserController@updateRole');
 
 
 //post to payment
-//Route::post('/payment', 'paymentGatewayController@checkout');
-Route::post('/result', function(){return view('dashboard');});
+Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
+Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
+//Route::post('/internet', function(Request $request){
+//        if($_POST["internet_bnk"]!=NULL){
+//            $bnk = $_POST["internet_bnk"];
+//            Route::get('/{bnk}',function(){
+//               return view('banking'); 
+//            });
+//        }
+//        else{
+//            return view('result');
+//        }
+//
+//});
+////ex post of credit card
+//(
+//    [_token] => dKD00CjEy1f9mzaAQRwvCZZ9fCnuQ0KO03nErMmf
+//    [omiseToken] => tokn_test_5iu8odxzio3t12f6irs
+//    [omiseSource] => 
+//)

@@ -134,6 +134,7 @@ class OmiseApiResource extends OmiseObject
     protected function execute($url, $requestMethod, $key, $params = null)
     {
         // If this class is execute by phpunit > get test mode.
+        
         if (preg_match('/phpunit/', $_SERVER['SCRIPT_NAME'])) {
             $result = $this->_executeTest($url, $requestMethod, $key, $params);
         } else {
@@ -182,7 +183,7 @@ class OmiseApiResource extends OmiseObject
         $ch = curl_init($url);
 
         curl_setopt_array($ch, $this->genOptions($requestMethod, $key.':', $params));
-
+        
         // Make a request or thrown an exception.
         if (($result = curl_exec($ch)) === false) {
             $error = curl_error($ch);
