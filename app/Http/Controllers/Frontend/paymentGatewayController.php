@@ -13,12 +13,12 @@ define('OMISE_SECRET_KEY',env("SECRET_KEY", "somedefaultvalue")  );
 
 class paymentGatewayController extends Controller{
     
-    public function chargeCard(){
+    public function chargeCard(Request $request){
         $charge = OmiseCharge::create(array('amount'      => 100000,
                                             'currency'    => 'thb',
                                             'description' => 'Order-384',
                                             'ip'          => '127.0.0.1',
-                                            'card'        => 'tokn_test_4zmrjhuk2rndz24a6x0'),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
+                                            'card'        => $request->input('omiseToken')),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
         if($charge['status'] == 'Success'){
             //checkCourse();
             return view('result');
