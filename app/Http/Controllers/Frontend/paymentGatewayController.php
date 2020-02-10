@@ -6,7 +6,9 @@ use Illuminate\Routing\Controller;
 //use App\Http\Controllers\omisePhp\lib\omise\OmiseCharge as omc;
 require_once (__DIR__ .'\omisePhp\lib\Omise.php');
 use OmiseCharge;
-use ChargeTest;
+use OmiseTransfer;
+use OmiseSource;
+
 define('OMISE_API_VERSION' , env("API_VERSION", "somedefaultvalue"));
 define('OMISE_PUBLIC_KEY' ,env("PUBLIC_KEY", "somedefaultvalue") );
 define('OMISE_SECRET_KEY',env("SECRET_KEY", "somedefaultvalue")  );
@@ -19,13 +21,13 @@ class paymentGatewayController extends Controller{
                                             'description' => 'Order-384',
                                             'ip'          => '127.0.0.1',
                                             'card'        => $request->input('omiseToken')),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
-        if($charge['status'] == 'Success'){
-            //checkCourse();
-            return view('result');
-         }
-        else{
+        if($charge['status'] == 'failure'){
             //alert("failure");
             return view('dashboard');
+         }
+        else{
+            //checkCourse();
+            return view('result');
         }
         
     }
@@ -40,59 +42,29 @@ class paymentGatewayController extends Controller{
 //                'currency' => 'thb',
 //                'card' => 'tokn_test_5iu8odxzio3t12f6irs'
 //        ));
-//        
-        $data = [
-          'dascription' =>'order1',
-            'amount' => 10025,
-            'currency' => 'thb',
-            'offsite' => 'internet_banking_scb',
-            'return_uri' => 'https://www.omise.co/example_return_uri'
-        ];
-        $curl = curl_init();
+//         
+        $parameter = array(
+            'type'     => $request->input('internet_bnk'),
+            'amount'   => 15000,
+            'currency' => 'thb'
+        );
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.omise.co/charges",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => $data
-//            CURLOPT_HTTPHEADER => array(
-//                // Set here requred headers
-//                "authorization: Basic c2tleV90ZXNOXzU1ajkwanQybX1qOtZnY2UxaG86Og==",
-//                "cache-control: no-cache",
-//                "content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-//                )
-        ));
+        $source = OmiseSource::create($parameter,OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
+        $charge = OmiseCharge::create($source,OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
         
-        
-        $response = curl_exec($curl);
-        
-        $err = curl_error($curl);
-        dd($err);
-        curl_close($curl);
-
-        if ($err) {
-            throw new Exception($err);
-        } else {
-            $json = json_decode($response);
-            echo Html::a('ชำระเงิน', $json->authorize_uri,['class' =>'btn btn-success']);
+        if($charge['status'] == 'failure'){
+            //alert("failure");
+            return view('dashboard');
+         }
+        else{
+            //checkCourse();
+            return view('result');
         }
-//        echo('<pre>');
-//        print_r($_POST);
-//        echo('</pre>');
-//        if($request->has('internet_banking_scb')){
-//            return view('banking');
-//        }
-//        else{
-//            return view('result');
-//        }
-//        
+        
         
     }
     public function tutorGetPaid(){
-        
+        $transfer = OmiseTransfer::create(array('amount' => 100000),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
     }
     
 }
