@@ -38,3 +38,6 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+Route::get('/profile', 'UserController@viewProfile')->name('profile.show');
+Route::get('/profile/{user}/edit', 'UserController@editProfile')->name('profile.edit');
+Route::patch('/profile/{user}', 'UserController@updateProfile')->name('profile.update');
