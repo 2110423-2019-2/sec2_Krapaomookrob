@@ -32,7 +32,7 @@
                   <a class="btn ownbtn" href="#">Request Payment</a>
                 </li>
                 <li class="nav-item active">
-                  <a class="btn btn-light" href="#">Dashboard</a>
+                  <a class="btn btn-light" href="/"">Dashboard</a>
                 </li>
                 <li class="nav-item">
                   <a class="btn btn-light" href="#">My Courses</a>
@@ -44,7 +44,7 @@
                   <a class="btn btn-light" href="#">Messages</a>
                 </li>
                 <li class="nav-item">
-                  <a class="btn btn-light" href="/myaccount">My Account</a>
+                  <a class="btn btn-light" href="/profile">My Account</a>
                 </li>
                 <li class="nav-item">
                   <a class="btn btn-light" href="#">🔔</a>
