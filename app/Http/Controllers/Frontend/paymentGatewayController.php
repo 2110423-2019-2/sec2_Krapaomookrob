@@ -29,42 +29,41 @@ class paymentGatewayController extends Controller{
             //checkCourse();
             return view('result');
         }
-        
+
     }
-    
+
     public function checkout(Request $request){
-       //dd('xxx');
-        //dd($request);
-        
-        //$omise = new Omise();
-//        $charge = OmiseCharge::create(array(
-//                'amount' => 10025,
-//                'currency' => 'thb',
-//                'card' => 'tokn_test_5iu8odxzio3t12f6irs'
-//        ));
-//         
-        $parameter = array(
+        $source = OmiseSource::create(array(
             'type'     => $request->input('internet_bnk'),
             'amount'   => 15000,
             'currency' => 'thb'
-        );
+        ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
 
-        $source = OmiseSource::create($parameter,OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
-        $charge = OmiseCharge::create($source,OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
-        
-        if($charge['status'] == 'failure'){
+        $charge = OmiseCharge::create(array(
+            'amount' => 15000,
+            'currency' => 'thb',
+            'return_uri' => 'http://www.example.com',
+            'source' => $source['id']
+          ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
+
+        //pay destination
+        dd($charge['authorize_uri']);
+
+        //Charge status. One of failed, expired, pending, reversed or successful.
+
+        /*if($charge['status'] == 'failed'){
             //alert("failure");
             return view('dashboard');
          }
         else{
             //checkCourse();
             return view('result');
-        }
-        
-        
+        }*/
+
+
     }
     public function tutorGetPaid(){
         $transfer = OmiseTransfer::create(array('amount' => 100000),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
     }
-    
+
 }
