@@ -38,7 +38,9 @@
                 <div class="col-lg">4000 THB<br/>
                     Starts on 19/09/2019</div>
                 <div class="col-lg">
-                    <button class="cancelbtn btn px-5 mt-3">Remove</button>
+                    <div id="app">
+                        <remove-button></remove-button>
+                    </div>
                 </div>
             </div>
         </div>
