@@ -21,7 +21,7 @@ class paymentGatewayController extends Controller{
                                             'description' => 'Order-384',
                                             'ip'          => '127.0.0.1',
                                             'card'        => $request->input('omiseToken')),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
-        if($charge['status'] == 'failure'){
+        if($charge['status'] == 'failed'){
             //alert("failure");
             return view('dashboard');
          }
