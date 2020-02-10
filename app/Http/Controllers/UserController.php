@@ -20,7 +20,16 @@ class UserController extends Controller
     }
 
     public function viewProfile(User $user){
-        return view('profile.view',compact('user'));
+        $user = auth() -> user();
+        $role = ($user -> role)?($user -> role):"-";
+        $username = ($user -> name)?($user -> name):"-";
+        $phone = ($user -> phone)?($user -> phone):"-";
+        $education_level = ($user -> education_level)?($user -> education_level):"-"; 
+        $nickname = ($user -> nickname)?($user -> nickname):"-"; 
+        $email = ($user -> email)?($user -> email):"-";
+        $password = str_repeat("*",strlen($user -> password));
+
+        return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password'));
     }
 
     public function editProfile(User $user){

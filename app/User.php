@@ -54,4 +54,9 @@ class User extends Authenticatable
     public function isSuperuser(){
         return $this->role == 'superuser';
     }
+
+    public function getImage(){
+        $imagePath = ($this->image) ? $this -> image : 'public/img/favicon.png';
+        return $imagePath;
+    }
 }
