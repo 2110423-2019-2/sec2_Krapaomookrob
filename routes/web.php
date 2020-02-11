@@ -10,6 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function () {
+    return view('dashboard');
+});
+
 
 Route::get('/payment', function () {
     return view('payment');
@@ -41,6 +45,11 @@ Route::post('/user-role', 'UserController@updateRole');
 //post to payment
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
+//want to sourceID to result by using controller
+Route::get('/result/{sourceID}', 'Frontend\paymentGatewayController@returnPage');
+//Route::get('/result/{sourceID}', function () {
+//    return view(result);
+//})->name('comment.show'));
 //Route::post('/internet', function(Request $request){
 //        if($_POST["internet_bnk"]!=NULL){
 //            $bnk = $_POST["internet_bnk"];

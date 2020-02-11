@@ -10,17 +10,21 @@
 @endsection
 
 @section('content')
+<div>
+    <h type = "hidden" name = "price" value = "{{$price = 1000 * 100}}"> </h>
+</div>
 <div class = "row">
     <div class = "row-sm-6 col-sm-6">
     <form name="checkout" value = "card" method="POST" action="card" >
       @csrf
+        <input name="p" type ="hidden" value = "{{$price}}">
       <script type="text/javascript"   src="https://cdn.omise.co/omise.js"
         data-key="pkey_test_5irvp3eqbf7ybksdjlt"
         data-image="{{asset('img/favicon.png')}}"
         data-frame-label="EDITT payment"
         data-button-label="Pay with Credit/Debit"
         data-submit-label="Submit" 
-        data-amount="10025" //money in thb that must *100 to
+        data-amount="{{$price}}" //money in thb that must *100 to
         data-currency="thb"
         >
       </script>
@@ -31,14 +35,28 @@
     </div>
     
     <div class = "col-sm-6">
-        <form name = 'intercheckout' method="POST" action ="internet">
+        <form name = 'intercheckout' method="POST" action ="internet"  onclick="checkRadioButon()">
           @csrf  
-            <input type="radio" name ="internet_bnk" value="internet_banking_scb"> SCB<br>
-            <input type="radio" name ="internet_bnk" value="internet_banking_bbl"> BBL<br>
-            <input type="radio" name ="internet_bnk" value="internet_banking_ktb"> KTB<br>
-            <input type="radio" name ="internet_bnk" value="	internet_banking_bay">กรุงศรี<br>
-            
-      <button type="submit" id="checkoutButton" name="form2">Pay with internet banking</button>
+            <input type="radio" id ="scb" name ="internet_bnk" onclick="checkRadioButon()" value="internet_banking_scb" > SCB<br>
+            <input type="radio" id = "bbl" name ="internet_bnk" onclick="checkRadioButon()" value="internet_banking_bbl"> BBL<br>
+            <input type="radio" id = "ktb" name ="internet_bnk" onclick="checkRadioButon()" value="internet_banking_ktb"> KTB<br>
+            <input type="radio" id ="bay" name ="internet_bnk" onclick="checkRadioButon()" value="	internet_banking_bay">กรุงศรี<br>
+            <input name="p" type ="hidden" value = "{{$price}}">
+      <button type="submit" id="checkoutButton"  name="form2" disabled >Pay with internet banking</button>
+           <script>
+
+        function checkRadioButon() {  
+            var checkRadio = document.querySelector( 
+                'input[name="internet_bnk"]:checked'); 
+              
+            if(checkRadio == null) { 
+                document.getElementById("checkoutButton").disabled = true;
+            }
+            else{
+                document.getElementById("checkoutButton").disabled = false;
+            }
+        } 
+    </script> 
         </form>
     </div>
 </div>
