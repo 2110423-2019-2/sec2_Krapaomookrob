@@ -1,13 +1,15 @@
 <template>
 
-    <button class="cancelbtn btn px-5 mt-3">Remove</button>
+    <button class="cancelbtn btn px-5 mt-3">{{buttonText}}</button>
 
 </template>
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
+        mounted: function() {
+                    console.log('Component mounted.')
+        },
+
+        props: ['buttonText']
     }
 </script>

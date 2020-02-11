@@ -39,7 +39,7 @@
                     Starts on 19/09/2019</div>
                 <div class="col-lg">
                     <div id="app">
-                        <remove-button></remove-button>
+                        <remove-button button-text="Remove"></remove-button>
                     </div>
                 </div>
             </div>

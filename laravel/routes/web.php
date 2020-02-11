@@ -38,3 +38,7 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+Route::get('/cart', function(){ 
+    // route to cart oage
+    return view('cart');
+});
