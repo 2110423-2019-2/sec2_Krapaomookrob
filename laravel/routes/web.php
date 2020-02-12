@@ -38,3 +38,13 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+
+Route::get('/payment', function () {
+    return view('payment');
+});
+
+//post to payment
+Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
+Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
+//want to sourceID to result by using controller
+Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
