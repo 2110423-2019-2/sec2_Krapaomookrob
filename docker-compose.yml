@@ -3,6 +3,8 @@ services:
 
     laravel:
         image: hitalos/laravel
+        build:
+            dockerfile: Dockerfile
         ports:
             - 8000:80
         volumes:
