@@ -4,10 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class course extends Model
+class Course extends Model
 {
-    //
-    public function carts(){
-        return $this->belongsToMany(Cart::class);
+    protected $guarded = [];
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class);
+    }
+
+    public function days()
+    {
+        return $this->belongsToMany(Day::class);
     }
 }

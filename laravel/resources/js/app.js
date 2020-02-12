@@ -30,4 +30,8 @@ Vue.component('remove-button', require('./components/RemoveButton.vue').default)
 
 const app = new Vue({
     el: '#app',
+    data: {
+        activeCancel: 'cancelbtn',
+        activeOwn: 'ownbtn'
+      }
 });

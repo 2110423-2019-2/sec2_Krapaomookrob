@@ -1945,13 +1945,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    console.log('Component mounted.');
+    console.log("Component mounted.");
   },
-  props: ['buttonText']
+  props: ["buttonText", "buttonType"]
 });
 
 /***/ }),
@@ -37373,7 +37371,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("button", { staticClass: "cancelbtn btn px-5 mt-3" }, [
+  return _c("button", { staticClass: "btn px-5 mt-3 w-100" }, [
     _vm._v(_vm._s(_vm.buttonText))
   ])
 }
@@ -49575,7 +49573,11 @@ Vue.component('remove-button', __webpack_require__(/*! ./components/RemoveButton
  */
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    activeCancel: 'cancelbtn',
+    activeOwn: 'ownbtn'
+  }
 });
 
 /***/ }),
