@@ -9,7 +9,8 @@ use App\Payment;
 
 
 // 1
-require_once dirname(__FILE__).'\omisePhp\lib\Omise.php';
+require_once dirname(__FILE__).'/../../../../vendor/autoload.php';
+
 /*
 //2
 // Cores and utilities.
