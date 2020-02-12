@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('dashboard', ['user' => auth()->user()]);
 });
 
 //Login for developers

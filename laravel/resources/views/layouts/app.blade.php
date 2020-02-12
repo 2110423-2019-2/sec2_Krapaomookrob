@@ -24,39 +24,45 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <span class="navbar-text mr-auto"></span>
               <ul class="navbar-nav">
-                <li class="nav-item active">
-                  <small class="d-block">Hello, <span class="theme">{{auth()->check()?auth()->user()->name:'Not Login yet'}}</span></small>
-                  <small class="d-block">You have <span class="theme">1023 Available Credits</span></small>
-                </li>
-                <li class="nav-item">
-                  <a class="btn ownbtn" href="#">Request Payment</a>
-                </li>
-                <li class="nav-item active">
-                  <a class="btn btn-light" href="#">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                  <a class="btn btn-light" href="#">My Courses</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="btn btn-light" href="#">My Calendar</a>
-                </li>
-                <li class="nav-item">
-                  <a class="btn btn-light" href="#">Messages</a>
-                </li>
-                <li class="nav-item">
-                  <a class="btn btn-light" href="#">My Account</a>
-                </li>
-                <li class="nav-item">
-                  <a class="btn btn-light" href="#">🔔</a>
-                </li>
-                <li class="nav-item">
-                  <a class="btn ownbtn" href="#">🛒 Cart</a>
-                </li>
+                @if(!empty($user))
+                  <li class="nav-item active">
+                    <small class="d-block">Hello, <span class="theme">{{$user->name}}</span></small>
+                    <small class="d-block">You have <span class="theme">1023 Available Credits</span></small>
+                  </li>
+                  @if($user->isTutor())
+                    <li class="nav-item">
+                      <a class="btn ownbtn" href="#">Request Payment</a>
+                    </li>
+                  @endif
+                  <li class="nav-item active">
+                    <a class="btn btn-light" href="#">Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="btn btn-light" href="#">My Courses</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="btn btn-light" href="#">My Calendar</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="btn btn-light" href="#">Messages</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="btn btn-light" href="#">My Account</a>
+                  </li>
+                  @if($user->isStudent())
+                    <li class="nav-item">
+                      <a class="btn btn-light" href="#">🔔</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="btn ownbtn" href="#">🛒 Cart</a>
+                    </li>
+                  @endif
+                @endif
                 <li class="nav-item">
                   @if(Auth::check())
                     <a class="btn btn-light" href="/logout">Logout</a>
                   @else
-                  <a class="btn btn-light" href="/login">Login</a>
+                    <a class="btn btn-light" href="/login">Login</a>
                   @endif
                 </li>
               </ul>
