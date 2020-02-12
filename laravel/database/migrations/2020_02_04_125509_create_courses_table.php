@@ -22,7 +22,9 @@ class CreateCoursesTable extends Migration
             $table->integer('studentCount');
             $table->integer('price');
             $table->string('noClasses')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
