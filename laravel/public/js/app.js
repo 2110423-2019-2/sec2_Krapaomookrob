@@ -49785,6 +49785,9 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__(/*! D:\workspace\sec2_Krapaomookrob\laravel\resources\js\app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! D:\workspace\sec2_Krapaomookrob\laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\sec2_Krapaomookrob\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\sec2_Krapaomookrob\resources\sass\app.scss */"./resources/sass/app.scss");
+
 
 
 /***/ })

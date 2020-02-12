@@ -42,3 +42,13 @@ Route::get('/cart', function(){
     // route to cart oage
     return view('cart');
 });
+
+Route::get('/payment', function () {
+    return view('payment');
+});
+
+//post to payment
+Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
+Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
+//want to sourceID to result by using controller
+Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
