@@ -46,15 +46,13 @@ Route::post('/user-role', 'UserController@updateRole');
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
-Route::get('/result/{sourceID}', 'Frontend\paymentGatewayController@returnPage');
-//Route::get('/result/{sourceID}', function () {
-//    return view(result);
-//})->name('comment.show'));
+Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
+
 //Route::post('/internet', function(Request $request){
 //        if($_POST["internet_bnk"]!=NULL){
 //            $bnk = $_POST["internet_bnk"];
 //            Route::get('/{bnk}',function(){
-//               return view('banking'); 
+//               return view('banking');
 //            });
 //        }
 //        else{
@@ -66,5 +64,5 @@ Route::get('/result/{sourceID}', 'Frontend\paymentGatewayController@returnPage')
 //(
 //    [_token] => dKD00CjEy1f9mzaAQRwvCZZ9fCnuQ0KO03nErMmf
 //    [omiseToken] => tokn_test_5iu8odxzio3t12f6irs
-//    [omiseSource] => 
+//    [omiseSource] =>
 //)

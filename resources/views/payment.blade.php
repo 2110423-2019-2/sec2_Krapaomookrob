@@ -10,6 +10,7 @@
 @endsection
 
 @section('content')
+
 <div>
     <h type = "hidden" name = "price" value = "{{$price = 1000 * 100}}"> </h>
 </div>
@@ -18,6 +19,7 @@
     <form name="checkout" value = "card" method="POST" action="card" >
       @csrf
         <input name="p" type ="hidden" value = "{{$price}}">
+        <input name="class" type ="hidden" value = "">
       <script type="text/javascript"   src="https://cdn.omise.co/omise.js"
         data-key="pkey_test_5irvp3eqbf7ybksdjlt"
         data-image="{{asset('img/favicon.png')}}"
@@ -42,9 +44,9 @@
             <input type="radio" id = "ktb" name ="internet_bnk" onclick="checkRadioButon()" value="internet_banking_ktb"> KTB<br>
             <input type="radio" id ="bay" name ="internet_bnk" onclick="checkRadioButon()" value="	internet_banking_bay">กรุงศรี<br>
             <input name="p" type ="hidden" value = "{{$price}}">
-      <button type="submit" id="checkoutButton"  name="form2" disabled >Pay with internet banking</button>
+      <button type="submit" id="checkoutButton"  name="form2" disabled onclick = "()">Pay with internet banking</button>
            <script>
-
+               
         function checkRadioButon() {  
             var checkRadio = document.querySelector( 
                 'input[name="internet_bnk"]:checked'); 
