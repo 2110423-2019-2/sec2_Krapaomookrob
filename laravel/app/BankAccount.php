@@ -11,4 +11,8 @@ class BankAccount extends Model
     protected $fillable = [
         'id', 'account_number', 'account_name', 'bank', 'user_id'
     ];
+
+    public function User(){
+        return $this->belongsTo('App\User');
+    }
 }
