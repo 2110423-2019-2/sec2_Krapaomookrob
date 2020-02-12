@@ -10,11 +10,4 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-<<<<<<< HEAD
-.DS_Store
-/omise-php
-||||||| 49eb42c5
-.DS_Store
-=======
 *.DS_Store
->>>>>>> dev
