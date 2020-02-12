@@ -38,3 +38,8 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+// Search API and its view
+Route::get('/search', 'SearchController@searchCourse');
+Route::get('/searchCourses', function() {
+    return view('searchCourses');
+});
