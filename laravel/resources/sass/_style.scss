@@ -1,0 +1,97 @@
+body{background-color: $body-bg !important}
+
+::-moz-selection{
+    background-color:$purple;
+    color:#ffffff;
+}
+::selection{
+    background-color:$purple;
+    color:#ffffff;
+}
+
+#header{
+  background-color:$white;
+}
+
+.card{
+  margin-top: 1rem;
+}
+
+.dash{
+  border: dashed 1px #b7b7b7;
+}
+
+.ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ownbtn{
+  color: #fff;
+  background-image: linear-gradient(to right, #74D4D8 , #55B3E0);
+}
+
+.ownbtn:hover{
+  color: #fff;
+  background-image: linear-gradient(to right, #6BC7CB , #48A4D0);
+}
+
+.ownbtn:focus{
+  border-color:#65C4DB;
+}
+
+.nav-item{
+  margin-left: 0.5rem;
+}
+
+.theme{
+  color: $theme;
+}
+
+.fbbtn{
+  width: 225px;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  color: white;
+  background-color: #3B5998;
+  text-align: center;
+  text-decoration: none;
+}
+
+.fbbtn:hover{
+  opacity: 1;
+  text-decoration: none;
+  color: white;
+}
+
+.icon-radiobtn [type=radio]{ 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.icon-radiobtn [type=radio] + i {
+  cursor: pointer;
+}
+
+.icon-radiobtn [type=radio]:checked + i {
+  box-shadow: 0px 0px 12px #3498DB;
+}
+
+.icon-radiobtn i.fas {
+  display: inline-block;
+  border-radius: 4px;
+  box-shadow: 0px 0px 2px #888;
+  padding: 0.5em 0.6em;
+  width: 300px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
