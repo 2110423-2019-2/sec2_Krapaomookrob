@@ -21,6 +21,12 @@ docker-compose up
 
 Then, you can access the site in http://localhost:8000/
 
+### Generate Database
+
+``` shell
+cd <root>
+docker exec sec2_krapaomookrob_laravel_1 php artisan migrate:refresh --seed
+```
 
 ### Members
 
