@@ -71,7 +71,7 @@ body{background-color: $body-bg !important}
   color: white;
 }
 
-.icon-radiobtn [type=radio]{ 
+.icon-radiobtn [type=radio]{
   position: absolute;
   opacity: 0;
   width: 0;
@@ -94,4 +94,10 @@ body{background-color: $body-bg !important}
   width: 300px;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.frame{
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
 }

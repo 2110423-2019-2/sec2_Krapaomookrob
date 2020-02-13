@@ -15,6 +15,12 @@ Route::get('/', function () {
     return view('dashboard');
 });
 
+Route::get('/api/subjects','CourseController@fetchSubjects');
+Route::get('/api/days','CourseController@fetchDays');
+Route::get('/new-course', function () {
+    return view('new_course');
+});
+
 //Login for developers
 
 Route::get('/login-dev/{id}', 'Auth\LoginController@loginDeveloper');

@@ -11459,3 +11459,9 @@ body {
   margin-bottom: 20px;
 }
 
+.frame {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
