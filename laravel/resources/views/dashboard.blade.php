@@ -50,6 +50,8 @@
     </div>
   </div>
 </div>
+@endsection
+
 @if (isset($alert))
     <div class="alert alert-success alert-dismissible fade show">
     {{ $alert }}
@@ -58,4 +60,3 @@
     </button>
     </div>
 @endif
-@endsection
