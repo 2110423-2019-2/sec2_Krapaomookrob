@@ -45,7 +45,7 @@ class paymentGatewayController extends Controller{
         ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
         $payment = Payment::create([
             //'user_id' => auth()->user()->id
-            'user_id' => 0
+            'user_id' => 1
         ]);
 
         $charge = OmiseCharge::create(array(
@@ -79,7 +79,10 @@ class paymentGatewayController extends Controller{
         $result = OmiseCharge::retrieve($payment->charge_id);
         $payment->status = $result['status'];
         $payment->save();
-        return view('result') -> with('sourceID', $result['status']);
+        if($result['status'] == "failed"){
+            return view('payment')->with('error','Fail to pay');
+        }
+        return view('dashboard')->with('alert','Successful');
     }
 
 }
