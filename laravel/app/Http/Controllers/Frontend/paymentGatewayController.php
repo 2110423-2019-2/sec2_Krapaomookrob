@@ -3,33 +3,9 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Payment;
-//use App\Http\Controllers\omisePhp\lib\omise\OmiseCharge as omc;
-//require_once (__DIR__ .'\omisePhp\lib\Omise.php');
-//require_once 'path-to-library/omise-php/lib/Omise.php';
 
-
-// 1
 require_once dirname(__FILE__).'/../../../../vendor/autoload.php';
 
-/*
-//2
-// Cores and utilities.
-require_once dirname(__FILE__).'omisePhp/lib/omise/res/obj/OmiseObject.php';
-require_once dirname(__FILE__).'omisePhp/lib/omise/res/OmiseApiResource.php';
-
-// Errors
-require_once dirname(__FILE__).'omisePhp/lib/omise/exception/OmiseExceptions.php';
-
-// API Resources.
-require_once dirname(__FILE__).'/omise/OmiseCharge.php';
-require_once dirname(__FILE__).'/omise/OmiseSource.php';
-require_once dirname(__FILE__).'/omise/OmiseTransfer.php';
-
-
-
-
-
-*/
 use OmiseCharge;
 use OmiseTransfer;
 use OmiseSource;
@@ -47,14 +23,16 @@ class paymentGatewayController extends Controller{
                                             'ip'          => '127.0.0.1',
                                             'card'        => $request->input('omiseToken')),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
         //dd("xcx");
-        if($charge['status'] == 'failed'){
-            //alert("failure");
 
-            return view('dashboard');
+        if($charge['status'] == 'failed'){
+           // alert("failure");
+
+            return view('payment')->with('error','Fail to pay');
          }
         else{
             //checkCourse();
-            return view('banking');
+
+            return view('dashboard')->with('alert','Successful');
         }
 
     }
@@ -85,17 +63,6 @@ class paymentGatewayController extends Controller{
 //        ->
            // dd($source['id']);
             return redirect($charge['authorize_uri']);
-        //Charge status. One of failed, expired, pending, reversed or successful.
-
-        /*if($charge['status'] == 'failed'){
-            //alert("failure");
-            return view('dashboard');
-         }
-        else{
-            //checkCourse();
-            return view('result');
-        }*/
-
 
     }
     public function Paid(){
