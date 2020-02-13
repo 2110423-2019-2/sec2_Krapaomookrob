@@ -2,8 +2,6 @@
 
 @section('title', 'Usertype - Even Die I am The Tutor')
 
-{{-- @section('topic', 'Search Courses') --}}
-
 @section('content')
 <div class="row pb-4">
   <div class="col-lg-12">
@@ -15,18 +13,33 @@
                 <div class="d-flex flex-wrap pt-3">
                         @csrf
                         <div class="col-3">
-                            <h5>Tutor</h5>
-                            <input type="text" placeholder="Student's Name" name="student_name" class="pl-2 small">
+                            <h5>Student</h5>
+                            <input type="text" class='form-control' placeholder="Student's Name" name="student_name" class="pl-2 small">
                             <h5 class="pt-2">Area</h5>
-                            <input type="text" placeholder="Area/City/Province" name="area" class="pl-2 small">
+                            <input type="text" class='form-control' placeholder="Area/City/Province" name="area" class="pl-2 small">
+                            <div class="input-group">
+                                <input class="form-control py-2 rounded-pill mr-1 pr-5" type="search" value="search">
+                                <span class="input-group-append">
+                                    <button class="btn rounded-pill border-0 ml-n5" type="button" disabled>
+                                          <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <h5>Subjects</h5>
-                            <input type="text" placeholder="Subject" name="subject" class="pl-2 small">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="basic-addon1">@</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                              </div>
+
+                            <input type="text" class='form-control' placeholder="Subject" name="subject" class="pl-2 small">
                         </div>
                         <div class="col-3">
                             <h5>Day</h5>
-                            <select class="dropdown-primary" name="day">
+                            <select class="custom-select" name="day">
                                 <option value="">Not Specified</option>
                                 <option value="monday">Monday</option>
                                 <option value="tuesday">Tuesday</option>
@@ -39,7 +52,7 @@
                         </div>
                         <div class="col-3">
                             <h5>Time</h5>
-                            <select class="dropdown-primary" name="time">
+                            <select class="custom-select" name="time">
                                 <option value="">Not Specified</option>
                                 <option value="morning">Morning</option>
                                 <option value="afternoon">Afternoon</option>
@@ -47,9 +60,9 @@
                                 <option value="night">Night</option>
                             </select>
                             <h5 class="pt-2">No. of Students</h5>
-                            <input type="text" placeholder="Not Specified" name="num_students" class="pl-2 small">
+                            <input type="text" class='form-control' placeholder="Not Specified" name="num_students" class="pl-2 small">
                             <h5 class="pt-2">Max Price</h5>
-                            <input type="text" placeholder="Not Specified" name="max_price" class="pl-2 small">
+                            <input type="text" class='form-control' placeholder="Not Specified" name="max_price" class="pl-2 small">
                         </div>
                 </div>
                 <div class="d-flex flex-wrap pt-3" style="justify-content: center"><button type="submit" class="btn ownbtn">Search Courses</button></div>
@@ -92,8 +105,8 @@
                 <div>Starts on 19/02/2020</div>
             </div>
             <div class="col-2 d-flex flex-column flex-wrap" style="justify-content: flex-end">
-                <div class="btn ownbtn" data-toggle="modal" data-target="#x{{$course->id}}">Request to be Tutor</div>
-                    <div class="modal fade" id="x{{$course->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <button type="button" class="btn ownbtn" data-toggle="modal" data-target="#modal{{$course->id}}" id='requestbutton{{$course->id}}'>Request to be Tutor</button>
+                    <div class="modal fade" id="modal{{$course->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -110,11 +123,9 @@
                           </div>
                           <div class="modal-footer">
                             <div class="btn btn-light" data-dismiss="modal">Cancel</div>
-                            <form class="icon-radiobtn" action="/tutor-request" method="POST">
-                                @csrf
-                                <input type="hidden" name="course_id" value=" {{$course->id}}">
-                                <input type="hidden" name="requester_id" value=" {{auth()->user()->id}}">
-                                <button id=1 type="submit" class="btn ownbtn" >Confirm</button>
+                            <form class="icon-radiobtn" data-id='{{$course->id}}' onsubmit="request(this)">
+                                <input type="hidden" id="course_id" name="course_id" value="{{$course->id}}">
+                                <button id='confirmbutton{{$course->id}}' type="submit" class="btn ownbtn" >Confirm</button>
                             </form>
                           </div>
                         </div>
@@ -128,4 +139,29 @@
     @endif
   </div>
 </div>
+<script>
+   function request(elem) {
+        event.preventDefault();
+        event.stopPropagation();
+        var course_id = $(elem).data().id;
+        $.ajax({
+            type:'POST',
+            url:'/tutor-request',
+            data:{course_id:course_id ,_token: '{{csrf_token()}}'},
+            success:function(data) {
+                var id = '#x'+course_id;
+                console.log(id);
+                $("#modal"+course_id).modal('hide');
+                $("#requestbutton"+course_id).prop('disabled',true);
+                $("#requestbutton"+course_id).css({'pointer-events':'none'});
+                $("#requestbutton"+course_id).removeClass('ownbtn');
+                $("#requestbutton"+course_id).addClass('btn-light');
+                $("#requestbutton"+course_id).html('Request Sent !');
+                console.log("#requestbutton"+course_id)
+            }
+        });
+        console.log('#x'+course_id);
+        return false;
+    }
+</script>
 @endsection

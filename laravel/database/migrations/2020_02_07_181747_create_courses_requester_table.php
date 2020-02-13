@@ -19,6 +19,7 @@ class CreateCoursesRequesterTable extends Migration
             $table->bigInteger('requester_id')->unsigned();
             $table->foreign('course_id')->references('id')->on('courses');
             $table->foreign('requester_id')->references('id')->on('users');
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
