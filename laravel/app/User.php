@@ -54,4 +54,8 @@ class User extends Authenticatable
     public function isSuperuser(){
         return $this->role == 'superuser';
     }
+
+    public function BankAccount(){
+        return $this->hasOne('App\BankAccount');
+    }
 }

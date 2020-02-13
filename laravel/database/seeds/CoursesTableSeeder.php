@@ -35,7 +35,8 @@ class CoursesTableSeeder extends Seeder
             'startDate' => '2020-02-04',
             'studentCount' => 3,
             'price' => 500,
-            'noClasses' => '2110865'
+            'noClasses' => '2110865',
+            'user_id' => 1
           ]);
 
           $someDays = Day::find([1,2,3]);
