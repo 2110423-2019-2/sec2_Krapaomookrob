@@ -1,5 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Kanit);@charset "UTF-8";
-
 /*!
  * Bootstrap v4.4.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
@@ -11491,7 +11490,7 @@ body {
     border-color:#65C4DB;
 }
 button:disabled,
-button[disabled]{
+button[disabled]:hover{
     color: #808588;
     background-image: linear-gradient(to right, #b9bbb6 , #b9bbb6);
 }

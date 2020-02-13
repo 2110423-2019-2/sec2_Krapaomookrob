@@ -127,7 +127,7 @@ body{background-color: $body-bg !important}
     border-color:#65C4DB;
 }
 button:disabled,
-button[disabled]{
+button[disabled]:hover{
     color: #808588;
     background-image: linear-gradient(to right, #b9bbb6 , #b9bbb6);
 }
