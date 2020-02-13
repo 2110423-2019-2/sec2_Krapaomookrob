@@ -10,9 +10,9 @@ use OmiseCharge;
 use OmiseTransfer;
 use OmiseSource;
 
-define('OMISE_API_VERSION' , env("API_VERSION", "somedefaultvalue"));
-define('OMISE_PUBLIC_KEY' ,'pkey_test_5irvp3eqbf7ybksdjlt');
-define('OMISE_SECRET_KEY','skey_test_5irvp3eqkwepp9mc4kn');
+define('OMISE_API_VERSION' , env("API_VERSION", null));
+define('OMISE_PUBLIC_KEY' , env("OMISE_PUBLIC_KEY", null));
+define('OMISE_SECRET_KEY', env("OMISE_SECRET_KEY", null));
 
 class paymentGatewayController extends Controller{
 
