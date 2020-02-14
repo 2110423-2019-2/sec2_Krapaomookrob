@@ -15,6 +15,13 @@ Route::get('/', function () {
     return view('dashboard', ['user' => auth()->user()]);
 });
 
+Route::get('/api/course/subjects','CourseController@fetchSubjects');
+Route::get('/api/course/days','CourseController@fetchDays');
+Route::post('/api/course/new','CourseController@newCourse');
+Route::get('/new-course', function () {
+    return view('new_course');
+});
+
 //Login for developers
 
 Route::get('/login-dev/{id}', 'Auth\LoginController@loginDeveloper');
@@ -38,6 +45,10 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+Route::get('/cart', function(){
+    // route to cart oage
+    return view('cart');
+});
 
 Route::get('/payment', function () {
     return view('payment');
