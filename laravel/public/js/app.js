@@ -2010,6 +2010,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2023,36 +2043,81 @@ Vue.component('multiselect', vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defaul
   },
   data: function data() {
     return {
+      err: {
+        chooseSubjects: false,
+        chooseArea: false,
+        chooseDays: false,
+        startDate: false,
+        price: false,
+        noClasses: false
+      },
+      center: {
+        lat: 13.7384627,
+        lng: 100.5320458
+      },
+      markers: [],
+      currentPlace: null,
+      chooseArea: "",
+      chooseSubjects: [],
+      fetchSubjects: [],
+      fetchDays: [],
+      chooseDays: [],
       time: {
-        hh: '02',
-        mm: '01'
+        HH: '14',
+        mm: '00'
       },
       hours: 1,
       startDate: null,
-      center: {
-        lat: 13.743999,
-        lng: 100.532697
-      },
-      markers: [],
-      places: [],
-      currentPlace: null,
-      value: [],
-      subjects: [],
-      days: []
+      price: "",
+      noClasses: "",
+      studentCount: 1
     };
   },
   mounted: function mounted() {
     var _this = this;
 
     this.geolocate();
-    axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/days').then(function (response) {
-      return _this.days = response.data;
+    axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/course/days').then(function (response) {
+      return _this.fetchDays = response.data;
     });
-    axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/subjects').then(function (response) {
-      return _this.subjects = response.data;
+    axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/course/subjects').then(function (response) {
+      return _this.fetchSubjects = response.data;
     });
   },
   methods: {
+    newCourse: function newCourse() {
+      var check = false;
+      this.err = {
+        chooseSubjects: false,
+        chooseArea: false,
+        chooseDays: false,
+        startDate: false,
+        price: false,
+        noClasses: false
+      };
+      if (!this.chooseSubjects.length) this.err.chooseSubjects = true, check = true;
+      if (!this.chooseArea.length) this.err.chooseArea = true, check = true;
+      if (!this.chooseDays.length) this.err.chooseDays = true, check = true;
+      if (!this.startDate) this.err.startDate = true, check = true;
+      if (!this.price.length) this.err.price = true, check = true;
+      if (!this.noClasses.length) this.err.noClasses = true, check = true;
+      if (check) return;
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/api/course/new', {
+        subjects: this.chooseSubjects,
+        area: this.chooseArea,
+        days: this.chooseDays,
+        time: this.time,
+        startDate: this.startDate,
+        hours: this.hours,
+        price: this.price,
+        noClasses: this.noClasses,
+        studentCount: this.studentCount
+      }).then(function (response) {
+        return window.location.href = "/my-courses";
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
     setPlace: function setPlace(place) {
       this.currentPlace = place;
     },
@@ -2062,10 +2127,10 @@ Vue.component('multiselect', vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defaul
           lat: this.currentPlace.geometry.location.lat(),
           lng: this.currentPlace.geometry.location.lng()
         };
-        this.markers.push({
+        this.markers = [{
           position: marker
-        });
-        this.places.push(this.currentPlace);
+        }];
+        this.chooseArea = this.currentPlace.name;
         this.center = marker;
         this.currentPlace = null;
       }
@@ -55554,7 +55619,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", { staticClass: "frame p-4" }, [
+  return _c("div", { staticClass: "frame p-4" }, [
     _c("div", { staticClass: "row" }, [
       _c(
         "div",
@@ -55570,16 +55635,22 @@ var render = function() {
                 attrs: {
                   "close-on-select": false,
                   multiple: true,
-                  options: _vm.subjects
+                  options: _vm.fetchSubjects
                 },
                 model: {
-                  value: _vm.value,
+                  value: _vm.chooseSubjects,
                   callback: function($$v) {
-                    _vm.value = $$v
+                    _vm.chooseSubjects = $$v
                   },
-                  expression: "value"
+                  expression: "chooseSubjects"
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.err.chooseSubjects
+                ? _c("div", { staticClass: "feedback" }, [
+                    _vm._v("Please provide a subject.")
+                  ])
+                : _vm._e()
             ],
             1
           ),
@@ -55602,7 +55673,13 @@ var render = function() {
                   on: { click: _vm.addMarker }
                 },
                 [_vm._v("Pick")]
-              )
+              ),
+              _vm._v(" "),
+              _vm.err.chooseArea
+                ? _c("div", { staticClass: "feedback" }, [
+                    _vm._v("Please provide a area.")
+                  ])
+                : _vm._e()
             ],
             1
           ),
@@ -55643,16 +55720,22 @@ var render = function() {
                   attrs: {
                     "close-on-select": false,
                     multiple: true,
-                    options: _vm.days
+                    options: _vm.fetchDays
                   },
                   model: {
-                    value: _vm.value,
+                    value: _vm.chooseDays,
                     callback: function($$v) {
-                      _vm.value = $$v
+                      _vm.chooseDays = $$v
                     },
-                    expression: "value"
+                    expression: "chooseDays"
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.err.chooseDays
+                  ? _c("div", { staticClass: "feedback" }, [
+                      _vm._v("Please provide some days.")
+                    ])
+                  : _vm._e()
               ],
               1
             ),
@@ -55665,7 +55748,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("vue-timepicker", {
                   attrs: {
-                    format: "hh:mm",
+                    format: "HH:mm",
                     "minute-interval": 30,
                     "input-class": "form-control"
                   },
@@ -55697,7 +55780,13 @@ var render = function() {
                     },
                     expression: "startDate"
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.err.startDate
+                  ? _c("div", { staticClass: "feedback" }, [
+                      _vm._v("Please provide a start date.")
+                    ])
+                  : _vm._e()
               ],
               1
             ),
@@ -55749,37 +55838,129 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(0)
+        _c("div", { staticClass: "row mt-4" }, [
+          _c("div", { staticClass: "col-sm-4" }, [
+            _c("h5", [_vm._v("Price")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.price,
+                  expression: "price"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { placeholder: "Price" },
+              domProps: { value: _vm.price },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.price = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.err.price
+              ? _c("div", { staticClass: "feedback" }, [
+                  _vm._v("Please provide prices.")
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-4" }, [
+            _c("h5", [_vm._v("No. of Classes")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.noClasses,
+                  expression: "noClasses"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { placeholder: "No. of Classes" },
+              domProps: { value: _vm.noClasses },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.noClasses = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.err.noClasses
+              ? _c("div", { staticClass: "feedback" }, [
+                  _vm._v("Please provide No. of Classes.")
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-4" }, [
+            _c("h5", [_vm._v("Student Count")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.studentCount,
+                    expression: "studentCount"
+                  }
+                ],
+                staticClass: "custom-select",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.studentCount = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { selected: "" } }, [_vm._v("1")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("2")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("3")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("4")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("5")])
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row justify-content-center mt-4" }, [
+          _c(
+            "a",
+            { staticClass: "btn ownbtn px-5", on: { click: _vm.newCourse } },
+            [_vm._v("Create New Course")]
+          )
+        ])
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mt-4" }, [
-      _c("div", { staticClass: "col-sm-6" }, [
-        _c("h5", [_vm._v("Price")]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { placeholder: "Price" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-6" }, [
-        _c("h5", [_vm._v("No. of Classes")]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { placeholder: "No. of Classes" }
-        })
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
