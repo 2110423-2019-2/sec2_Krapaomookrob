@@ -6,12 +6,25 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Course;
 use App\Subject;
+use App\User;
 
 class SearchController extends Controller
 {
     public function liveSearch(Request $request) {
         if ($request->input('subject')) {
             $result = Subject::select('name')->get();
+            $out = "";
+            foreach ($result as $row) {
+                $out .= "<option value=" . $row->name . ">";
+            }
+            return $out;
+        } else if ($request->input('tutor')) {
+            $key = $request->input('tutor');
+            $result = User::select('name')
+                ->where('name', 'like', '%' . $key . '%')
+                ->distinct()
+                ->orderByRaw('CHAR_LENGTH(name)')
+                ->get();
             $out = "";
             foreach ($result as $row) {
                 $out .= "<option value=" . $row->name . ">";
@@ -38,8 +51,9 @@ class SearchController extends Controller
             ->leftjoin('course_subject', 'courses.id', '=', 'course_subject.course_id')
             ->leftjoin('subjects', 'course_subject.subject_id', '=', 'subjects.id')
             ->leftjoin('course_day', 'courses.id', '=', 'course_day.course_id')
-            ->leftjoin('days', 'days.id', '=', 'course_day.day_id');
-
+            ->leftjoin('days', 'days.id', '=', 'course_day.day_id')
+            ->leftjoin('users', 'users.id', '=', 'courses.user_id');
+            
         $tutor = $request->input('tutor');
         $area = $request->input('area');
         $subject = $request->input('subject');
@@ -49,20 +63,42 @@ class SearchController extends Controller
         // $request->input('no-class');
         // $request->input('max-price');
 
-        // if ($tutor) {$query = $query->where('area', 'like', '%' . $area . '%');}
+        if ($tutor) {$query = $query->where('users.name', 'like', '%' . $tutor . '%');}
         if ($area) {$query = $query->where('courses.area', 'like', '%' . $area . '%');}
         if ($subject) {$query = $query->where('subjects.name', 'like', '%' . $subject . '%');}
         if ($day != 'ns') {$query = $query->where('days.name', '=', $day);}
         // if ($time != 'ns') {$query = $query->where('days.name', 'like', '%' . $day . '%');}
+        
+        $query = $query->select('courses.id')->distinct()->pluck('courses.id');
 
-        $query = $query->select('area', 'startDate', 'price', 'subjects.name as sname', 'days.name as dname');
-        return $query->get();
+        $query_2 = DB::table('courses')
+            ->whereIn('courses.id', $query)
+            ->leftjoin('course_subject', 'courses.id', '=', 'course_subject.course_id')
+            ->leftjoin('subjects', 'course_subject.subject_id', '=', 'subjects.id')
+            ->leftjoin('course_day', 'courses.id', '=', 'course_day.course_id')
+            ->leftjoin('days', 'days.id', '=', 'course_day.day_id')
+            ->leftjoin('users', 'users.id', '=', 'courses.user_id');
+            
 
-        // echo $courses;
-        // foreach ($courses as $course) {
-        //     echo $course->area;
-        // }
-
-        return response()->json(array('data' => $courses));
+        $course_day = DB::table('course_day')
+            ->leftjoin('days', 'days.id', '=', 'course_day.day_id')
+            ->select('course_day.course_id', DB::raw("GROUP_CONCAT(days.name SEPARATOR ', ') as day"))
+            ->groupBy('course_day.course_id');
+            
+        $query_2 = $query_2->select(
+            'courses.user_id', 
+            'courses.id', 
+            'area', 
+            'startDate', 
+            'price', 
+            // 'subjects.name as sname', 
+            // 'days.name as dname',
+            DB::raw("GROUP_CONCAT(DISTINCT subjects.name SEPARATOR ', ') as sname"),
+            DB::raw("GROUP_CONCAT(DISTINCT days.name SEPARATOR ', ') as dname"),
+            'users.name as uname',
+            'courses.time',
+            'courses.hours',
+        )->groupBy('courses.id');
+        return $query_2->get();
     }
 }
