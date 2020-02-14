@@ -42,7 +42,7 @@
         
         
           <div id="stylized" class="myform">
-              <form id="form" name="form" method="get" action="search">
+              <form action="javascript:updateSearchedCourses();">
                   
                   <div class="row my-2" >
 
@@ -91,7 +91,7 @@
                     <div class="column mx-4">
                         <h5>Day</h5>  
                         <div class="row ml-1"  style="width: 220px">
-                        <select id="weekdays" class="dropdownInput" style="width: 100%">
+                        <select id="day" name="day" class="dropdownInput" style="width: 100%">
                           <option value="ns">Not Specified</option>
                           <option value="sunday">Sunday</option>
                           <option value="monday">Monday</option>
@@ -107,21 +107,32 @@
                     <div class="column mx-4">
                         <h5>Time</h5>  
                         <div class="row ml-1"  style="width: 220px">
-                        <select id="Time" class="dropdownInput" style="width: 100%">
+                        <select id="time" name='time' class="dropdownInput" style="width: 100%">
                           <option value="ns">Not Specified</option>
                     
                         </select>
                       </div>
                     </div>
                   </div>
-
                   <button class="btn ownbtn justify-item-center">Search Courses</button>
-
               </form>
           </div>
         
 
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br><br>
+<h1>Search Results</h1>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body pr-0">
+          <div id="searchResults"></div>  
       </div>
     </div>
   </div>
@@ -147,6 +158,70 @@
       xmlhttp.open("GET","search-courses/search?"+field+"="+str, true);
       xmlhttp.send();
     }
+</script>
+
+
+<script>
+  function updateSearchedCourses(){
+    if (window.XMLHttpRequest) {
+      xmlhttp=new XMLHttpRequest();
+    } else { 
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    tutor = document.getElementById('tutor').value;
+    area = document.getElementById('area').value;
+    subject = document.getElementById('subject').value;
+    day = document.getElementById('day').value;
+    time = document.getElementById('time').value;
+    
+    xmlhttp.onreadystatechange=function() {
+      if (this.readyState==4 && this.status==200) {
+        showTable(xmlhttp.responseText); 
+      }
+    }
+    xmlhttp.open("GET","search?tutor="+tutor+"&area="+area+"&subject="+subject+"&day="+day+"&time="+time, true);
+    xmlhttp.send();
+  }
+  
+  function showTable(response){
+    var array = JSON.parse(response);
+    html = getTableHeader();
+    for (i = 0; i < array.length; i++) {
+      html += getHTMLRows(array[i]);
+    }
+    document.getElementById('searchResults').innerHTML=inHTMLTable(html);
+  }
+
+  function inHTMLTable(str){
+    return '<table style="width:100%">' + str + '</table>';
+  }
+  function inHTMLRow(str){
+    return '<tr>' + str + '</tr>';
+  }
+  function inHTMLCell(str){
+    return '<td>' + str + '</td>';
+  }
+  function inHTMLHeader(str){
+    return '<th>' + str + '</th>';
+  }
+  function getTableHeader(){
+    html = ''
+    for (i of ['Tutor', 'Available Subjects', 'Areas', 'Classes', 'Price/Start Date']){
+      html += inHTMLHeader(i);
+    }
+    return inHTMLRow(html);
+  }
+
+  function getHTMLRows(rowData) {
+    html = inHTMLCell(rowData.tutor);
+    html += inHTMLCell(rowData.area);
+    html += inHTMLCell(rowData.sname);
+    html += inHTMLCell(rowData.dname);
+    html += inHTMLCell(rowData.price);
+    return inHTMLRow(html);
+  }
+
 </script>
 
 @endsection

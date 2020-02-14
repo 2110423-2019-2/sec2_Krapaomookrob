@@ -34,21 +34,29 @@ class SearchController extends Controller
 
     public function searchCourse(Request $request){
         
-        
-        // $request->input('tutor');
+        $query = DB::table('courses')
+            ->leftjoin('course_subject', 'courses.id', '=', 'course_subject.course_id')
+            ->leftjoin('subjects', 'course_subject.subject_id', '=', 'subjects.id')
+            ->leftjoin('course_day', 'courses.id', '=', 'course_day.course_id')
+            ->leftjoin('days', 'days.id', '=', 'course_day.day_id');
+
+        $tutor = $request->input('tutor');
         $area = $request->input('area');
         $subject = $request->input('subject');
-        // $request->input('day');
-        // $request->input('time');
+        $day = $request->input('day');
+        $time = $request->input('time');
         // $request->input('hour-class');
         // $request->input('no-class');
         // $request->input('max-price');
 
-        // return DB::table()
-        return DB::table('course_subject')
-            // ->where('area', 'like', '%' . $area . '%')
-            // ->orWhere('subject', 'like', '%' . $subject . '%')
-            ->get();
+        // if ($tutor) {$query = $query->where('area', 'like', '%' . $area . '%');}
+        if ($area) {$query = $query->where('courses.area', 'like', '%' . $area . '%');}
+        if ($subject) {$query = $query->where('subjects.name', 'like', '%' . $subject . '%');}
+        if ($day != 'ns') {$query = $query->where('days.name', '=', $day);}
+        // if ($time != 'ns') {$query = $query->where('days.name', 'like', '%' . $day . '%');}
+
+        $query = $query->select('area', 'startDate', 'price', 'subjects.name as sname', 'days.name as dname');
+        return $query->get();
 
         // echo $courses;
         // foreach ($courses as $course) {
