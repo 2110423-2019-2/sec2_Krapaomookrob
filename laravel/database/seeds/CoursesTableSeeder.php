@@ -52,7 +52,8 @@ class CoursesTableSeeder extends Seeder
             'startDate' => '2020-02-04',
             'studentCount' => 3,
             'price' => 1000,
-            'noClasses' => '2269420'
+            'noClasses' => '2269420',
+            'user_id' => 2
           ]);
 
           $someDays2 = Day::find([2,4]);
@@ -60,6 +61,25 @@ class CoursesTableSeeder extends Seeder
           
           $course2->days()->attach($someDays2);
           $course2->subjects()->attach($someSubjects2);
+
+          for($i = 1; $i <= 30; $i++){
+            $courseI = Course::create([
+              'area' => 'Silom',
+              'time' => '14:00:00',
+              'hours' => '2',
+              'startDate' => '2020-02-14',
+              'studentCount' => 3,
+              'price' => 1000*($i%3) + ($i%13)*100,
+              'noClasses' => $i,
+              'user_id' => $i%2==0?5:6
+            ]);
+
+            $someDaysI = $courseI->days()->attach(Day::find([$i%8, ($i+1)%8, ($i+2)%8]));
+            $someSubjectsI = $courseI->subjects()->attach(Subject::find([$i%13, $i%3, $i%5]));
+            
+            $courseI->days()->attach($someDaysI);
+            $courseI->subjects()->attach($someSubjectsI);
+          }
       
 
     }

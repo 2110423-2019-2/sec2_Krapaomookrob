@@ -40,35 +40,3 @@
 @endif
 
 
-<style>
-    .ownpaginator {
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
-        box-shadow: 0px 0px 1px #888;
-        margin-bottom: 10px;
-        margin-top: -4px;
-    }
-    .btn-circle {
-        width: 36px;
-        height: 36px;
-        padding: 9px 0px;
-        text-align: center;
-        font-size: 12px;
-        line-height: 1.42857;
-        border: 1px solid rgba(0, 0, 0, 0.125);
-        border-radius: 18px;
-        margin-left: 10px;
-    }
-    .btn-circle:hover{
-        opacity: 1;
-        text-decoration: none;
-    }
-    .btn-circle.active{
-        color: #fff;
-        background-image: linear-gradient(to right, #74D4D8 , #55B3E0);
-    }
-    .dot-pagination{
-        padding-top: 8px;
-        margin-left: 10px;
-    }
-</style>

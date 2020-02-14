@@ -10,6 +10,7 @@
 
 @endsection
 
+{{-- {{dd(auth()->user())}} --}}
 
 @section('content')
     
@@ -53,7 +54,9 @@
                         <br/>
                         Starts on {{date('d-M-y', strtotime($course->startDate))}}
                     </td>
-                    <td class="col-2 text-success">Success</td>
+                    <td class="col-2">
+                        <a class="btn btn-danger" href="#">Cancel</button>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -65,29 +68,3 @@
     </footer>
 @endsection
 
-<style>
-.owntable{
-    margin-bottom: 0px !important;
-    border-radius: 4px;
-    background-color: white;
-    box-shadow: 0px 0px 1px #888;
-}
-
-.owntable td{
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid #dee2e6 !important;
-    
-}
-
-.owntable th{
-    border-top: 0px !important;
-    padding-top: 30px !important;
-}
-
-.owntable .ownbtn{
-    width: 60%;
-}
-
-
-</style>

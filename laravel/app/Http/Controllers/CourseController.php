@@ -41,6 +41,8 @@ class CourseController extends Controller
         $course->days()->sync($days);
         $course->save();
         return response('OK', 200);
+    }
+    
     public function myCoursesIndex(){
         $user = auth()->user();
         $courses;

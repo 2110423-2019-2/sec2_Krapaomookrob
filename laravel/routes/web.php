@@ -14,7 +14,7 @@
 
 
 Route::get('/', function () {
-    return view('dashboard', ['user' => auth()->user()]);
+    return view('dashboard');
 });
 
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
