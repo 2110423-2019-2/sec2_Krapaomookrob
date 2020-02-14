@@ -38,11 +38,12 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+// Route for shopping cart
 Route::get('/cart', function(){ 
-    // route to cart oage
     return view('cart');
 });
 
+// Route for payment
 Route::get('/payment', function () {
     return view('payment');
 });

@@ -39,7 +39,9 @@
                     Starts on 19/09/2019</div>
                 <div class="col-lg">
                     <div id="app">
-                        <remove-button button-text="Remove" v-bind:class="[activeCancel]"></remove-button>
+                        <remove-button button-text="Remove" 
+                        v-bind:class="[activeCancel]"
+                        v-on:click="addCart"></remove-button>
                     </div>
                 </div>
             </div>

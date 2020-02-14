@@ -7,6 +7,8 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.VueCookie = require('vue-cookie');
+window.Vue.use(window.VueCookie);
 
 /**
  * The following block of code may be used to automatically register your
@@ -33,5 +35,25 @@ const app = new Vue({
     data: {
         activeCancel: 'cancelbtn',
         activeOwn: 'ownbtn'
+      },
+    methods: {
+      addCart: function(event){
+        // set cookie for '1' day
+        if (this.$cookie.get('cart') == null){
+          this.$cookie.set('cart',['...'] ,1);  // TODO:insert first item
+        }else{
+          let tmp = this.$cookie.get('cart');
+          this.$cookie.delete('cart');
+          tmp.push('...');                      // TODO:insert new item
+          this.$cookie.set('cart',tmp,1);
+        }
+      },
+      removeCart: function(event){
+        // no null delete case 
+        let tmp = this.$cookie.get('cart');
+        this.$cookie.delete('cart');
+        tmp.pop('...');                         // TODO:pop item
+        this.$cookie.set('cart',tmp,1);
       }
+    }
 });
