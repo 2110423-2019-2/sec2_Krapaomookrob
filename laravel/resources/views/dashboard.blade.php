@@ -18,8 +18,8 @@
         <div class="d-flex flex-wrap">
           <div class="card p-3 dash mr-3">
               <h5>P'Taan</h5>
-              <span>Saturday, 23 Nov 2019</span>
-              <span>13:00-15:00 (2hrs)</span>
+              <span class="d-block">Saturday, 23 Nov 2019</span>
+              <span class="d-block">13:00-15:00 (2hrs)</span>
               <a class="btn ownbtn" href="#">Start Attendance Checking</a>
           </div>
         </div>
@@ -51,3 +51,12 @@
   </div>
 </div>
 @endsection
+
+@if (isset($alert))
+    <div class="alert alert-success alert-dismissible fade show">
+    {{ $alert }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+@endif

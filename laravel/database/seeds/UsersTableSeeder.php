@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\BankAccount;
 
 class UsersTableSeeder extends Seeder
 {
@@ -75,5 +76,16 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt(rand(1000, 9999)),
             'role' => 'superuser',
         ]);
+
+        $users = User::all();
+
+        foreach($users as $user){
+            BankAccount::create([
+                'account_number' => '356213245' . substr($user->id, -1),
+                'account_name' => $user->name,
+                'bank' =>  'Kasikorn',
+                'user_id' => $user->id,
+            ]);
+        }
     }
 }
