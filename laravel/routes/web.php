@@ -11,6 +11,8 @@
 |
 */
 
+
+
 Route::get('/', function () {
     return view('dashboard');
 });
@@ -58,3 +60,6 @@ Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
 Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
+
+//My Courses
+Route::get('/my-courses', 'CourseController@myCoursesIndex');
