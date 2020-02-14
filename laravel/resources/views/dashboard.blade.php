@@ -5,7 +5,7 @@
 @section('topic', 'Dashboard')
 
 @section('menu')
-<a class="btn ownbtn" href="#">Search Courses</a>
+<a class="btn ownbtn" href="/search-courses">Search Courses</a>
 <a class="btn ownbtn" href="#">New Course Request</a>
 @endsection
 

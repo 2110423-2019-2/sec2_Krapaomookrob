@@ -9,7 +9,30 @@
 <a class="btn ownbtn" href="#">New Course Request</a>
 @endsection
 
-@section('content')
+@section('content') 
+<style>
+  .searchBtn{
+    border: 0px;
+    background-color: rgb(79, 182, 217); 
+    border-radius: 3px 0px 0px 3px; 
+    margin-right: 0px;
+    padding: 10px;
+  }
+  .searchInput{
+    border: solid 1px rgb(200,200,200); 
+    border-radius: 0px 3px 3px 0px; 
+    border-left: 0px;
+    margin-left: 0px;
+    padding-left: 10px;
+  }
+  .dropdownInput{
+    border: solid 1px rgb(200,200,200); 
+    border-radius: 3px; 
+    padding: 5.5px 10px;
+  }
+</style>
+
+
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
@@ -21,48 +44,78 @@
           <div id="stylized" class="myform">
               <form id="form" name="form" method="get" action="search">
                   
-                  <div class="row">
+                  <div class="row my-2" >
 
                     <div class="column mx-4">
                         <h5> Tutor</h5>  
                         <div class="row ml-1">
-                          <button class="mr-0 py-2 px-2" style="background-color: rgb(79, 182, 217); border-radius: 3px 0px 0px 3px; border: 0px" disabled>
+                          <button class="searchBtn" disabled>
                             <svg class="d-flex align-item-center justify-content-center" style="fill: white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 20 20">
                                 <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                             </svg>
                           </button>
-                          <input class="ml-0 pl-2" style="border-radius: 0px 3px 3px 0px; border: solid 1px rgb(200,200,200); border-left: 0px" name="name" id="name" placeholder="Tutor's Name"/>
+                          <input class="searchInput" name="tutor" id="tutor" placeholder="Tutor's Name"/>
                         </div>
                         
                         </br>
                         
                         <h5> Area</h5>  
                           <div class="row ml-1">
-                          <button class="mr-0 py-2 px-2" style="background-color: rgb(79, 182, 217); border-radius: 3px 0px 0px 3px; border: 0px" disabled>
+                          <button class="searchBtn" disabled>
                             <svg class="d-flex align-item-center justify-content-center" style="fill: white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 20 20">
                                 <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                             </svg>
                           </button>
-                          <input class="ml-0 pl-2" style="border-radius: 0px 3px 3px 0px; border: solid 1px rgb(200,200,200); border-left: 0px" name="name" id="name" placeholder="Area/City/Province"/>
+                          <input list="areaDataList" class="searchInput" name="area" id="area" placeholder="Area/City/Province" onkeyup="showResult(this.value, 'area', 'areaList')"/>
+                          <datalist id="areaDataList">
+                            <div id="areaList"></div>
+                          </datalist>
                         </div>
                     </div>
                     
                     <div class="column mx-4">
                         <h5>Subjects</h5>  
                         <div class="row ml-1">
-                          <button class="mr-0 py-2 px-2" style="background-color: rgb(79, 182, 217); border-radius: 3px 0px 0px 3px; border: 0px" disabled>
+                          <button class="searchBtn" disabled>
                             <svg class="d-flex align-item-center justify-content-center" style="fill: white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 20 20">
                                 <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                             </svg>
                           </button>
-                          <input class="ml-0 pl-2" style="border-radius: 0px 3px 3px 0px; border: solid 1px rgb(200,200,200); border-left: 0px" name="name" id="name" placeholder="Subject"/>
+                          <input list="subjectDataList" class="searchInput" name="subject" id="subject" placeholder="Subject" onfocus="showResult('all', 'subject', 'subjectList')"/>
+                          <datalist id="subjectDataList">
+                            <div id="subjectList"></div>
+                          </datalist>
                         </div>
-                        
-                        </br>
-                        
+                    </div>
+                          
+                    <div class="column mx-4">
+                        <h5>Day</h5>  
+                        <div class="row ml-1"  style="width: 220px">
+                        <select id="weekdays" class="dropdownInput" style="width: 100%">
+                          <option value="ns">Not Specified</option>
+                          <option value="sunday">Sunday</option>
+                          <option value="monday">Monday</option>
+                          <option value="tuesday">Tuesday</option>
+                          <option value="wednesday">Wednesday</option>
+                          <option value="thursday">Thursday</option>
+                          <option value="friday">Friday</option>
+                          <option value="saturday">Saturday</option>
+                        </select>
+                      </div>
                     </div>
 
+                    <div class="column mx-4">
+                        <h5>Time</h5>  
+                        <div class="row ml-1"  style="width: 220px">
+                        <select id="Time" class="dropdownInput" style="width: 100%">
+                          <option value="ns">Not Specified</option>
+                    
+                        </select>
+                      </div>
+                    </div>
                   </div>
+
+                  <button class="btn ownbtn justify-item-center">Search Courses</button>
 
               </form>
           </div>
@@ -73,4 +126,27 @@
     </div>
   </div>
 </div>
+
+
+<script>
+    function showResult(str, field, listName) {
+      if (str.length==0) {
+        // document.getElementById(listName).innerHTML="";
+        return;
+      }
+      if (window.XMLHttpRequest) {
+        xmlhttp=new XMLHttpRequest();
+      } else { 
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange=function() {
+        if (this.readyState==4 && this.status==200) {
+          document.getElementById(listName).innerHTML= xmlhttp.responseText; 
+        }
+      }
+      xmlhttp.open("GET","search-courses/search?"+field+"="+str, true);
+      xmlhttp.send();
+    }
+</script>
+
 @endsection

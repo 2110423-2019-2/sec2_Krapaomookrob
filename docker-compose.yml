@@ -7,6 +7,7 @@ services:
             - 8000:80
         volumes:
             - ./laravel:/var/www
+        # command: npm run dev
         links:
             - mysql
         environment:
@@ -40,3 +41,26 @@ services:
             MYSQL_USER: dbuser
             MYSQL_PASSWORD: p455w0rd
             MYSQL_ROOT_PASSWORD: p455w0rd
+    
+    composer:
+        image: composer
+        volumes:
+            - ./laravel:/app
+        command: [
+            'bash', '-c',
+            'composer install &&
+            if [[ -f /app/.env ]]; then echo ".env file already exists";
+            else cp /app/.env.example /app/.env && php artisan key:generate; fi'
+        ]
+
+    # node:
+    #     # image: node:12-alpine
+    #     build:
+    #         context: docker
+    #         dockerfile: node.dockerfile
+    #     # working_dir: /app
+    #     ports:
+    #         - 3000:3000
+    #     # volumes:
+    #     #     - ./laravel:/app
+    #     command: npm run dev
