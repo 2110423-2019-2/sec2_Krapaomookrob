@@ -20,7 +20,14 @@ class CourseController extends Controller
     }
 
     public function myCoursesIndex(){
-        $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->paginate(5)->onEachSide(1);
+        $user = auth()->user();
+        $courses;
+        if($user->isStudent()){
+            $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->paginate(10)->onEachSide(1);
+        }
+        else if($user->isTutor()){
+            $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->paginate(10)->onEachSide(1);
+        }
         return view('my_courses', ['courses' => $courses]);
     }
 }
