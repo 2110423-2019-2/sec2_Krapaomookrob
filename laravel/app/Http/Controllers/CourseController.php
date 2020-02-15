@@ -43,15 +43,66 @@ class CourseController extends Controller
         return response('OK', 200);
     }
     
+    
     public function myCoursesIndex(){
         $user = auth()->user();
         $courses;
+        $classDateList = [];
+        $nextClasses = [];
+        $isFinished = [];
+        $classesLeft = [];
         if($user->isStudent()){
-            $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->paginate(10)->onEachSide(1);
+            $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
         }
         else if($user->isTutor()){
-            $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->paginate(10)->onEachSide(1);
+            $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
         }
-        return view('my_courses', ['courses' => $courses]);
+        foreach($courses as $course){
+            $classes = $this->allClasses($course->startDate,  $course->days->pluck('name')->toArray(), $course->noClasses);
+            array_push($classDateList, $classes[0]);
+            array_push($nextClasses, $classes[1]);
+            array_push($classesLeft, $classes[2]);
+            $now = Carbon::now()->addHours(7);
+            array_push($isFinished, end($classes[0])->lt($now));
+            
+        }
+        // dd($courses);
+        return view('my_courses', ['courses' => $courses, 'classDateList' => $classDateList, 'nextClasses' => $nextClasses, 'isFinished' => $isFinished, 'classesLeft' => $classesLeft]);
     }
+
+    private function allClasses($startDate, $weekDays, $noClasses){
+        $weekMap = [
+            'Sunday' => 0,
+            'Monday' => 1,
+            'Tuesday' => 2,
+            'Wednesday' => 3,
+            'Thursday' => 4,
+            'Friday' => 5,
+            'Saturday' => 6,
+        ];
+        $count = $noClasses;
+        $now = new Carbon($startDate);
+        $classDate = [];
+        $currentTime = Carbon::now()->addHours(7);
+        $nextClass = null;
+        $classesLeft = 0;
+        while($count != 0){
+            $min = $now->copy()->addDays(8);
+            foreach($weekDays as $weekDay){
+                $t = $now->copy()->next($weekMap[$weekDay]);
+                if($t->lt($min)){
+                    $min = $t;
+                }
+            }
+            array_push($classDate, $min);
+            if($nextClass == null && $currentTime->lte($min)){
+                $nextClass = $min;
+                $classesLeft = $count;
+            }
+            $now = $min;
+            $count = $count - 1;
+        }
+        return [$classDate, $nextClass, $classesLeft];
+    }
+    
 }
