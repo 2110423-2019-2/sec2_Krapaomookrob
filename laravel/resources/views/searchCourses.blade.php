@@ -6,7 +6,7 @@
 
 @section('menu')
 <a class="btn" style="background-color: #ffffff; border: solid 1px rgba(200,200,200, 0.6)" href="#">< Back</a>
-<a class="btn ownbtn" href="#">New Course Request</a>
+<a class="btn ownbtn" href="new-course">New Course Request</a>
 @endsection
 
 @section('content') 
@@ -159,23 +159,33 @@
                         <h5>Day</h5>  
                         <div class="row ml-1"  style="width: 220px">
                         <select id="day" name="day" class="dropdownInput" style="width: 100%">
-                          <option value="ns">Not Specified</option>
-                          <option value="sunday">Sunday</option>
-                          <option value="monday">Monday</option>
-                          <option value="tuesday">Tuesday</option>
-                          <option value="wednesday">Wednesday</option>
-                          <option value="thursday">Thursday</option>
-                          <option value="friday">Friday</option>
-                          <option value="saturday">Saturday</option>
+                          <option value="">Not Specified</option>
+                          <option value="Sunday">Sunday</option>
+                          <option value="Monday">Monday</option>
+                          <option value="Tuesday">Tuesday</option>
+                          <option value="Wednesday">Wednesday</option>
+                          <option value="Thursday">Thursday</option>
+                          <option value="Friday">Friday</option>
+                          <option value="Saturday">Saturday</option>
                         </select>
                       </div>
+
+                      <div class="col selectedBox">
+                          <h7><b>SELECTED DAYS</b></h7>
+                            <div name="dayUL" id="dayUL">
+                              <div name="dayNS" id="dayNS" style="color:grey">
+                                <small>No Selected Days</small>
+                              </div>
+                            </div>
+                      </div>
+
                     </div>
 
                     <div class="column mx-4">
                         <h5>Time</h5>  
                         <div class="row ml-1"  style="width: 220px">
-                        <select id="time" name='time' class="dropdownInput" style="width: 100%">
-                          <option value="ns">Not Specified</option>
+                        <select id="time" name='time' class="dropdownInput" style="width: 100%" onchange="updateSearchedCourses()">
+                          <option value="">Not Specified</option>
                           <option value="6:00">6:00</option>
                           <option value="6:30">6:30</option>
                           <option value="7:00">7:00</option>
@@ -208,8 +218,8 @@
                       
                         <h5>Hours/Class</h5>  
                         <div class="row ml-1"  style="width: 220px">
-                        <select id="hourClass" name='hourClass' class="dropdownInput" style="width: 100%">
-                          <option value="ns">Not Specified</option>
+                        <select id="hourClass" name='hourClass' class="dropdownInput" style="width: 100%" onchange="updateSearchedCourses()">
+                          <option value="">Not Specified</option>
                           <option value="1">1:00</option>
                           <option value="2">2:00</option>
                           <option value="3">3:00</option>
@@ -294,6 +304,12 @@
       if (areaList[i].style.display == 'none') {continue;}
       area += area.length==0?'':',';
       area += areaList[i].value;
+    }
+    dayList = document.getElementById('dayUL').querySelectorAll('.selectedItem');
+    for (i = 0; i < dayList.length; i++) {
+      if (dayList[i].style.display == 'none') {continue;}
+      day += day.length==0?'':',';
+      day += dayList[i].value;
     }
     
     xmlhttp.onreadystatechange=function() {
@@ -393,7 +409,8 @@
 var close = document.getElementsByClassName("close");
 var numElement = {
   "subject": 0,
-  "area": 0
+  "area": 0,
+  "day": 0
 }
 
 // Create a new list item when clicking on the "Add" button
@@ -410,6 +427,12 @@ areaTextBox.addEventListener("keyup", function(event) {
   }
   showResult(this.value, 'area', 'areaList');
 });
+var daySelectBox = document.getElementById("day");
+daySelectBox.addEventListener("change", function(event) {
+  newElement('day');
+  updateSearchedCourses();
+});
+
 
 function newElement(field) {
   var li = document.createElement("button");
@@ -441,6 +464,7 @@ function newElement(field) {
       if (numElement[field]===0) {
         document.getElementById(field+"NS").style.display = 'block';
       }
+      updateSearchedCourses();
     }
   }
 }
