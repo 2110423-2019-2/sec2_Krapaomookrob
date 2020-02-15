@@ -31,6 +31,7 @@ Vue.use(VueGoogleMaps, {
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('remove-button', require('./components/RemoveButton.vue').default);
 Vue.component('new_course-component', require('./components/NewCourseComponent.vue').default);
+Vue.component('cart-item', require('./components/CartItem.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -41,27 +42,20 @@ Vue.component('new_course-component', require('./components/NewCourseComponent.v
 const app = new Vue({
     el: '#app',
     data: {
-        activeCancel: 'cancelbtn',
+        activeRemove: 'cancelbtn',
         activeOwn: 'ownbtn'
       },
     methods: {
-      addCart: function(event){
+      addCart: function(elementId){
         // set cookie for '1' day
         if (this.$cookie.get('cart') == null){
-          this.$cookie.set('cart',['...'] ,1);  // TODO:insert first item
+          this.$cookie.set('cart',[elementId] ,1);  // TODO:insert first item
         }else{
           let tmp = this.$cookie.get('cart');
           this.$cookie.delete('cart');
-          tmp.push('...');                      // TODO:insert new item
+          tmp.push(elementId);                      // TODO:insert new item
           this.$cookie.set('cart',tmp,1);
         }
-      },
-      removeCart: function(event){
-        // no null delete case 
-        let tmp = this.$cookie.get('cart');
-        this.$cookie.delete('cart');
-        tmp.pop('...');                         // TODO:pop item
-        this.$cookie.set('cart',tmp,1);
-      }
+      }      
     }
 });

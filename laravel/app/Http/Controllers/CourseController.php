@@ -10,6 +10,9 @@ use Auth;
 use Carbon\Carbon;
 
 use App\Course;
+use App\Course_day;
+use App\Course_subject;
+use App\User;
 
 class CourseController extends Controller
 {
@@ -42,4 +45,35 @@ class CourseController extends Controller
         $course->save();
         return response('OK', 200);
     }
+
+    public function getCourseInfo($courseId) {
+        // find course
+        $course = Course::find($courseId);
+        
+        // find days
+        $days = $course->days->pluck('name');
+        
+        // find subject
+        $subjects = $course->subjects->pluck('name');
+
+        // find tutor's name
+        $tutorName = $course->user->name;
+
+        $returnObj = [
+            'tutor_name' => $tutorName,
+            'course_id' => $course->id,
+            'area' => $course->area,
+            'time' => $course->time,
+            'hour' => $course->hours,
+            'startDate' => $course->startDate,
+            'price' => $course->price,
+            'days' => $days,
+            'subjects' => $subjects,
+            'noClass' => $course->noClass,
+            'studentCount' => $course->studentCount 
+        ];
+
+        return $returnObj;
+    }
+
 }

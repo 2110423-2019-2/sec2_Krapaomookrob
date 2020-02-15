@@ -8,7 +8,6 @@ export default {
     console.log("Component mounted.");
   },
 
-  props: ["buttonText"]
-
+  props: ["buttonText", "elementId"],
 };
 </script>

@@ -54,7 +54,7 @@ class CartController extends Controller
 
         foreach ($course_ids as $course_id) {
             Cart::create([
-                'payment_id' => $payment->user_id,
+                'payment_id' => $payment->id,
                 'course_id' => $course_id
             ]);
         };
@@ -104,19 +104,5 @@ class CartController extends Controller
     {
         //
     }
-
-    public function setCookie(Request $request)
-    {
-        $minute = 60;
-        $response = new Response('Set Cookie');
-        $response->withCookie(cookie('','',''));
-        return $response;
-    }
-
-    public function getCookie(Request $request)
-    {
-        return $request->cookie('');
-    }
-
 
 }
