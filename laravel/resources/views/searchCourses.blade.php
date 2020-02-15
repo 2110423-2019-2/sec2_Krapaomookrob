@@ -165,14 +165,11 @@
                       
                         <h5>Hours/Class</h5>  
                         <div class="row ml-1"  style="width: 220px">
-                        <select id="time" name='time' class="dropdownInput" style="width: 100%">
+                        <select id="hourClass" name='hourClass' class="dropdownInput" style="width: 100%">
                           <option value="ns">Not Specified</option>
-                          <option value="0:30">0:30</option>
-                          <option value="1:00">1:00</option>
-                          <option value="1:30">1:30</option>
-                          <option value="2:00">2:00</option>
-                          <option value="2:30">2:30</option>
-                          <option value="3:00">3:00</option>
+                          <option value="1">1:00</option>
+                          <option value="2">2:00</option>
+                          <option value="3">3:00</option>
                         </select>
                         </div>
 
@@ -190,7 +187,7 @@
 
                     </div>
                   </div>
-                  <div class="col-lg-12" style="text-align: center;">
+                  <div class="col-lg-11" style="text-align: center;">
                     <button class="btn ownbtn px-5 py-2">Search Courses</button>
                   </div>
               </form>
@@ -251,13 +248,16 @@
     subject = document.getElementById('subject').value;
     day = document.getElementById('day').value;
     time = document.getElementById('time').value;
+    hour = document.getElementById('hourClass').value;
+    noClass = document.getElementById('noClass').value;
+    maxPrice = document.getElementById('maxPrice').value;
     
     xmlhttp.onreadystatechange=function() {
       if (this.readyState==4 && this.status==200) {
         showTable(xmlhttp.responseText); 
       }
     }
-    xmlhttp.open("GET","search?tutor="+tutor+"&area="+area+"&subject="+subject+"&day="+day+"&time="+time, true);
+    xmlhttp.open("GET",`search?tutor=${tutor}&area=${area}&subject=${subject}&day=${day}&time=${time}&hour=${hour}&noClass=${noClass}&maxPrice=${maxPrice}`, true);
     xmlhttp.send();
   }
   
@@ -294,14 +294,26 @@
   }
 
   function getHTMLRows(rowData) {
-    tutor_profile = '<b>'+rowData.uname+'</b>' + '<button class="addtocartbtn btn py-0">Chat</button>';
-    html = inHTMLCell(tutor_profile);
+    html = inHTMLCell(
+      `<b>${rowData.uname}</b> <br>
+      ${rowData.education_level?rowData.education_level:'<i>Unknown</i>'}<br>
+      <button class="addtocartbtn btn py-0">Chat</button>
+      `
+    );
     html += inHTMLCell(rowData.area);
     html += inHTMLCell(rowData.sname);
     html += inHTMLCell(rowData.dname);
     var mydate = new Date(rowData.startDate);
     var strdate = mydate.toLocaleDateString('en-US');
-    html += inHTMLCell('<b>' + rowData.price + ' THB<br>Starts on ' + strdate + '</b>');
+    var time = rowData.time.split(':');
+    html += inHTMLCell(
+      `<b> ${rowData.price} THB <br>
+      Starts on ${strdate} </b> <br>
+      ${time[0]}:${time[1]}-${parseInt(time[0])+parseInt(rowData.hours)}:${time[1]}<br>
+      (${rowData.hours} hr${rowData.hours>1?'s':''}/class) <br>
+      ${rowData.noClasses} Class${rowData.noClasses>1?'es':''},<br>
+      ${rowData.studentCount==1?'Individual':'Group of '+rowData.studentCount}
+      `);
     buttonGen = `
       <div class="column mx-0" style="text-align:center">
         <button class="regnowbtn btn ownbtn">Register Now</button>
