@@ -6,6 +6,7 @@ use App\Cart;
 use App\Payment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use illuminate\Http\Response;
 
 class CartController extends Controller
 {
@@ -44,13 +45,19 @@ class CartController extends Controller
     public function store(Request $request)
     {
         
-        Payment::create([
-            'user_id' => auth()->user()->id
-        ]);
-        
-        Cart::create([
+        $course_ids = $request->cookie('course_ids');
 
+        $payment = Payment::create([
+            'user_id' => auth()->user()->id,
+            
         ]);
+
+        foreach ($course_ids as $course_id) {
+            Cart::create([
+                'payment_id' => $payment->id,
+                'course_id' => $course_id
+            ]);
+        };
     }
 
     /**
@@ -97,10 +104,5 @@ class CartController extends Controller
     {
         //
     }
-
-    // public function CheckOut($course_arrray){
-
-    // }
-
 
 }

@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\CourseController;
+
 Route::get('/', function () {
     return view('dashboard', ['user' => auth()->user()]);
 });
@@ -59,6 +61,9 @@ Route::get('/cart', function(){
     return view('cart');
 });
 
+Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
+
+// Route for payment
 Route::get('/payment', function () {
     return view('payment');
 });

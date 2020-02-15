@@ -54,6 +54,30 @@
   td { 
     padding: 5px;
   }
+  .selectedBox {
+    background-color:rgb(245,245,245); 
+    margin-top: 20px; 
+    margin-left: 5px; 
+    padding: 10px; 
+    width: 215px; 
+    border-radius: 3px;
+  }
+  .selectedItem{
+    background-color: white; 
+    border: solid 0px; 
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 10px;
+    text-align: left;
+    vertical-align: middle;
+    /* font-weight: bold; */
+  }
+  .close{
+    color: red; 
+  }
 </style>
 
 
@@ -90,10 +114,19 @@
                                 <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                             </svg>
                           </button>
-                          <input list="areaDataList" class="searchInput" name="area" id="area" placeholder="Area/City/Province" onkeyup="showResult(this.value, 'area', 'areaList')"/>
+                          <input list="areaDataList" class="searchInput" name="area" id="area" placeholder="Area/City/Province"/>
                           <datalist id="areaDataList">
                             <div id="areaList"></div>
                           </datalist>
+                        </div>
+
+                        <div class="col selectedBox">
+                          <h7><b>SELECTED AREAS</b></h7>
+                            <div name="areaUL" id="areaUL">
+                              <div name="areaNS" id="areaNS" style="color:grey">
+                                <small>No Selected Areas</small>
+                              </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -110,6 +143,16 @@
                             <div id="subjectList"></div>
                           </datalist>
                         </div>
+
+                        <div class="col selectedBox">
+                          <h7><b>SELECTED SUBJECTS</b></h7>
+                            <div name="subjectUL" id="subjectUL">
+                              <div name="subjectNS" id="subjectNS" style="color:grey">
+                                <small>No Selected Subjects</small>
+                              </div>
+                            </div>
+                        </div>
+
                     </div>
                           
                     <div class="column mx-4">
@@ -192,25 +235,13 @@
                   </div>
               </form>
           </div>
-        
 
       </div>
     </div>
   </div>
 </div>
 
-<br><br>
-<h1>Search Results</h1>
-
-<div class="row">
-  <div class="col-lg-12">
-    <div class="card">
-      <div class="card-body pr-0">
-          <div id="searchResults"></div>  
-      </div>
-    </div>
-  </div>
-</div>
+<div id="searchResults"></div>  
 
 
 <script>
@@ -251,10 +282,29 @@
     hour = document.getElementById('hourClass').value;
     noClass = document.getElementById('noClass').value;
     maxPrice = document.getElementById('maxPrice').value;
+
+    subjectList = document.getElementById('subjectUL').querySelectorAll('.selectedItem');
+    for (i = 0; i < subjectList.length; i++) {
+      if (subjectList[i].style.display == 'none') {continue;}
+      subject += subject.length==0?'':',';
+      subject += subjectList[i].value;
+    }
+    areaList = document.getElementById('areaUL').querySelectorAll('.selectedItem');
+    for (i = 0; i < areaList.length; i++) {
+      if (areaList[i].style.display == 'none') {continue;}
+      area += area.length==0?'':',';
+      area += areaList[i].value;
+    }
     
     xmlhttp.onreadystatechange=function() {
       if (this.readyState==4 && this.status==200) {
-        showTable(xmlhttp.responseText); 
+        // try{
+          showTable(xmlhttp.responseText); 
+        // } catch(err){
+        //   document.getElementById('searchResults').innerHTML=`
+        //   <br><br>
+        //   <h1>Result Not Found</h1>`
+        // }
       }
     }
     xmlhttp.open("GET",`search?tutor=${tutor}&area=${area}&subject=${subject}&day=${day}&time=${time}&hour=${hour}&noClass=${noClass}&maxPrice=${maxPrice}`, true);
@@ -267,7 +317,19 @@
     for (i = 0; i < array.length; i++) {
       html += getHTMLRows(array[i]);
     }
-    document.getElementById('searchResults').innerHTML=inHTMLTable(html);
+    document.getElementById('searchResults').innerHTML=`
+    <br><br>
+    <h1>Search Results</h1>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body pr-0">
+          ${inHTMLTable(html)}
+          </div>
+        </div>
+      </div>
+    </div>`
   }
 
   function inHTMLTable(str){
@@ -325,4 +387,62 @@
 
 </script>
 
+
+<script>
+// Click on a close button to hide the current list item
+var close = document.getElementsByClassName("close");
+var numElement = {
+  "subject": 0,
+  "area": 0
+}
+
+// Create a new list item when clicking on the "Add" button
+var subjectTextBox = document.getElementById("subject");
+subjectTextBox.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+    newElement('subject');
+  }
+});
+var areaTextBox = document.getElementById("area");
+areaTextBox.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+    newElement('area');
+  }
+  showResult(this.value, 'area', 'areaList');
+});
+
+function newElement(field) {
+  var li = document.createElement("button");
+  var inputValue = document.getElementById(field).value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    // alert("You must write something!");
+  } else {
+    document.getElementById(field+"NS").style.display = 'none';
+    document.getElementById(field+"UL").appendChild(li);
+  }
+  document.getElementById(field).value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  li.className = "selectedItem";
+  li.value = inputValue;
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+  numElement[field] += 1;
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+      numElement[field] -= 1;
+      if (numElement[field]===0) {
+        document.getElementById(field+"NS").style.display = 'block';
+      }
+    }
+  }
+}
+</script>
 @endsection

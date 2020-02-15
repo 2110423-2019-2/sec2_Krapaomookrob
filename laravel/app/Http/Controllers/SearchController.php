@@ -65,8 +65,20 @@ class SearchController extends Controller
         $maxPrice = $request->input('maxPrice');
 
         if ($tutor) {$query = $query->where('users.name', 'like', '%' . $tutor . '%');}
-        if ($area) {$query = $query->where('courses.area', 'like', '%' . $area . '%');}
-        if ($subject) {$query = $query->where('subjects.name', 'like', '%' . $subject . '%');}
+        // if ($area) {$query = $query->where('courses.area', 'like', '%' . $area . '%');}
+        if ($area) {
+            $areaArray = explode(',', $area);
+            // $query = $query->whereIn('courses.area', 'like', '%' . $areaArray . '%');
+            $query = $query->where(function ($queryTem) use($areaArray) {
+                for ($i = 0; $i < count($areaArray); $i++){
+                   $queryTem->orwhere('courses.area', 'like',  '%' . $areaArray[$i] .'%');
+                }      
+            });
+        }
+        if ($subject) {
+            $subjectArray = explode(',', $subject);
+            $query = $query->whereIn('subjects.name', $subjectArray);
+        }
         if ($day != 'ns') {$query = $query->where('days.name', '=', $day);}
         if ($time != 'ns') {$query = $query->where('courses.time', '=', $time);}
         if ($hour != 'ns') {$query = $query->where('courses.hours', '=', $hour);}
