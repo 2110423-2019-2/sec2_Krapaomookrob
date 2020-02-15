@@ -26,6 +26,7 @@
               <span class="navbar-text mr-auto"></span>
               <ul class="navbar-nav">
                 @php($user = auth()->user())
+                {{-- Navbar for user --}}
                 @if(!empty($user))
                   <li class="nav-item active">
                     <small class="d-block">Hello, <span class="theme">{{$user->name}}</span></small>
@@ -39,12 +40,14 @@
                   <li class="nav-item active">
                     <a class="btn btn-light" href="/">Dashboard</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="btn btn-light" href="/my-courses">My Courses</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="btn btn-light" href="#">My Calendar</a>
-                  </li>
+                  @if($user->isTutor() || $user->isStudent())
+                    <li class="nav-item">
+                      <a class="btn btn-light" href="/my-courses">My Courses</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="btn btn-light" href="#">My Calendar</a>
+                    </li>
+                  @endif
                   <li class="nav-item">
                     <a class="btn btn-light" href="#">Messages</a>
                   </li>
@@ -59,14 +62,15 @@
                       <a class="btn ownbtn" href="#">🛒 Cart</a>
                     </li>
                   @endif
-                @endif
-                <li class="nav-item">
-                  @if(Auth::check())
+                  <li class="nav-item">
                     <a class="btn btn-light" href="/logout">Logout</a>
-                  @else
-                    <a class="btn btn-light" href="/login">Login</a>
-                  @endif
-                </li>
+                  </li>
+                {{-- Navbar for guest --}}
+                @else
+                  <li class="nav-item">
+                      <a class="btn btn-light" href="/login">Login</a>
+                  </li>
+                @endif
               </ul>
             </div>
           </nav>
