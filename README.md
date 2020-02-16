@@ -4,11 +4,7 @@
 
 ``` shell
 cd <root>
-
-cp laravel/.env.example laravel/.env
-composer install -d laravel 
-php laravel/artisan config:clear
-php laravel/artisan key:generate
+docker-compose up composer
 ```
 
 ### Run Project
@@ -28,10 +24,10 @@ docker exec sec2_krapaomookrob_laravel_1 php artisan migrate:refresh --seed
 ```
 
 The database can be managed by phpmyadmin on http://localhost:8081/
-- username: dbuser
-- password: p455w0rd
+- username: `dbuser`
+- password: `p455w0rd`
 
-### Members
+## Members
 
 * Niti Assavaplakorn
 * Peeranuth Kehasukcharoen
