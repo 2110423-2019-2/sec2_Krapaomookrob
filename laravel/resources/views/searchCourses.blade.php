@@ -395,14 +395,14 @@
     if ((Vue.cookie.get('cart')==null) || !Vue.cookie.get('cart').includes(String(rowData.id))){
       buttonGen = `
         <div class="column mx-0" style="text-align:center">
-          <button class="regnowbtn btn ownbtn">Register Now</button>
+          <a href="/cart"><button class="regnowbtn btn ownbtn" onclick="instancePayment(${rowData.id},1)">Register Now</button></a>
           <button class="addtocartbtn btn" id="course-${rowData.id}" onclick="addToCart(${rowData.id},1)">Add To Cart</button>
         </div>`
     }
     else{
       buttonGen = `
         <div class="column mx-0" style="text-align:center">
-          <button class="regnowbtn btn ownbtn">Register Now</button>
+          <a href="/cart"><button class="regnowbtn btn ownbtn" onclick="instancePayment(${rowData.id},1)">Register Now</button></a>
           <button class="addtocartbtn btn" id="course-${rowData.id}" onclick="addToCart(${rowData.id},1)">Remove From Cart</button>
         </div>`
     }
@@ -503,7 +503,7 @@ function addToCart(elementId, cookieDuration) {
     let tmp = String(cook).split(',');
     if (!tmp.includes(String(elementId))){
       Vue.cookie.delete('cart');
-      tmp.push(elementId);                      // TODO:insert new item
+      tmp.push(String(elementId));                      // TODO:insert new item
       Vue.cookie.set('cart',tmp,cookieDuration);
       isToRemove = true;
     }else{
@@ -513,6 +513,22 @@ function addToCart(elementId, cookieDuration) {
     }
   }
   changeButtonState(elementId,isToRemove);
+}
+
+function instancePayment(elementId, cookieDuration) {
+  var cook = Vue.cookie.get('cart');
+  if (cook == null){
+    Vue.cookie.set('cart',[elementId], cookieDuration);
+  }
+  else {
+    let tmp = String(cook).split(',');
+    if (!tmp.includes(String(elementId))){
+      Vue.cookie.delete('cart');
+      tmp.push(String(elementId));
+      Vue.cookie.set('cart',tmp,cookieDuration);
+    }
+    // else (already in cart) : do nothing
+  }
 }
 
 </script>
