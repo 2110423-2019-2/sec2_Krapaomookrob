@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Course;
 use App\Day;
 use App\Subject;
+use App\User;
 
 class CoursesTableSeeder extends Seeder
 {
@@ -79,6 +80,8 @@ class CoursesTableSeeder extends Seeder
             
             $courseI->days()->attach($someDaysI);
             $courseI->subjects()->attach($someSubjectsI);
+
+            $courseI->students()->attach(User::find($i % 6 + 1));
           }
       
 

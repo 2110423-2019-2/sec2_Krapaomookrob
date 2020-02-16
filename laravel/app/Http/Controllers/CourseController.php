@@ -10,6 +10,7 @@ use Auth;
 use Carbon\Carbon;
 
 use App\Course;
+use App\CourseStudent;
 
 class CourseController extends Controller
 {
@@ -42,7 +43,22 @@ class CourseController extends Controller
         $course->save();
         return response('OK', 200);
     }
-    
+
+    public function cancelCourse(Request $request){
+        $user_id = $request->user_id;
+        $course_id = $request->course_id;
+        $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
+        $registeredCourse->status = 'refunding';
+        $registeredCourse->save();
+        return response($registeredCourse, 200);
+    }
+
+    public function getStatus(Request $request){
+        $user_id = $request->user_id;
+        $course_id = $request->course_id;
+        $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
+        return response($registeredCourse->status, 200);
+    }
     
     public function myCoursesIndex(){
         $user = auth()->user();
@@ -52,7 +68,7 @@ class CourseController extends Controller
         $isFinished = [];
         $classesLeft = [];
         if($user->isStudent()){
-            $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
+            $courses = $user->registeredCourses()->with(['days', 'subjects'])->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
         }
         else if($user->isTutor()){
             $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
@@ -64,9 +80,7 @@ class CourseController extends Controller
             array_push($classesLeft, $classes[2]);
             $now = Carbon::now()->addHours(7);
             array_push($isFinished, end($classes[0])->lt($now));
-            
         }
-        // dd($courses);
         return view('my_courses', ['courses' => $courses, 'classDateList' => $classDateList, 'nextClasses' => $nextClasses, 'isFinished' => $isFinished, 'classesLeft' => $classesLeft]);
     }
 
@@ -105,4 +119,5 @@ class CourseController extends Controller
         return [$classDate, $nextClass, $classesLeft];
     }
     
+ 
 }

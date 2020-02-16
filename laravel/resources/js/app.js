@@ -29,7 +29,7 @@ Vue.use(VueGoogleMaps, {
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('remove-button', require('./components/RemoveButton.vue').default);
 Vue.component('new_course-component', require('./components/NewCourseComponent.vue').default);
-
+Vue.component('cancel-button', require('./components/CancelButton.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

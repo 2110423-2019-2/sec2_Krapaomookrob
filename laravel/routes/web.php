@@ -64,3 +64,5 @@ Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage'
 
 //My Courses
 Route::get('/my-courses', 'CourseController@myCoursesIndex');
+Route::post('/api/course/cancel','CourseController@cancelCourse');
+Route::post('/api/course/status','CourseController@getStatus');

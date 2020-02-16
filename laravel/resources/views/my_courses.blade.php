@@ -6,7 +6,7 @@
 
 
 @section('content')
-    <table class="table owntable">
+    <table id=app class="table owntable">
         <thead>
             <tr class='d-flex'>
             @if(auth()->user()->isTutor())
@@ -30,7 +30,7 @@
                     <td scope="row" class='col-2'>
                         @if(auth()->user()->isTutor())
                             <p class='font-weight-bold mb-0'>Course ID {{$course->id}} </p>
-                            <p>No. of student {{$course->studentCount}} </p>
+                            <p>Number of students {{$course->studentCount}} </p>
                         @else
                             <p class='font-weight-bold mb-0'> {{$course->user->nickname}} </p>
                             <p> {{$course->user->education_level}} </p>
@@ -63,14 +63,17 @@
                     </td>
                     <td class="col-2">
                         <div class="progress">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{100*(1-$classesLeft[$index]/$course->noClasses)}}%" ></div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{100*(1-$classesLeft[$index]/$course->noClasses)}}%"></div>
+                                @if(!$isFinished[$index])
+                                    {{$course->noClasses - $classesLeft[$index]}}/{{$course->noClasses}}
+                                @endif
                         </div>
                         @if($isFinished[$index])
-                            <div class="row justify-content-md-center"">
+                            <div class="row justify-content-md-center">
                                 <p class="text-success">Finished</p>
                             </div>
                         @elseif(!$isFinished[$index] & auth()->user()->isStudent())
-                            <div class="row"><a class="btn btn-danger" href="#">Cancel</a></div>
+                            <cancel-button userid={{auth()->user()->id}} courseid={{$course->id}}></cancel-button>
                         @endif
                     </td>
                 </tr>
