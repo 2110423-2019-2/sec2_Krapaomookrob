@@ -1,5 +1,5 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Kanit');
+@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
 @import 'variables';
@@ -7,4 +7,13 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import '~vue2-timepicker/dist/VueTimepicker.css';
+
+@import '~vue-multiselect/dist/vue-multiselect.min.css';
+
+@import '~vue2-datepicker/index.css';
+
 @import 'style';
+
+//sweetalert
+@import '~sweetalert2/src/sweetalert2.scss';

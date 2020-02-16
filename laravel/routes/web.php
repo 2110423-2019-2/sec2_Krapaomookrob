@@ -11,8 +11,17 @@
 |
 */
 
+use App\Http\Controllers\CourseController;
+
 Route::get('/', function () {
-    return view('dashboard');
+    return view('dashboard', ['user' => auth()->user()]);
+});
+
+Route::get('/api/course/subjects','CourseController@fetchSubjects');
+Route::get('/api/course/days','CourseController@fetchDays');
+Route::post('/api/course/new','CourseController@newCourse');
+Route::get('/new-course', function () {
+    return view('new_course');
 });
 
 //Login for developers
@@ -47,3 +56,20 @@ Route::post('/tutor-search','CourseController@search');
 
 Route::post('/tutor-request','CourseController@requestCourse');
 
+Route::get('/cart', function(){
+    // route to cart oage
+    return view('cart');
+});
+
+Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
+
+// Route for payment
+Route::get('/payment', function () {
+    return view('payment');
+});
+
+//post to payment
+Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
+Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
+//want to sourceID to result by using controller
+Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
