@@ -47,6 +47,15 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+
+// Search API and its view
+Route::get('/search', 'SearchController@searchCourse');
+Route::get('/search-courses', function() {
+    return view('searchCourses');
+});
+
+Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
+
 Route::get('/cart', function(){
     // route to cart oage
     return view('cart');
