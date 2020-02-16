@@ -10,7 +10,6 @@
         <div class="form-group">
           <h5>Area</h5>
           <gmap-autocomplete class="form-control" @place_changed="setPlace"></gmap-autocomplete>
-          <button class="btn btn-primary btn-block" @click="addMarker">Pick</button>
           <div class="feedback" v-if="err.chooseArea">Please provide a area.</div>
         </div>
         <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
@@ -146,18 +145,13 @@
         },
         setPlace(place) {
           this.currentPlace = place
-        },
-        addMarker() {
-          if(this.currentPlace) {
-            const marker = {
-              lat: this.currentPlace.geometry.location.lat(),
-              lng: this.currentPlace.geometry.location.lng()
-            };
-            this.markers = [{position: marker}]
-            this.chooseArea = this.currentPlace.name
-            this.center = marker
-            this.currentPlace = null
+          const marker = {
+            lat: this.currentPlace.geometry.location.lat(),
+            lng: this.currentPlace.geometry.location.lng()
           }
+          this.markers = [{position: marker}]
+          this.chooseArea = this.currentPlace.name
+          this.center = marker
         },
         geolocate: function() {
           navigator.geolocation.getCurrentPosition(position => {
