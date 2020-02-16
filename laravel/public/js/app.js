@@ -2029,7 +2029,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -2120,20 +2119,15 @@ Vue.component('multiselect', vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defaul
     },
     setPlace: function setPlace(place) {
       this.currentPlace = place;
-    },
-    addMarker: function addMarker() {
-      if (this.currentPlace) {
-        var marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
-        };
-        this.markers = [{
-          position: marker
-        }];
-        this.chooseArea = this.currentPlace.name;
-        this.center = marker;
-        this.currentPlace = null;
-      }
+      var marker = {
+        lat: this.currentPlace.geometry.location.lat(),
+        lng: this.currentPlace.geometry.location.lng()
+      };
+      this.markers = [{
+        position: marker
+      }];
+      this.chooseArea = this.currentPlace.name;
+      this.center = marker;
     },
     geolocate: function geolocate() {
       var _this2 = this;
@@ -55665,15 +55659,6 @@ var render = function() {
                 staticClass: "form-control",
                 on: { place_changed: _vm.setPlace }
               }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary btn-block",
-                  on: { click: _vm.addMarker }
-                },
-                [_vm._v("Pick")]
-              ),
               _vm._v(" "),
               _vm.err.chooseArea
                 ? _c("div", { staticClass: "feedback" }, [
