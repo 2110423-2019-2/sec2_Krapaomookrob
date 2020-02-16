@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Usertype - Even Die I am The Tutor')
-
+@section('title', 'Search Courses - Even Die I am The Tutor')
+@section('topic','Search Courses')
+@section('menu')
+<div class='btn ownbtn'>Create New Course</div>
+@endsection
 @section('content')
 <div class="row pb-4">
   <div class="col-lg-12">
-    <h2>Search Courses</h2>
     <div class="card">
         <div class="d-flex flex-wrap flex-column p-3">
             <div class="strong h5" style="align-self: center">Search Courses</div>
@@ -17,24 +19,9 @@
                             <input type="text" class='form-control' placeholder="Student's Name" name="student_name" class="pl-2 small">
                             <h5 class="pt-2">Area</h5>
                             <input type="text" class='form-control' placeholder="Area/City/Province" name="area" class="pl-2 small">
-                            <div class="input-group">
-                                <input class="form-control py-2 rounded-pill mr-1 pr-5" type="search" value="search">
-                                <span class="input-group-append">
-                                    <button class="btn rounded-pill border-0 ml-n5" type="button" disabled>
-                                          <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
                         </div>
                         <div class="col-3">
                             <h5>Subjects</h5>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">@</span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                              </div>
-
                             <input type="text" class='form-control' placeholder="Subject" name="subject" class="pl-2 small">
                         </div>
                         <div class="col-3">
@@ -70,7 +57,7 @@
         </div>
     </div>
     @if (!empty($courses))
-    <h2 class="pt-3">Search Results</h2>
+    <h1 class="pt-3">Search Results</h1>
     <div class="card">
         <div class="d-flex flex-wrap pt-3">
             <div class="col-2">Student</div>
