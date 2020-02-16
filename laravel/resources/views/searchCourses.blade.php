@@ -363,8 +363,8 @@
   function getTableHeader(){
     html = `
       <th width=15%>Tutor</th>
-      <th width=15%>Available Subjects</th>
       <th width=15%>Areas</th>
+      <th width=15%>Available Subjects</th>
       <th width=15%>Classes</th>
       <th width=15%>Price/Start Date</th>
       <th></th>`;
