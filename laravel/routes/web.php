@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\AdminController;
+
 Route::get('/', function () {
     return view('dashboard', ['user' => auth()->user()]);
 });
@@ -59,3 +61,13 @@ Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
 Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
+
+
+Route::get('/admin-panel', function(){
+    // route to cart oage
+    return view('admin_panel');
+});
+Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
+Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
+Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
+Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
