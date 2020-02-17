@@ -363,8 +363,8 @@
   function getTableHeader(){
     html = `
       <th width=15%>Tutor</th>
-      <th width=15%>Available Subjects</th>
       <th width=15%>Areas</th>
+      <th width=15%>Available Subjects</th>
       <th width=15%>Classes</th>
       <th width=15%>Price/Start Date</th>
       <th></th>`;
@@ -392,11 +392,20 @@
       ${rowData.noClasses} Class${rowData.noClasses>1?'es':''},<br>
       ${rowData.studentCount==1?'Individual':'Group of '+rowData.studentCount}
       `);
-    buttonGen = `
-      <div class="column mx-0" style="text-align:center">
-        <button class="regnowbtn btn ownbtn">Register Now</button>
-        <button class="addtocartbtn btn">Add To Cart</button>
-      </div>`
+    if ((Vue.cookie.get('cart')==null) || !Vue.cookie.get('cart').includes(String(rowData.id))){
+      buttonGen = `
+        <div class="column mx-0" style="text-align:center">
+          <a href="/cart"><button class="regnowbtn btn ownbtn" onclick="instancePayment(${rowData.id},1)">Register Now</button></a>
+          <button class="addtocartbtn btn" id="course-${rowData.id}" onclick="addToCart(${rowData.id},1)">Add To Cart</button>
+        </div>`
+    }
+    else{
+      buttonGen = `
+        <div class="column mx-0" style="text-align:center">
+          <a href="/cart"><button class="regnowbtn btn ownbtn" onclick="instancePayment(${rowData.id},1)">Register Now</button></a>
+          <button class="addtocartbtn btn" id="course-${rowData.id}" onclick="addToCart(${rowData.id},1)">Remove From Cart</button>
+        </div>`
+    }
     html += inHTMLCell(buttonGen);
     return inHTMLRow(html);
   }
@@ -468,5 +477,59 @@ function newElement(field) {
     }
   }
 }
+
+// add to cart
+function changeButtonState(elementId,isToRemove) {
+  btn = document.getElementById('course-'+elementId);
+  if (isToRemove)
+  { 
+    btn.innerHTML = 'Remove From Cart';
+    // btn.style.color = 'rgb(242, 87, 87)';
+  }else{
+    btn.innerHTML = 'Add To Cart';
+    // btn.style.color = '#000';
+  }
+
+}
+
+function addToCart(elementId, cookieDuration) {
+  // set cookie for '1' day
+  var cook = Vue.cookie.get('cart');
+  var isToRemove = false;
+  if (cook == null){
+    Vue.cookie.set('cart',[elementId] ,cookieDuration);  // TODO:insert first item
+    isToRemove = true;
+  }else{
+    let tmp = String(cook).split(',');
+    if (!tmp.includes(String(elementId))){
+      Vue.cookie.delete('cart');
+      tmp.push(String(elementId));                      // TODO:insert new item
+      Vue.cookie.set('cart',tmp,cookieDuration);
+      isToRemove = true;
+    }else{
+      // remove from cart
+      tmp.splice(tmp.indexOf(String(elementId)),1);
+      Vue.cookie.set('cart',tmp,cookieDuration);
+    }
+  }
+  changeButtonState(elementId,isToRemove);
+}
+
+function instancePayment(elementId, cookieDuration) {
+  var cook = Vue.cookie.get('cart');
+  if (cook == null){
+    Vue.cookie.set('cart',[elementId], cookieDuration);
+  }
+  else {
+    let tmp = String(cook).split(',');
+    if (!tmp.includes(String(elementId))){
+      Vue.cookie.delete('cart');
+      tmp.push(String(elementId));
+      Vue.cookie.set('cart',tmp,cookieDuration);
+    }
+    // else (already in cart) : do nothing
+  }
+}
+
 </script>
 @endsection
