@@ -1917,6 +1917,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
@@ -55623,24 +55644,8 @@ render._withStripped = true
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "d-flex justify-content-center" }, [
-    _vm.status === "registered"
-      ? _c(
-          "button",
-          { staticClass: "btn btn-danger", on: { click: _vm.sendRequest } },
-          [_vm._v("Cancel")]
-        )
-      : _c("p", { staticClass: "text-danger text-capitalize" }, [
-          _vm._v(_vm._s(_vm.status))
-        ])
-  ])
-}
+var render = function () {}
 var staticRenderFns = []
-render._withStripped = true
 
 
 
