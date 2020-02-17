@@ -111,7 +111,7 @@
                           <div class="modal-footer">
                             <div class="btn btn-light" data-dismiss="modal">Cancel</div>
                             <form class="icon-radiobtn" data-id='{{$course->id}}' onsubmit="request(this)">
-                                <input type="hidden" id="course_id" name="course_id" value="{{$course->id}}">
+                                <input type="hidden" name="course_id" value="{{$course->id}}">
                                 <button id='confirmbutton{{$course->id}}' type="submit" class="btn ownbtn" >Confirm</button>
                             </form>
                           </div>
@@ -136,18 +136,14 @@
             url:'/tutor-request',
             data:{course_id:course_id ,_token: '{{csrf_token()}}'},
             success:function(data) {
-                var id = '#x'+course_id;
-                console.log(id);
                 $("#modal"+course_id).modal('hide');
                 $("#requestbutton"+course_id).prop('disabled',true);
                 $("#requestbutton"+course_id).css({'pointer-events':'none'});
                 $("#requestbutton"+course_id).removeClass('ownbtn');
                 $("#requestbutton"+course_id).addClass('btn-light');
                 $("#requestbutton"+course_id).html('Request Sent !');
-                console.log("#requestbutton"+course_id)
             }
         });
-        console.log('#x'+course_id);
         return false;
     }
 </script>
