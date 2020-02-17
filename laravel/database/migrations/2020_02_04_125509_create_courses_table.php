@@ -15,7 +15,6 @@ class CreateCoursesTable extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('area');
             $table->time('time');
             $table->integer('hours');
             $table->date('startDate');
@@ -23,8 +22,10 @@ class CreateCoursesTable extends Migration
             $table->integer('price');
             $table->string('noClasses')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('location_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('location_id')->references('id')->on('locations');
         });
     }
 
