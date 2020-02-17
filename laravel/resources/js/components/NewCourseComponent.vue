@@ -107,8 +107,6 @@
                         <v-btn text color="primary" @click="$refs.menuDate.save(startDate)">OK</v-btn>
                       </v-date-picker>
                     </v-menu>
-
-              <!-- <date-picker v-model="startDate"></date-picker> -->
               <div class="feedback" v-if="err.startDate">Please provide start date.</div>
             </div>
             <div class="col-sm-5">
@@ -207,6 +205,7 @@
             locationId: this.areaLocationId,
             days: this.chooseDays,
             time: this.time,
+            center: this.center,
             startDate: this.startDate,
             hours: this.hours,
             price: this.price,

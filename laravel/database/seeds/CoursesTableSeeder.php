@@ -31,6 +31,8 @@ class CoursesTableSeeder extends Seeder
           $location = Location::create([
             'name' => 'จุฬาลงกรณ์มหาวิทยาลัย',
             'address' => '254 ถนน พญาไท แขวง วังใหม่ เขตปทุมวัน กรุงเทพมหานคร 10330 ประเทศไทย',
+            'latitude' => 13.7384627,
+            'longitude' => 100.5320458,
             'locationId' => '5a14febeeeafb68572c007e2fc69ea6f2a609651'
           ]);
 
