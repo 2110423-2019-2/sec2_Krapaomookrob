@@ -30,7 +30,7 @@ class CourseController extends Controller
     public function newCourse(Request $request){
         $location = Location::firstOrCreate(
           ['locationId' => $request->locationId],
-          ['name' => $request->area, 'address' => $request->address]
+          ['name' => $request->area, 'address' => $request->address, 'latitude' => $request->center['lat'],'longitude' =>$request->center['lng']]
         );
 
         $course = new Course;
@@ -55,10 +55,10 @@ class CourseController extends Controller
     public function getCourseInfo($courseId) {
         // find course
         $course = Course::find($courseId);
-        
+
         // find days
         $days = $course->days->pluck('name');
-        
+
         // find subject
         $subjects = $course->subjects->pluck('name');
 
@@ -76,7 +76,7 @@ class CourseController extends Controller
             'days' => $days,
             'subjects' => $subjects,
             'noClass' => $course->noClass,
-            'studentCount' => $course->studentCount 
+            'studentCount' => $course->studentCount
         ];
 
         return $returnObj;
