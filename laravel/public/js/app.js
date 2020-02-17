@@ -2250,8 +2250,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2326,6 +2324,7 @@ __webpack_require__.r(__webpack_exports__);
         locationId: this.areaLocationId,
         days: this.chooseDays,
         time: this.time,
+        center: this.center,
         startDate: this.startDate,
         hours: this.hours,
         price: this.price,
