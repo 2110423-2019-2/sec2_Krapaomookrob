@@ -29,9 +29,9 @@ class CourseController extends Controller
     public function newCourse(Request $request){
         $course = new Course;
         $course->area = $request->area;
-        $course->time = "{$request->time['HH']}:{$request->time['mm']}:00";
+        $course->time = $request->time;
         $course->hours = $request->hours;
-        $course->startDate = (new Carbon($request->startDate))->addHours(7);
+        $course->startDate = new Carbon($request->startDate);
         $course->price = $request->price;
         $course->noClasses = $request->noClasses;
         $course->studentCount = $request->studentCount;
