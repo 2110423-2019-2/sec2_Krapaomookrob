@@ -156,19 +156,9 @@
 </template>
 
 <script>
-  import Multiselect from 'vue-multiselect'
-  import VueTimepicker from 'vue2-timepicker'
-  import DatePicker from 'vue2-datepicker'
   import axios from 'axios'
 
-  Vue.component('multiselect', Multiselect)
-
   export default {
-    components: {
-      Multiselect,
-      VueTimepicker,
-      DatePicker
-    },
     data () {
       return {
         err: {time:false, chooseSubjects:false, chooseArea:false, chooseDays:false, startDate:false, price:false, noClasses:false},
@@ -176,6 +166,8 @@
         markers: [],
         currentPlace: null,
         chooseArea: "",
+        areaAddress: "",
+        areaLocationId: "",
         chooseSubjects: [],
         fetchSubjects: [],
         fetchDays: [],
@@ -211,6 +203,8 @@
           axios.post('/api/course/new', {
             subjects: this.chooseSubjects,
             area: this.chooseArea,
+            address: this.areaAddress,
+            locationId: this.areaLocationId,
             days: this.chooseDays,
             time: this.time,
             startDate: this.startDate,
@@ -230,6 +224,8 @@
           }
           this.markers = [{position: marker}]
           this.chooseArea = this.currentPlace.name
+          this.areaAddress = this.currentPlace.formatted_address
+          this.areaLocationId = this.currentPlace.id
           this.center = marker
         },
         geolocate: function() {
