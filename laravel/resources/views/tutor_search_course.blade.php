@@ -136,7 +136,7 @@
             url:'/tutor-request',
             data:{course_id:course_id ,_token: '{{csrf_token()}}'},
             success:function(data) {
-                $("#modal"+course_id).modal('hide');
+                $("#modal"+course_id).trigger('click');
                 $("#requestbutton"+course_id).prop('disabled',true);
                 $("#requestbutton"+course_id).css({'pointer-events':'none'});
                 $("#requestbutton"+course_id).removeClass('ownbtn');
