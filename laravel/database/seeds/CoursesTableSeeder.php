@@ -68,9 +68,8 @@ class CoursesTableSeeder extends Seeder
           $course2->days()->attach($someDays2);
           $course2->subjects()->attach($someSubjects2);
 
-          
+
           $course3 = Course::create([
-            'area' => 'Chulalogkorn',
             'time' => '13:00:00',
             'hours' => '1',
             'startDate' => '2020-02-17',
@@ -83,12 +82,11 @@ class CoursesTableSeeder extends Seeder
 
           $someDays3 = Day::find([1,2,4,5]);
           $someSubjects3 = Subject::find([1,2,3,4]);
-          
+
           $course3->days()->attach($someDays3);
           $course3->subjects()->attach($someSubjects3);
-          
+
           $course4 = Course::create([
-            'area' => 'Samyan Mitr Town',
             'time' => '9:00:00',
             'hours' => '2',
             'startDate' => '2020-03-01',
@@ -101,10 +99,10 @@ class CoursesTableSeeder extends Seeder
 
           $someDays4 = Day::find([1,7]);
           $someSubjects4 = Subject::find([1,8,11]);
-          
+
           $course4->days()->attach($someDays4);
           $course4->subjects()->attach($someSubjects4);
-      
+
 
     }
 }
