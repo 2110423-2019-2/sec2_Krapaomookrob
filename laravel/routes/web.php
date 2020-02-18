@@ -73,3 +73,11 @@ Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
 Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
+
+// My Profile View
+Route::get('/profile', 'UserController@viewProfile')->name('profile.show');
+Route::get('/profile/edit', 'UserController@editProfile')->name('profile.edit');
+Route::patch('/profile', 'UserController@updateProfile')->name('profile.update');
+
+// Tutor Profile View
+Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('profile.tutor.show');

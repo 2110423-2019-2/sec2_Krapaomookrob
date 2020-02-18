@@ -58,4 +58,12 @@ class User extends Authenticatable
     public function BankAccount(){
         return $this->hasOne('App\BankAccount');
     }
+
+    public function getImage(){
+        return $this->image;
+    }
+
+    public function getSecret(){
+        return str_repeat("*",strlen($this -> password));
+    }
 }
