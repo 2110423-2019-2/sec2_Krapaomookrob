@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->role == 'superuser';
     }
 
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
+
     public function BankAccount(){
         return $this->hasOne('App\BankAccount');
     }
