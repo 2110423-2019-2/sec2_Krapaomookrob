@@ -2,28 +2,35 @@
 namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use App\Payment;
+use Illuminate\Support\Facades\DB;
 
+use App\Payment;
+use App\course;
+use App\Cart;
+use App\User;
+use App\CourseStudent;
 require_once dirname(__FILE__).'/../../../../vendor/autoload.php';
 
 use OmiseCharge;
 use OmiseTransfer;
 use OmiseSource;
 
-define('OMISE_API_VERSION' , env("API_VERSION", null));
-define('OMISE_PUBLIC_KEY' , env("OMISE_PUBLIC_KEY", null));
-define('OMISE_SECRET_KEY', env("OMISE_SECRET_KEY", null));
+define('OMISE_API_VERSION' , env("API_VERSION", "somedefaultvalue"));
+define('OMISE_PUBLIC_KEY' , 'pkey_test_5irvp3eqbf7ybksdjlt');
+define('OMISE_SECRET_KEY','skey_test_5irvp3eqkwepp9mc4kn');
 
 class paymentGatewayController extends Controller{
 
     public function cartToPayment(Request $request){
-        //dd($request->input('course_id')[0]);
+        //$course1 = array(1,2,3);
         //check course that isnt taken
-        foreach ($request->input('course_id') as $value) {
-            if(value == null) break;
-            $courseStudent = User_student::find(value);
-            if($courseStudent->status == 'registed'){
-                 return abort(400,'Some course is taken.');
+        foreach ($request->input('course_id') as $value)
+        //foreach ($course1 as $value)
+        {
+            if($value == null) return abort(406);
+            $courseStudent = CourseStudent::find($value);
+            if($courseStudent != null && $courseStudent->status == 'registered'){
+                 return abort(406,'Some course is taken.');
             }
         }
         //create payment
@@ -33,20 +40,28 @@ class paymentGatewayController extends Controller{
         ]);
         //count price + create cart
         $totalprice = 0;
-        foreach ($request->input('course_id') as $value) {
-            $totalprice += Course::find($value)->price;
-            $cart = Cart::create([
-                'course_id' => $value,
-                'payment_id' => $payment->id
+        foreach ($request->input('course_id') as $value)
+        //foreach ($course1 as $value)
+        {
+            $totalprice = $totalprice + (Course::find($value))->price;
+            //dd($totalprice);
+            Cart::create([
+                'payment_id' => $payment->id,
+                'course_id' =>  $value
+
             ]);
         }
-
+/*
         $pay = [
             'payment_id' => $payment->id,
             'totalprice' => $totalprice
         ];
-
-        return view('payment')->with('payment',$pay);
+        */
+        return response()->json([
+                'payment_id' => $payment->id,
+                'totalprice' => $totalprice
+              ]);
+     //   return view('payment')->with('payment',$pay);
 
     }
 
@@ -67,14 +82,13 @@ class paymentGatewayController extends Controller{
          }
         else{
             //create taken course
-            $cart = Cart::select('payment_id',$request->input('paymentID'));
+            $cart = Cart::select('course_id')
+                        ->where('payment_id',$request->input('paymentID'))->get();
+           // dd($cart);
             foreach ($cart as $value) {
-                Course_student::create([
-                    'user_id' => auth()->user()->id,
-                    'status' => 'registed',
-                    'course_id' => $value->course_id
-                    //'user_id' => 1
-                ]);
+               // dd($value);
+               auth()->user()->registeredCourses()->attach(Course::find($value->course_id));
+
             }
             return view('dashboard')->with('alert','Successful');
         }
@@ -95,6 +109,7 @@ class paymentGatewayController extends Controller{
             'return_uri' => url(sprintf("http://localhost:8000/result/%s",$request->input('paymentID'))),
             'source' => $source['id']
           ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
+          $payment = Payment::find($request->input('paymentID'));
           $payment->charge_id = $charge['id'];
           $payment->save();
 
@@ -127,14 +142,16 @@ class paymentGatewayController extends Controller{
         }
         else{
             //create taken course
-            $cart = Cart::select('payment_id',$request->input('paymentID'));
+           // $cart = Cart::select('payment_id',$paymentID);
+            $cart = Cart::select('course_id')
+                        ->where('payment_id',$paymentID)->get();
+
+
             foreach ($cart as $value) {
-                Course_student::create([
-                    'user_id' => auth()->user()->id,
-                    'status' => 'registed',
-                    'course_id' => $value->course_id
-                    //'user_id' => 1
-                ]);
+
+                   // 'user_id' => auth()->user()->id,
+                   auth()->user()->registeredCourses()->attach(Course::find($value->course_id));
+
             }
             return view('dashboard')->with('alert','Successful');
         }

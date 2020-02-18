@@ -64,14 +64,9 @@ Route::get('/cart', function(){
 Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
 
 // Route for payment
-Route::get('/payment', function () {
-    $pay = [
-        'payment_id' => 1,
-        'totalprice' => 0
-    ];
-    return view('result')->with('payment',$pay);
-});
-Route::post('/payment', 'Frontend\paymentGatewayController@cartToPayment');
+
+//Route::post('/payment', 'Frontend\paymentGatewayController@cartToPayment');
+//Route::post('/payment/{totalprice}/{payment_id}')
 //post to payment
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
