@@ -24,10 +24,10 @@
           </div>
           <div class="modal-footer">
               <div class="row w-100 justify-content-end">
-                <div class="col-3 pr-1">
+                <div class="col-3 p-0">
                   <button type="button" class="btn btn-secondary m-0" data-dismiss="modal">Close</button>
                 </div>
-                <div class="col-3 pr-1">
+                <div class="col-3 p-0">
                   <button type="button" class="btn btn-primary m-0" data-dismiss="modal" v-on:click="sendRequest">Confirm</button>
                 </div>
               </div>
