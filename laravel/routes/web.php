@@ -14,7 +14,7 @@
 use App\Http\Controllers\CourseController;
 
 Route::get('/', function () {
-    return view('dashboard', ['user' => auth()->user()]);
+    return view('dashboard');
 });
 
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
@@ -82,3 +82,8 @@ Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
 Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
+
+//My Courses
+Route::get('/my-courses', 'CourseController@myCoursesIndex');
+Route::post('/api/course/cancel','CourseController@cancelCourse');
+Route::post('/api/course/status','CourseController@getStatus');

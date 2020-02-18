@@ -63,4 +63,8 @@ class User extends Authenticatable
     public function BankAccount(){
         return $this->hasOne('App\BankAccount');
     }
+
+    public function registeredCourses(){
+        return $this->belongsToMany('App\Course', 'course_student');
+    }
 }
