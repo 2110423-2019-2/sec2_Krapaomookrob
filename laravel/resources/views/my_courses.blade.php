@@ -18,7 +18,7 @@
             <th scope="col" class='col-2'>Areas</th>
             <th scope="col" class='col-2'>Classes</th>
             <th scope="col" class='col-2'>Schedule</th>
-            <th scope="col" class='col-2'>Status</th>
+            <th scope="col" class='col-2'></th>
             </tr>
         </thead>
         <tbody>
@@ -62,12 +62,7 @@
                         @endif
                     </td>
                     <td class="col-2">
-                        <div class="progress">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{100*(1-$classesLeft[$index]/$course->noClasses)}}%"></div>
-                                @if(!$isFinished[$index])
-                                    {{$course->noClasses - $classesLeft[$index]}}/{{$course->noClasses}}
-                                @endif
-                        </div>
+                        
                         @if($isFinished[$index])
                             <div class="row justify-content-md-center">
                                 <p class="text-success">Finished</p>

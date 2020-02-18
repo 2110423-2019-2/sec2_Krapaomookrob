@@ -1,26 +1,36 @@
 <template>
   <div>
-    <div class='d-flex justify-content-center'>
-      <button class="btn btn-danger" v-on:click="sendRequest" v-if="status==='registered'">Cancel</button>
-      <p v-else class="text-danger text-capitalize">{{status}}</p>
+    <div class='col'>
+      <div class='row justify-content-center'>
+        <button class="btn ownbtn"  v-if="status==='registered'">Postpone</button>
+      </div>
+      <div class='row justify-content-center'>
+        <button class="btn btn-danger"  v-if="status==='registered'" data-toggle="modal" :data-target="'#cancelModal'+courseId">Cancel</button>
+        <p v-else class="text-danger text-capitalize">{{status}}</p>
+      </div>
     </div>
 
-    // Confirm Modal
-    <div class="modal" tabindex="-1" role="dialog">
+    <div :id="'cancelModal' + courseId" class="modal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Confirm</h5>
+            <h5 class="modal-title">Confirmmation</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <p>If you cancel the course you will not be able to undo.</p>
+            <p>You will receive 70% refund from the remaining classs. If you confirm you will not be able to undo.</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Confirm</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <div class="row w-100 justify-content-end">
+                <div class="col-3 pr-1">
+                  <button type="button" class="btn btn-secondary m-0" data-dismiss="modal">Close</button>
+                </div>
+                <div class="col-3 pr-1">
+                  <button type="button" class="btn btn-primary m-0" data-dismiss="modal" v-on:click="sendRequest">Confirm</button>
+                </div>
+              </div>
           </div>
         </div>
       </div>
