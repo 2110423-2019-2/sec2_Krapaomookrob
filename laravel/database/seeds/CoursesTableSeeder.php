@@ -5,6 +5,7 @@ use App\Course;
 use App\Day;
 use App\Subject;
 use App\Location;
+use App\User;
 
 class CoursesTableSeeder extends Seeder
 {
@@ -69,6 +70,63 @@ class CoursesTableSeeder extends Seeder
 
           $course2->days()->attach($someDays2);
           $course2->subjects()->attach($someSubjects2);
+
+
+          $course3 = Course::create([
+            'time' => '13:00:00',
+            'hours' => '1',
+            'startDate' => '2020-02-17',
+            'studentCount' => 2,
+            'price' => 700,
+            'noClasses' => '12',
+            'user_id' => 6,
+            'location_id' => 1
+          ]);
+
+          $someDays3 = Day::find([1,2,4,5]);
+          $someSubjects3 = Subject::find([1,2,3,4]);
+
+          $course3->days()->attach($someDays3);
+          $course3->subjects()->attach($someSubjects3);
+
+          $course4 = Course::create([
+            'time' => '9:00:00',
+            'hours' => '2',
+            'startDate' => '2020-03-01',
+            'studentCount' => 1,
+            'price' => 750,
+            'noClasses' => '1',
+            'user_id' => 6,
+            'location_id' => 1
+          ]);
+
+          $someDays4 = Day::find([1,7]);
+          $someSubjects4 = Subject::find([1,8,11]);
+
+          $course4->days()->attach($someDays4);
+          $course4->subjects()->attach($someSubjects4);
+
+          for($i = 1; $i <= 27; $i++){
+            $courseI = Course::create([
+              'time' => '14:00:00',
+              'hours' => '2',
+              'startDate' => '2020-02-'.$i,
+              'studentCount' => 3,
+              'price' => 1000*($i%3) + ($i%13)*100,
+              'noClasses' => $i,
+              'user_id' => $i%2==0?5:6,
+              'location_id' => 1
+            ]);
+
+            $someDaysI = $courseI->days()->attach(Day::find([$i%8, ($i+1)%8, ($i+2)%8]));
+            $someSubjectsI = $courseI->subjects()->attach(Subject::find([$i%13, $i%3, $i%5]));
+            
+            $courseI->days()->attach($someDaysI);
+            $courseI->subjects()->attach($someSubjectsI);
+
+            $courseI->students()->attach(User::find($i % 6 + 1));
+          }
+      
 
 
           $course3 = Course::create([

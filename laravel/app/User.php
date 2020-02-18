@@ -55,7 +55,24 @@ class User extends Authenticatable
         return $this->role == 'superuser';
     }
 
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
+
     public function BankAccount(){
         return $this->hasOne('App\BankAccount');
+    }
+
+    public function getImage(){
+        return $this->image;
+    }
+
+    public function getSecret(){
+        return str_repeat("*",strlen($this -> password));
+    }
+
+    public function registeredCourses(){
+        return $this->belongsToMany('App\Course', 'course_student');
     }
 }
