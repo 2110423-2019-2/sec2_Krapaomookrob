@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Day;
+use App\Location;
 use App\Subject;
 use Auth;
 use Carbon\Carbon;
@@ -27,15 +28,20 @@ class CourseController extends Controller
     }
 
     public function newCourse(Request $request){
+        $location = Location::firstOrCreate(
+          ['locationId' => $request->locationId],
+          ['name' => $request->area, 'address' => $request->address, 'latitude' => $request->center['lat'],'longitude' =>$request->center['lng']]
+        );
+
         $course = new Course;
-        $course->area = $request->area;
-        $course->time = "{$request->time['HH']}:{$request->time['mm']}:00";
+        $course->time = $request->time;
         $course->hours = $request->hours;
-        $course->startDate = (new Carbon($request->startDate))->addHours(7);
+        $course->startDate = new Carbon($request->startDate);
         $course->price = $request->price;
         $course->noClasses = $request->noClasses;
         $course->studentCount = $request->studentCount;
         $course->user()->associate(Auth::user());
+        $course->location()->associate($location);
         $course->save();
 
         $days = Day::whereIn('name', $request->days)->get()->pluck('id');
@@ -49,10 +55,10 @@ class CourseController extends Controller
     public function getCourseInfo($courseId) {
         // find course
         $course = Course::find($courseId);
-        
+
         // find days
         $days = $course->days->pluck('name');
-        
+
         // find subject
         $subjects = $course->subjects->pluck('name');
 

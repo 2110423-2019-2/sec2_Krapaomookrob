@@ -5,7 +5,7 @@
 @section('topic', 'New Course')
 
 @section('content')
-<div id="app">
+<v-app id="app">
   <new_course-component></new_course-component>
-</div>
+</v-app>
 @endsection

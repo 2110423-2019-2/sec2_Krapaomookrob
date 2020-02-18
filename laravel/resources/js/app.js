@@ -17,6 +17,10 @@ Vue.use(VueGoogleMaps, {
     libraries: "places"
   }
 });
+
+import Vuetify from 'vuetify'
+Vue.use(Vuetify)
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -40,5 +44,23 @@ Vue.component('cart-item', require('./components/CartItem.vue').default);
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    vuetify: new Vuetify(),
+    data: {
+        activeRemove: 'cancelbtn',
+        activeOwn: 'ownbtn'
+      },
+    methods: {
+      addCart: function(elementId){
+        // set cookie for '1' day
+        if (this.$cookie.get('cart') == null){
+          this.$cookie.set('cart',[elementId] ,1);  // TODO:insert first item
+        }else{
+          let tmp = this.$cookie.get('cart');
+          this.$cookie.delete('cart');
+          tmp.push(elementId);                      // TODO:insert new item
+          this.$cookie.set('cart',tmp,1);
+        }
+      }      
+    }
 });
