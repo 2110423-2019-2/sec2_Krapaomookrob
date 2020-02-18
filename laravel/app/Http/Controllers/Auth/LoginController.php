@@ -113,6 +113,7 @@ class LoginController extends Controller
                 $user = User::create([
                     'email' => $email,
                     'name' => $providerUser->getName(),
+                    'nickname' => explode(" ", $providerUser->getName())[0],
                     'image' => $providerUser->getAvatar(),
                     'password' => bcrypt(rand(1000, 9999)),
                 ]);

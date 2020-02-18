@@ -36,7 +36,11 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('remove-button', require('./components/RemoveButton.vue').default);
 Vue.component('new_course-component', require('./components/NewCourseComponent.vue').default);
 Vue.component('cart-item', require('./components/CartItem.vue').default);
+<<<<<<< HEAD
 
+=======
+Vue.component('cancel-button', require('./components/CancelButton.vue').default);
+>>>>>>> myCourses
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

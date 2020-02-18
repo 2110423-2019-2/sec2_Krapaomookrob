@@ -14,7 +14,7 @@
 use App\Http\Controllers\CourseController;
 
 Route::get('/', function () {
-    return view('dashboard', ['user' => auth()->user()]);
+    return view('dashboard');
 });
 
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
@@ -47,6 +47,15 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+//Tutor Search and Request
+Route::get('/tutor-search', function () {
+    $courses = [];
+    return view('tutor_search_course',compact('courses'));
+});
+Route::post('/tutor-search','CourseController@search');
+
+Route::post('/tutor-request','CourseController@requestCourse');
+
 
 // Search API and its view
 Route::get('/search', 'SearchController@searchCourse');
@@ -73,3 +82,8 @@ Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
 Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
+
+//My Courses
+Route::get('/my-courses', 'CourseController@myCoursesIndex');
+Route::post('/api/course/cancel','CourseController@cancelCourse');
+Route::post('/api/course/status','CourseController@getStatus');
