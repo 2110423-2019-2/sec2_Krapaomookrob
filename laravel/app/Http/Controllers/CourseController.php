@@ -62,14 +62,14 @@ class CourseController extends Controller
         $returnObj = [
             'tutor_name' => $tutorName,
             'course_id' => $course->id,
-            'area' => $course->area,
+            'area' => $course->locations->pluck('name'),
             'time' => $course->time,
             'hour' => $course->hours,
             'startDate' => $course->startDate,
             'price' => $course->price,
             'days' => $days,
             'subjects' => $subjects,
-            'noClass' => $course->noClass,
+            'noClass' => $course->noClasses,
             'studentCount' => $course->studentCount 
         ];
 

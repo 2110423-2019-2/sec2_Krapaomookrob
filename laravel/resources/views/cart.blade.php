@@ -35,11 +35,11 @@
 @endsection
     
 <script>
-
     // declare delete cart function here
-    function checkOutCart() {
-      console.log("delete cookie!");
-      Vue.cookie.delete("cart");
-    }
+function checkOutCart() {
+    
+    Vue.cookie.delete("cart");
+}
+    
 </script>
 

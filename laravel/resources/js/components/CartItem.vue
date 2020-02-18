@@ -56,12 +56,13 @@
           class="mt-0 mb-1 ml-2"
           style="color:rgb(242, 87, 87); font-size: 1.8em"
         >{{this.totalPrice}} THB</p>
-        <a href="/cart">
+        <a href="#">
           <!-- TODO: send to payment page -->
-          <button class="btn-lg coutbtn px-5" onclick="checkOutCart()">Checkout</button>
+          <button class="btn-lg coutbtn px-5" onclick="testo">Checkout</button>
         </a>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -82,26 +83,22 @@ export default {
 
   mounted: function() {
     var self = this;
-    console.log("Cart item mounted");
     // get course info
     let cartItems = this.$cookie.get("cart");
-    this.cart = cartItems; // debug
-    try {
-      for (var item of cartItems.split(",")) {
-        if (this.info == null) {
-          axios.get("api/course/" + String(item)).then(response => {
-            this.info = [response.data];
-            this.totalPrice += response.data.price;
-          });
-        } else {
-          axios.get("api/course/" + String(item)).then(response => {
-            this.info.push(response.data);
-            this.totalPrice += response.data.price;
-          });
-        }
+    this.cart = cartItems;
+
+    for (var item of cartItems.split(",")) {
+      if (this.info == null) {
+        axios.get("api/course/" + String(item)).then(response => {
+          this.info = [response.data];
+          this.totalPrice += response.data.price;
+        });
+      } else {
+        axios.get("api/course/" + String(item)).then(response => {
+          this.info.push(response.data);
+          this.totalPrice += response.data.price;
+        });
       }
-    }catch{
-      console.log('null value');
     }
   },
   methods: {
@@ -109,8 +106,11 @@ export default {
       // no null delete cased
       let tmp = this.$cookie.get("cart").split(",");
       this.$cookie.delete("cart");
-      tmp.splice(tmp.indexOf(String(elementId)),1);
+      tmp.splice(tmp.indexOf(String(elementId)), 1);
       this.$cookie.set("cart", tmp, 1);
+    },
+    testFunc: function(){
+      console.log('teto');
     }
   }
 };
