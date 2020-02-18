@@ -7,7 +7,7 @@
     >
       <div class="col-lg">
         <strong>{{entry.tutor_name}}</strong>
-        <br />Chula Engineering
+        <!-- <br />Chula Engineering -->
       </div>
       <div class="col-lg">{{entry.subjects.join(', ')}}</div>
       <div class="col-lg">{{entry.area}}</div>
@@ -58,7 +58,14 @@
         >{{this.totalPrice}} THB</p>
         <a href="#">
           <!-- TODO: send to payment page -->
-          <button class="btn-lg coutbtn px-5" onclick="testo">Checkout</button>
+          <!-- <button class="btn-lg coutbtn px-5" onclick="testo">Checkout</button> -->
+          <remove-button
+            button-text="CheckOut"
+            class="btn-lg coutbtn"
+            style="width: 10em !important"
+            v-bind:element-id="null"
+            v-on:click="checkOut()"
+          ></remove-button>
         </a>
       </div>
     </div>
@@ -109,12 +116,14 @@ export default {
       tmp.splice(tmp.indexOf(String(elementId)), 1);
       this.$cookie.set("cart", tmp, 1);
     },
-    testFunc: function(){
-      console.log('teto');
+    checkOut: function(){
+      var data = this.cart;
+      axios.get("/paymant/test", {
+        params : {
+          courseIds: data.split(",").map(x => parseInt(x))
+        }
+      }).then(response => window.location.href="/payment/{paymentId}/{sum}").catch(error => console.log(error))
     }
   }
 };
 </script>
-
-<style>
-</style>

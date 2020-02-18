@@ -68,7 +68,7 @@ class CourseController extends Controller
         $returnObj = [
             'tutor_name' => $tutorName,
             'course_id' => $course->id,
-            'area' => $course->locations->pluck('name'),
+            'area' => $course->location->name,
             'time' => $course->time,
             'hour' => $course->hours,
             'startDate' => $course->startDate,
