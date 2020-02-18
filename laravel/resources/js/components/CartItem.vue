@@ -20,7 +20,7 @@
         <br />
         {{entry.noClass}} Classes,
         <br />
-        <div v-if="entry.studenCount == 1">Individual</div>
+        <div v-if="entry.studentCount == 1">Individual</div>
         <div v-if="entry.studentCount > 1">{{entry.studentCount}} students</div>
       </div>
       <div class="col-lg">
@@ -109,7 +109,7 @@ export default {
       // no null delete cased
       let tmp = this.$cookie.get("cart").split(",");
       this.$cookie.delete("cart");
-      tmp.pop(String(elementId));
+      tmp.splice(tmp.indexOf(String(elementId)),1);
       this.$cookie.set("cart", tmp, 1);
     }
   }

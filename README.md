@@ -9,9 +9,16 @@ docker-compose up composer
 
 ### Run Project
 
+1. Run docker-compose
 ``` shell
 cd <root>
 docker-compose up
+```
+
+2. In another terminal, run npm
+``` shell
+cd <root>
+docker exec sec2_krapaomookrob_laravel_1 npm run watch
 ```
 
 Then, you can access the site in http://localhost:8000/
