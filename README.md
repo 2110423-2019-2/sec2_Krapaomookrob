@@ -15,7 +15,7 @@ cd <root>
 docker-compose up
 ```
 
-2. In another terminal, initialize and run npm (not always required)
+2. In another terminal, install and run npm (not always required)
 ``` shell
 cd <root>
 docker exec sec2_krapaomookrob_laravel_1 npm install
