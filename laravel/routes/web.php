@@ -11,8 +11,17 @@
 |
 */
 
+use App\Http\Controllers\CourseController;
+
 Route::get('/', function () {
-    return view('dashboard');
+    return view('dashboard', ['user' => auth()->user()]);
+});
+
+Route::get('/api/course/subjects','CourseController@fetchSubjects');
+Route::get('/api/course/days','CourseController@fetchDays');
+Route::post('/api/course/new','CourseController@newCourse');
+Route::get('/new-course', function () {
+    return view('new_course');
 });
 
 //Login for developers
@@ -39,10 +48,30 @@ Route::prefix('login')->group(function () {
 Route::post('/user-role', 'UserController@updateRole');
 
 
-Route::get('/payment', function () {
-    return view('payment');
+// Search API and its view
+Route::get('/search', 'SearchController@searchCourse');
+Route::get('/search-courses', function() {
+    return view('searchCourses');
 });
 
+Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
+
+Route::get('/cart', function(){
+    // route to cart oage
+    return view('cart');
+});
+
+Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
+
+// Route for payment
+Route::get('/payment', function () {
+    $pay = [
+        'payment_id' => 1,
+        'totalprice' => 0
+    ];
+    return view('result')->with('payment',$pay);
+});
+Route::post('/payment', 'Frontend\paymentGatewayController@cartToPayment');
 //post to payment
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');

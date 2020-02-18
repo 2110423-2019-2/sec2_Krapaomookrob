@@ -5,8 +5,8 @@
 @section('topic', 'Dashboard')
 
 @section('menu')
-<a class="btn ownbtn" href="#">Search Courses</a>
-<a class="btn ownbtn" href="#">New Course Request</a>
+<a class="btn ownbtn" href="/search-courses">Search Courses</a>
+<a class="btn ownbtn" href="/new-course">New Course Request</a>
 @endsection
 
 @section('content')
@@ -18,8 +18,8 @@
         <div class="d-flex flex-wrap">
           <div class="card p-3 dash mr-3">
               <h5>P'Taan</h5>
-              <span>Saturday, 23 Nov 2019</span>
-              <span>13:00-15:00 (2hrs)</span>
+              <span class="d-block">Saturday, 23 Nov 2019</span>
+              <span class="d-block">13:00-15:00 (2hrs)</span>
               <a class="btn ownbtn" href="#">Start Attendance Checking</a>
           </div>
         </div>
@@ -61,3 +61,11 @@
     </div>
 @endif
 
+@if (isset($error))
+    <div class="alert alert-warning alert-dismissible fade show">
+    {{ $error }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+@endif

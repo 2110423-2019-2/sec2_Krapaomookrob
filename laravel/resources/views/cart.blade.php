@@ -1,22 +1,40 @@
 @extends('layouts.app')
 
+ิ@section('title', 'My Shopping Cart')
 
-
-
+@section('topic', 'Cart')
 
 @section('menu')
-<a class="btn ownbtn" href="#">Search Courses</a>
-<a class="btn ownbtn" href="#">New Course Request</a>
+
+    <a href="#" class="btn ownbtn px-5">Back</a>
+
 @endsection
 
 @section('content')
-
-<div class = "col-lg-3">
-    <h3 style ="text-align: center;">Payment: {{$payment['totalprice']}} </h3>
-    <h type = "hidden" name = "price" value = "{{$price = {{$payment['totalprice']}} * 100}}"> </h>
-
-</div>
+    {{-- content of cart --}}
+    
+    <div class="card pb-2">
+        <div class="card-body">
+            <h4 class="card-title">Courses in Cart</h4>
+            <div class="row mt-3 mb-2 bline">
+                <div class="col-lg">Tutor</div>
+                <div class="col-lg">Available Subjects</div>
+                <div class="col-lg">Areas</div>
+                <div class="col-lg">Classes</div>
+                <div class="col-lg">Price/Start Date</div>
+                <div class="col-lg"></div>
+            </div>
+            
+            <div id='app'>
+                <cart-item button-type="cancelbtn"></cart-item>
+            </div>
+        </div>
+        
+    </div>
+    
 <div class = "row ">
+    <h1 type = "hidden" name = "price" value = "{{$price = CartItem:totalPrice * 100}}"> </h1>
+    <h1 type = "hidden" name = "paymentID" value = "{{$paymentID = 1}}"> </h1>
     <div class = "col-lg-1">
     </div>
     <div class = "col-lg-4">
@@ -26,11 +44,10 @@
 
         <div class="d-flex flex-wrap">
 
-            <form name= "checkout" value = "card" method="POST" action="card" >
+            <form name= "checkout" value = "card" method="POST" action="card" onclick="checkOutCart()" >
             @csrf
                 <input name="p" type ="hidden" value = "{{$price}}">
-                <input name="class" type ="hidden" value = "">
-                <input name="paymentID" type ="hidden" value = "{{$payment['payment_id']}}">
+                <input name="pid" type ="hidden" value = "{{$paymentID}}">
             <script type="text/javascript"   src="https://cdn.omise.co/omise.js"
                 data-key="pkey_test_5irvp3eqbf7ybksdjlt"
                 data-image="{{asset('img/favicon.png')}}"
@@ -61,9 +78,9 @@
                 <input  type="radio" id = "ktb" name ="internet_bnk" onclick="Button1()" value="internet_banking_ktb"> KTB Netbank<hr>
                 <input type="radio" id ="bay" name ="internet_bnk" onclick="Button1()" value="internet_banking_bay"> Krungsri Online<br>
                 <input name="p" type ="hidden" value = "{{$price}}">
-                <input name="paymentID" type ="hidden" value = "{{$payment['payment_id']}}">
+                <input name="pid" type ="hidden" value = "{{$paymentID}}">
                 <br>
-        <button class ="omise-checkout-button" type="submit" id="checkoutButton"  name="form2" disabled >Pay with internet banking</button>
+        <button class ="omise-checkout-button" type="submit" id="checkoutButton" onclick="checkOutCart()"  name="form2" disabled >Pay with internet banking</button>
             <script>
                 function Button1() {
                 var checkRadio = document.querySelector('input[name="internet_bnk"]:checked');
@@ -87,7 +104,15 @@
         </div>
     </div>
 </div>
+
 @endsection
+    
+<script>
 
-
+    // declare delete cart function here
+    function checkOutCart() {
+      console.log("delete cookie!");
+      Vue.cookie.delete("cart");
+    }
+</script>
 

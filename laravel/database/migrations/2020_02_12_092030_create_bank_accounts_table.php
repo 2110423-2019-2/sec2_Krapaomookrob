@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCoursesTable extends Migration
+class CreateBankAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,14 @@ class CreateCoursesTable extends Migration
      */
     public function up()
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('bank_accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->time('time');
-            $table->integer('hours');
-            $table->date('startDate');
-            $table->integer('studentCount');
-            $table->integer('price');
-            $table->string('noClasses')->nullable();
+            $table->string('account_number');
+            $table->string('account_name');
+            $table->string('bank');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('location_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('location_id')->references('id')->on('locations');
         });
     }
 
@@ -36,6 +31,6 @@ class CreateCoursesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists('bank_accounts');
     }
 }

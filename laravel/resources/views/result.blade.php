@@ -11,13 +11,12 @@
 
 @section('content')
 <div class="row">
-  <div class="col-lg-9">
-    <div class="card">
-      <div class="card-body pr-0">
-        <h4 class="card-title">Hello, {{ $sourceID }}</h4>
-        
-      </div>
-    </div>
-  </div>
+
+<form name = 'intercheckout' method="POST" action ="payment" >
+        @csrf
+        <input name="course_id" type ="hidden" value = "1,2,3">
+        <button class ="omise-checkout-button" type="submit" id="checkoutButton"  name="form2" >Pay with internet banking</button>
 </div>
 @endsection
+
+
