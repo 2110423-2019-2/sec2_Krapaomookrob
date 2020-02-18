@@ -64,7 +64,6 @@ Route::get('/cart', function(){
 Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
 
 // Route for payment
-
 //Route::post('/payment', 'Frontend\paymentGatewayController@cartToPayment');
 //Route::post('/payment/{totalprice}/{payment_id}')
 //post to payment
