@@ -87,3 +87,11 @@ Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage'
 Route::get('/my-courses', 'CourseController@myCoursesIndex');
 Route::post('/api/course/cancel','CourseController@cancelCourse');
 Route::post('/api/course/status','CourseController@getStatus');
+
+// My Profile View
+Route::get('/profile', 'UserController@viewProfile')->name('profile.show');
+Route::get('/profile/edit', 'UserController@editProfile')->name('profile.edit');
+Route::patch('/profile', 'UserController@updateProfile')->name('profile.update');
+
+// Tutor Profile View
+Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('profile.tutor.show');

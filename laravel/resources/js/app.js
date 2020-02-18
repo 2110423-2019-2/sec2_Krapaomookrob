@@ -21,6 +21,9 @@ Vue.use(VueGoogleMaps, {
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
 
+import StarRating from 'vue-star-rating'
+Vue.component('star-rating', require('vue-star-rating').default);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
