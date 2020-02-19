@@ -55,6 +55,10 @@
       </div>
     </div>
   </div>
+  <div id="app">
+    {{-- test area --}}
+    <notification-bar></notification-bar>
+  </div>
 </div>
 @endsection
 

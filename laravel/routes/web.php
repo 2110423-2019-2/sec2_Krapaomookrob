@@ -86,13 +86,6 @@ Route::get('/payment', function () {
 
 Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
 
-Route::get('/cart', function(){
-    // route to cart oage
-    return view('cart');
-});
-
-Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
-
 // Route for payment
 //Route::post('/payment', 'Frontend\paymentGatewayController@cartToPayment');
 Route::post('/api/getPayment', 'Frontend\paymentGatewayController@cartToPayment');
@@ -116,3 +109,6 @@ Route::patch('/profile', 'UserController@updateProfile')->name('profile.update')
 
 // Tutor Profile View
 Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('profile.tutor.show');
+
+// Notification
+Route::get('/api/notification', 'NotificationController@getNotification')->name('notification.index');
