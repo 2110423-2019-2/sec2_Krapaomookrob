@@ -4,8 +4,14 @@
 
 @section('topic', 'Dashboard')
 
+@php($user = auth() -> user())
+
 @section('menu')
-<a class="btn ownbtn" href="/search-courses">Search Courses</a>
+@if($user->isTutor())
+  <a class="btn ownbtn" href="/tutor-search">Search Courses</a>
+@else
+  <a class="btn ownbtn" href="/search-courses">Search Courses</a>
+@endif
 <a class="btn ownbtn" href="/new-course">New Course Request</a>
 @endsection
 
