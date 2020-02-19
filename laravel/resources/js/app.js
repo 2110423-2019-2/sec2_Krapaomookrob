@@ -29,6 +29,7 @@ Vue.use(VueGoogleMaps, {
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('remove-button', require('./components/RemoveButton.vue').default);
 Vue.component('new_course-component', require('./components/NewCourseComponent.vue').default);
+Vue.component('admin_panel-component', require('./components/AdminPanelList.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

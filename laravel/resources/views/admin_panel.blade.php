@@ -10,11 +10,12 @@
 @endsection
 
 @section('content')
-<div class="row">
+<div id="app" class="row">
   <div class="col-lg-9">
     <div class="card">
       <div class="card-body pr-0">
         <h4 class="card-title">Hello, Tee</h4>
+        <admin_panel-component></admin_panel-component>
 
       </div>
     </div>
