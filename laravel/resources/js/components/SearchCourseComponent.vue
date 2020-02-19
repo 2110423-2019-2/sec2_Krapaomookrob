@@ -148,7 +148,19 @@
         <button class="btn ownbtn px-5 py-2" @click="searchCourse">Search Courses</button>
       </div>
     </div>
+  
+    <br>
+    <h1>Search Result</h1>
+    
+    <v-data-table
+      :headers="headers"
+      :items="search_result"
+      :items-per-page="15"
+      class="elevation-1"
+    ></v-data-table>
+    
   </div>
+  
 
 </template>
 
@@ -171,6 +183,15 @@
         hour: "",
         maxPrice: "",
         noClass: "",
+        headers: [
+          { text: 'Tutor', value: 'uname' },
+          { text: 'Available Subjects', value: 'sname' },
+          { text: 'Areas', value: 'time' },
+          { text: 'Classes', value: 'dname' },
+          { text: 'Price/Start Date', value: 'price' },
+          { text: 'Action', value: 'noClasses' },
+        ],
+        search_result: [],
       }
     },
     mounted() {
@@ -193,7 +214,7 @@
           maxPrice: this.maxPrice,
         }})
         .then(response => {
-          return response.data
+          this.search_result = response.data
         })
         .catch(error => console.log(error))
       }   

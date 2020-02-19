@@ -21,7 +21,7 @@ Vue.component('star-rating', require('vue-star-rating').default);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('remove-button', require('./components/RemoveButton.vue').default);
 Vue.component('new_course-component', require('./components/NewCourseComponent.vue').default);
-Vue.component('search_course-component', require('./components/SearchCourseComponent.vue').default);
+Vue.component('search-course-component', require('./components/SearchCourseComponent.vue').default);
 Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('cancel-button', require('./components/CancelButton.vue').default);
 
