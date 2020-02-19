@@ -10,8 +10,13 @@
 @endsection
 
 @section('content') 
+
+<v-app id="app">
+  <search_course-component></search_course-component>
+</v-app>
+
 <style>
-  .searchBtn{
+  .searchMagnifierBtn{
     border: 0px;
     background-color: rgb(79, 182, 217); 
     border-radius: 3px 0px 0px 3px; 
@@ -19,32 +24,32 @@
     padding: 10px;
     pointer-events:none;
   }
-  .searchInput{
+  .searchInputTextbox{
     border: solid 1px rgb(200,200,200); 
     border-radius: 0px 3px 3px 0px; 
     border-left: 0px;
     margin-left: 0px;
     padding-left: 10px;
   }
-  .dropdownInput{
+  .dropdownInputTextbox{
     border: solid 1px rgb(200,200,200); 
     border-radius: 3px; 
     padding: 8px 10px;
   }
-  .regnowbtn {
+  .regnowBtn {
     width: 80%;
     border-radius: 5px;
     margin-top: 10px;
     margin-bottom: 2px;
   }
-  .addtocartbtn {
+  .addToCartBtn {
     border: solid 1px rgb(200,200,200); 
     width: 80%;
     border-radius: 5px;
     margin-top: 2px;
     margin-bottom: 10px;
   }
-  .addtocartbtn:hover {
+  .addToCartBtn:hover {
     background-color: rgb(240,240,240);
   }
   tr{
@@ -94,12 +99,12 @@
                     <div class="column mx-4">
                         <h5> Tutor</h5>  
                         <div class="row ml-1">
-                          <button class="searchBtn">
+                          <button class="searchMagnifierBtn">
                             <svg class="d-flex align-item-center justify-content-center" style="fill: white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 20 20">
                                 <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                             </svg>
                           </button>
-                          <input list="tutorDataList" class="searchInput" name="tutor" id="tutor" placeholder="Tutor's Name" onkeyup="showResult(this.value, 'tutor', 'tutorList')"/>
+                          <input list="tutorDataList" class="searchInputTextbox" name="tutor" id="tutor" placeholder="Tutor's Name" onkeyup="showResult(this.value, 'tutor', 'tutorList')"/>
                           <datalist id="tutorDataList">
                             <div id="tutorList"></div>
                           </datalist>
@@ -109,12 +114,12 @@
                         
                         <h5> Area</h5>  
                           <div class="row ml-1">
-                          <button class="searchBtn">
+                          <button class="searchMagnifierBtn">
                             <svg class="d-flex align-item-center justify-content-center" style="fill: white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 20 20">
                                 <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                             </svg>
                           </button>
-                          <input list="areaDataList" class="searchInput" name="area" id="area" placeholder="Area/City/Province"/>
+                          <input list="areaDataList" class="searchInputTextbox" name="area" id="area" placeholder="Area/City/Province"/>
                           <datalist id="areaDataList">
                             <div id="areaList"></div>
                           </datalist>
@@ -133,12 +138,12 @@
                     <div class="column mx-4">
                         <h5>Subjects</h5>  
                         <div class="row ml-1">
-                          <button class="searchBtn">
+                          <button class="searchMagnifierBtn">
                             <svg class="d-flex align-item-center justify-content-center" style="fill: white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 20 20">
                                 <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                             </svg>
                           </button>
-                          <input list="subjectDataList" class="searchInput" name="subject" id="subject" placeholder="Subject" onfocus="showResult('all', 'subject', 'subjectList')"/>
+                          <input list="subjectDataList" class="searchInputTextbox" name="subject" id="subject" placeholder="Subject" onfocus="showResult('all', 'subject', 'subjectList')"/>
                           <datalist id="subjectDataList">
                             <div id="subjectList"></div>
                           </datalist>
@@ -158,7 +163,7 @@
                     <div class="column mx-4">
                         <h5>Day</h5>  
                         <div class="row ml-1"  style="width: 220px">
-                        <select id="day" name="day" class="dropdownInput" style="width: 100%">
+                        <select id="day" name="day" class="dropdownInputTextbox" style="width: 100%">
                           <option value="">Not Specified</option>
                           <option value="Sunday">Sunday</option>
                           <option value="Monday">Monday</option>
@@ -184,7 +189,7 @@
                     <div class="column mx-4">
                         <h5>Time</h5>  
                         <div class="row ml-1"  style="width: 220px">
-                        <select id="time" name='time' class="dropdownInput" style="width: 100%" onchange="updateSearchedCourses()">
+                        <select id="time" name='time' class="dropdownInputTextbox" style="width: 100%" onchange="updateSearchedCourses()">
                           <option value="">Not Specified</option>
                           <option value="6:00">6:00</option>
                           <option value="6:30">6:30</option>
@@ -218,7 +223,7 @@
                       
                         <h5>Hours/Class</h5>  
                         <div class="row ml-1"  style="width: 220px">
-                        <select id="hourClass" name='hourClass' class="dropdownInput" style="width: 100%" onchange="updateSearchedCourses()">
+                        <select id="hourClass" name='hourClass' class="dropdownInputTextbox" style="width: 100%" onchange="updateSearchedCourses()">
                           <option value="">Not Specified</option>
                           <option value="1">1:00</option>
                           <option value="2">2:00</option>
@@ -229,13 +234,13 @@
                       </br>
                         <h5>No. of Class</h5>  
                         <div class="row ml-1"  style="width: 220px">
-                        <input id="noClass" name='noClass' type="text" class="dropdownInput py-1" style="width: 100%" placeholder='Not Specified'>
+                        <input id="noClass" name='noClass' type="text" class="dropdownInputTextbox py-1" style="width: 100%" placeholder='Not Specified'>
                         </div>
                       
                       </br>
                         <h5>Max Price</h5>  
                         <div class="row ml-1"  style="width: 220px">
-                        <input id="maxPrice" name='maxPrice' type="text" class="dropdownInput py-1" style="width: 100%" placeholder='Not Specified'>
+                        <input id="maxPrice" name='maxPrice' type="text" class="dropdownInputTextbox py-1" style="width: 100%" placeholder='Not Specified'>
                         </div>
 
                     </div>
@@ -375,7 +380,7 @@
     html = inHTMLCell(
       `<b>${rowData.uname}</b> <br>
       ${rowData.education_level?rowData.education_level:'<i>Unknown</i>'}<br>
-      <button class="addtocartbtn btn py-0">Chat</button>
+      <button class="addToCartBtn btn py-0">Chat</button>
       `
     );
     html += inHTMLCell(rowData.area);
@@ -395,15 +400,15 @@
     if ((Vue.cookie.get('cart')==null) || !Vue.cookie.get('cart').includes(String(rowData.id))){
       buttonGen = `
         <div class="column mx-0" style="text-align:center">
-          <a href="/cart"><button class="regnowbtn btn ownbtn" onclick="instancePayment(${rowData.id},1)">Register Now</button></a>
-          <button class="addtocartbtn btn" id="course-${rowData.id}" onclick="addToCart(${rowData.id},1)">Add To Cart</button>
+          <a href="/cart"><button class="regnowBtn btn ownbtn" onclick="instancePayment(${rowData.id},1)">Register Now</button></a>
+          <button class="addToCartBtn btn" id="course-${rowData.id}" onclick="addToCart(${rowData.id},1)">Add To Cart</button>
         </div>`
     }
     else{
       buttonGen = `
         <div class="column mx-0" style="text-align:center">
-          <a href="/cart"><button class="regnowbtn btn ownbtn" onclick="instancePayment(${rowData.id},1)">Register Now</button></a>
-          <button class="addtocartbtn btn" id="course-${rowData.id}" onclick="addToCart(${rowData.id},1)">Remove From Cart</button>
+          <a href="/cart"><button class="regnowBtn btn ownbtn" onclick="instancePayment(${rowData.id},1)">Register Now</button></a>
+          <button class="addToCartBtn btn" id="course-${rowData.id}" onclick="addToCart(${rowData.id},1)">Remove From Cart</button>
         </div>`
     }
     html += inHTMLCell(buttonGen);

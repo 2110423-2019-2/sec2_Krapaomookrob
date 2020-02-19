@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -23,6 +24,9 @@ Route::post('/api/course/new','CourseController@newCourse');
 Route::get('/new-course', function () {
     return view('new_course');
 });
+
+Route::get('/api/fetch/tutors','SearchController@fetchTutors');
+Route::get('/api/fetch/areas','SearchController@fetchAreas');
 
 //Login for developers
 
@@ -60,7 +64,7 @@ Route::post('/tutor-request','CourseController@requestCourse');
 // Search API and its view
 Route::get('/search', 'SearchController@searchCourse');
 Route::get('/search-courses', function() {
-    return view('searchCourses');
+    return view('search_courses');
 });
 
 Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');

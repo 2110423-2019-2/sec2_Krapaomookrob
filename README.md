@@ -19,7 +19,7 @@ docker-compose up
 ``` shell
 cd <root>
 docker exec sec2_krapaomookrob_laravel_1 npm install
-docker exec sec2_krapaomookrob_laravel_1 npm run dev
+docker exec sec2_krapaomookrob_laravel_1 npm run watch
 ```
 
 Then, you can access the site in http://localhost:8000/
