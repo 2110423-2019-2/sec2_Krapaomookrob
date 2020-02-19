@@ -16,6 +16,7 @@ use App\User;
 use App\Course_subject;
 use App\Course_day;
 use App\CourseStudent;
+use App\Notification;
 
 class CourseController extends Controller
 {
@@ -90,6 +91,14 @@ class CourseController extends Controller
         $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
         $registeredCourse->status = 'refunding';
         $registeredCourse->save();
+        
+        //  create cancel notification
+        $username = User::where('id','=',$registeredCourse->user_id)->first()->name;
+        $notification = new Notification;
+        $notification->receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
+        $notification->message = "{$username} have cancel the course";
+        $notification->save();
+
         return response($registeredCourse, 200);
     }
 

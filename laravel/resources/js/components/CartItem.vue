@@ -122,7 +122,7 @@ export default {
         params : {
           courseIds: data.split(",").map(x => parseInt(x))
         }
-      }).then(response => window.location.href="/payment/{paymentId}/{sum}").catch(error => console.log(error))
+      }).then(response => window.location.href="/payment/{response.paymentId}/{response.sum}").catch(error => console.log(error))
     }
   }
 };
