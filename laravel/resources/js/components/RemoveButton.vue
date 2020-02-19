@@ -5,7 +5,7 @@
 <script>
 export default {
   mounted: function() {
-    console.log("Component mounted.");
+    // console.log("Component mounted.");
   },
 
   props: ["buttonText", "elementId"],

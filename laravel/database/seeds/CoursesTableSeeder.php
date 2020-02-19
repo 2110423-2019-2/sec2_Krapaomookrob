@@ -120,13 +120,13 @@ class CoursesTableSeeder extends Seeder
 
             $someDaysI = $courseI->days()->attach(Day::find([$i%8, ($i+1)%8, ($i+2)%8]));
             $someSubjectsI = $courseI->subjects()->attach(Subject::find([$i%13, $i%3, $i%5]));
-            
+
             $courseI->days()->attach($someDaysI);
             $courseI->subjects()->attach($someSubjectsI);
 
             $courseI->students()->attach(User::find($i % 6 + 1));
           }
-      
+
 
 
           $course3 = Course::create([

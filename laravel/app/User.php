@@ -75,4 +75,8 @@ class User extends Authenticatable
     public function registeredCourses(){
         return $this->belongsToMany('App\Course', 'course_student');
     }
+
+    public function notifications() {
+        return $this->belongsToMany(Notification::class);
+    }
 }

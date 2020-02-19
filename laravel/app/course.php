@@ -25,7 +25,7 @@ class Course extends Model
     public function location(){
         return $this->belongsTo(Location::class);
     }
-    
+
     public function students(){
         return $this->belongsToMany('App\User', 'course_student');
     }

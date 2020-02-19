@@ -7,7 +7,7 @@
     >
       <div class="col-lg">
         <strong>{{entry.tutor_name}}</strong>
-        <br />Chula Engineering
+        <!-- <br />Chula Engineering -->
       </div>
       <div class="col-lg">{{entry.subjects.join(', ')}}</div>
       <div class="col-lg">{{entry.area}}</div>
@@ -56,12 +56,20 @@
           class="mt-0 mb-1 ml-2"
           style="color:rgb(242, 87, 87); font-size: 1.8em"
         >{{this.totalPrice}} THB</p>
-        <a href="/cart">
+        <a href="#">
           <!-- TODO: send to payment page -->
-          <button class="btn-lg coutbtn px-5" onclick="checkOutCart()">Checkout</button>
+          <!-- <button class="btn-lg coutbtn px-5" onclick="testo">Checkout</button> -->
+          <remove-button
+            button-text="CheckOut"
+            class="btn-lg coutbtn"
+            style="width: 10em !important"
+            v-bind:element-id="null"
+            v-on:click.native="checkOut()"
+          ></remove-button>
         </a>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -82,26 +90,22 @@ export default {
 
   mounted: function() {
     var self = this;
-    console.log("Cart item mounted");
     // get course info
     let cartItems = this.$cookie.get("cart");
-    this.cart = cartItems; // debug
-    try {
-      for (var item of cartItems.split(",")) {
-        if (this.info == null) {
-          axios.get("api/course/" + String(item)).then(response => {
-            this.info = [response.data];
-            this.totalPrice += response.data.price;
-          });
-        } else {
-          axios.get("api/course/" + String(item)).then(response => {
-            this.info.push(response.data);
-            this.totalPrice += response.data.price;
-          });
-        }
+    this.cart = cartItems;
+
+    for (var item of cartItems.split(",")) {
+      if (this.info == null) {
+        axios.get("api/course/" + String(item)).then(response => {
+          this.info = [response.data];
+          this.totalPrice += response.data.price;
+        });
+      } else {
+        axios.get("api/course/" + String(item)).then(response => {
+          this.info.push(response.data);
+          this.totalPrice += response.data.price;
+        });
       }
-    }catch{
-      console.log('null value');
     }
   },
   methods: {
@@ -109,12 +113,16 @@ export default {
       // no null delete cased
       let tmp = this.$cookie.get("cart").split(",");
       this.$cookie.delete("cart");
-      tmp.splice(tmp.indexOf(String(elementId)),1);
+      tmp.splice(tmp.indexOf(String(elementId)), 1);
       this.$cookie.set("cart", tmp, 1);
+    },
+    checkOut: function(){
+      this.$cookie.delete('cart');
+      var data = this.cart;
+      axios.post("/api/getPayment", {
+        course_id: data.split(",").map(x => parseInt(x))
+      }).then(response => window.location.href="/payment/"+response.data.payment_id+"/"+response.data.totalprice).catch(error => console.log(error))
     }
   }
 };
 </script>
-
-<style>
-</style>

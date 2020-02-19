@@ -59,7 +59,7 @@
                       <a class="btn btn-light" href="#">🔔</a>
                     </li>
                     <li class="nav-item">
-                      <a class="btn ownbtn" href="#">🛒 Cart</a>
+                      <a class="btn ownbtn" href="/cart">🛒 Cart</a>
                     </li>
                   @endif
                   <li class="nav-item">
