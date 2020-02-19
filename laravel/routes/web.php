@@ -24,6 +24,13 @@ Route::get('/new-course', function () {
     return view('new_course');
 });
 
+Route::get('/api/course/subjects','CourseController@fetchSubjects');
+Route::get('/api/course/days','CourseController@fetchDays');
+Route::post('/api/course/new','CourseController@newCourse');
+Route::get('/new-course', function () {
+    return view('new_course');
+});
+
 //Login for developers
 
 Route::get('/login-dev/{id}', 'Auth\LoginController@loginDeveloper');
@@ -77,6 +84,18 @@ Route::get('/payment', function () {
     return view('payment');
 });
 
+Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
+
+Route::get('/cart', function(){
+    // route to cart oage
+    return view('cart');
+});
+
+Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
+
+// Route for payment
+//Route::post('/payment', 'Frontend\paymentGatewayController@cartToPayment');
+//Route::post('/payment/{totalprice}/{payment_id}')
 //post to payment
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');

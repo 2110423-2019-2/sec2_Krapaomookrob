@@ -108,7 +108,7 @@ class CourseController extends Controller
         $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
         return response($registeredCourse->status, 200);
     }
-    
+
     public function myCoursesIndex(){
         $user = auth()->user();
         $courses;
@@ -167,6 +167,6 @@ class CourseController extends Controller
         }
         return [$classDate, $nextClass, $classesLeft];
     }
-    
- 
+
+
 }
