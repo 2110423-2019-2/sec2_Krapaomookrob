@@ -70,7 +70,7 @@
         @foreach ($courses as $course)
         <div class="d-flex flex-wrap">
             <div class="col-2 d-flex flex-column flex-wrap">
-                <div>{{$course->area}}</div>
+                <div>{{$course->user_id}}</div>
                 <div style="margin-bottom: auto"><small>Chula Engineering</small></div>
                 <div class="pt-1"><a class="btn btn-light" href="#" style="width:100px">Chat</a></div>
             </div>
