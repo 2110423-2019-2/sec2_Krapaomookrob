@@ -11,10 +11,18 @@
 |
 */
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
-    return view('dashboard', ['user' => auth()->user()]);
+    return view('dashboard');
+});
+
+Route::get('/api/course/subjects','CourseController@fetchSubjects');
+Route::get('/api/course/days','CourseController@fetchDays');
+Route::post('/api/course/new','CourseController@newCourse');
+Route::get('/new-course', function () {
+    return view('new_course');
 });
 
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
@@ -47,24 +55,70 @@ Route::prefix('login')->group(function () {
 });
 Route::post('/user-role', 'UserController@updateRole');
 
+//Tutor Search and Request
+Route::get('/tutor-search', function () {
+    $courses = [];
+    return view('tutor_search_course',compact('courses'));
+});
+Route::post('/tutor-search','CourseController@search');
+
+Route::post('/tutor-request','CourseController@requestCourse');
+
+
+// Search API and its view
+Route::get('/search', 'SearchController@searchCourse');
+Route::get('/search-courses', function() {
+    return view('searchCourses');
+});
+
+Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
+
 Route::get('/cart', function(){
     // route to cart oage
     return view('cart');
 });
 
+Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
+
+// Route for payment
 Route::get('/payment', function () {
     return view('payment');
 });
 
+Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
+
+Route::get('/cart', function(){
+    // route to cart oage
+    return view('cart');
+});
+
+Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
+
+// Route for payment
+//Route::post('/payment', 'Frontend\paymentGatewayController@cartToPayment');
+Route::post('/api/getPayment', 'Frontend\paymentGatewayController@cartToPayment');
+
+Route::get('/payment/{payment_id}/{totalprice}','Frontend\paymentGatewayController@getPaymentPage');
 //post to payment
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
 Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
 
+//My Courses
+Route::get('/my-courses', 'CourseController@myCoursesIndex');
+Route::post('/api/course/cancel','CourseController@cancelCourse');
+Route::post('/api/course/status','CourseController@getStatus');
 
+// My Profile View
+Route::get('/profile', 'UserController@viewProfile')->name('profile.show');
+Route::get('/profile/edit', 'UserController@editProfile')->name('profile.edit');
+Route::patch('/profile', 'UserController@updateProfile')->name('profile.update');
+
+// Tutor Profile View
+Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('profile.tutor.show');
 Route::get('/admin-panel', function(){
-    // route to cart oage
+
     return view('admin_panel');
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');

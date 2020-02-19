@@ -16,6 +16,7 @@
         "jquery": "^3.2",
         "laravel-mix": "^5.0.1",
         "lodash": "^4.17.13",
+        "material-design-icons-iconfont": "^5.0.1",
         "popper.js": "^1.12",
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.20.1",
@@ -27,9 +28,9 @@
         "bootstrap": "^4.4.1",
         "sweetalert2": "^9.7.2",
         "vue": "^2.6.11",
-        "vue-multiselect": "^2.1.6",
-        "vue2-datepicker": "^3.3.0",
+        "vue-cookie": "^1.1.4",
+        "vue-star-rating": "^1.6.1",
         "vue2-google-maps": "^0.10.7",
-        "vue2-timepicker": "^1.0.8"
+        "vuetify": "^2.2.12"
     }
 }

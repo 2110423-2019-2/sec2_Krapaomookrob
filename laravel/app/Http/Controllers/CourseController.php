@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Day;
+use App\Location;
 use App\Subject;
 use Auth;
 use Carbon\Carbon;
 
 use App\Course;
+use App\User;
+use App\Course_subject;
+use App\Course_day;
+use App\CourseStudent;
+use App\Notification;
 
 class CourseController extends Controller
 {
@@ -24,15 +31,20 @@ class CourseController extends Controller
     }
 
     public function newCourse(Request $request){
+        $location = Location::firstOrCreate(
+          ['locationId' => $request->locationId],
+          ['name' => $request->area, 'address' => $request->address, 'latitude' => $request->center['lat'],'longitude' =>$request->center['lng']]
+        );
+
         $course = new Course;
-        $course->area = $request->area;
-        $course->time = "{$request->time['HH']}:{$request->time['mm']}:00";
+        $course->time = $request->time;
         $course->hours = $request->hours;
-        $course->startDate = (new Carbon($request->startDate))->addHours(7);
+        $course->startDate = new Carbon($request->startDate);
         $course->price = $request->price;
         $course->noClasses = $request->noClasses;
         $course->studentCount = $request->studentCount;
         $course->user()->associate(Auth::user());
+        $course->location()->associate($location);
         $course->save();
 
         $days = Day::whereIn('name', $request->days)->get()->pluck('id');
@@ -42,4 +54,137 @@ class CourseController extends Controller
         $course->save();
         return response('OK', 200);
     }
+
+    public function getCourseInfo($courseId) {
+        // find course
+        $course = Course::find($courseId);
+
+        // find days
+        $days = $course->days->pluck('name');
+
+        // find subject
+        $subjects = $course->subjects->pluck('name');
+
+        // find tutor's name
+        $tutorName = $course->user->name;
+
+        $returnObj = [
+            'tutor_name' => $tutorName,
+            'course_id' => $course->id,
+            'area' => $course->location->name,
+            'time' => $course->time,
+            'hour' => $course->hours,
+            'startDate' => $course->startDate,
+            'price' => $course->price,
+            'days' => $days,
+            'subjects' => $subjects,
+            'noClass' => $course->noClasses,
+            'studentCount' => $course->studentCount 
+        ];
+
+        return $returnObj;
+    }
+
+    public function cancelCourse(Request $request){
+        $user_id = $request->user_id;
+        $course_id = $request->course_id;
+        $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
+        $registeredCourse->status = 'refunding';
+        $registeredCourse->save();
+        
+        //  create cancel notification
+        $username = User::where('id','=',$registeredCourse->user_id)->first()->name;
+        $notification = new Notification;
+        $notification->receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
+        $notification->message = "{$username} have cancel the course";
+        $notification->save();
+
+        return response($registeredCourse, 200);
+    }
+
+    public function getStatus(Request $request){
+        $user_id = $request->user_id;
+        $course_id = $request->course_id;
+        $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
+        return response($registeredCourse->status, 200);
+    }
+
+    public function myCoursesIndex(){
+        $user = auth()->user();
+        $courses;
+        $classDateList = [];
+        $nextClasses = [];
+        $isFinished = [];
+        $classesLeft = [];
+        if($user->isStudent()){
+            $courses = $user->registeredCourses()->with(['days', 'subjects'])->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
+        }
+        else if($user->isTutor()){
+            $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
+        }
+        foreach($courses as $course){
+            $classes = $this->allClasses($course->startDate,  $course->days->pluck('name')->toArray(), $course->noClasses);
+            array_push($classDateList, $classes[0]);
+            array_push($nextClasses, $classes[1]);
+            array_push($classesLeft, $classes[2]);
+            $now = Carbon::now()->addHours(7);
+            array_push($isFinished, end($classes[0])->lt($now));
+        }
+        return view('my_courses', ['courses' => $courses, 'classDateList' => $classDateList, 'nextClasses' => $nextClasses, 'isFinished' => $isFinished, 'classesLeft' => $classesLeft]);
+    }
+
+    private function allClasses($startDate, $weekDays, $noClasses){
+        $weekMap = [
+            'Sunday' => 0,
+            'Monday' => 1,
+            'Tuesday' => 2,
+            'Wednesday' => 3,
+            'Thursday' => 4,
+            'Friday' => 5,
+            'Saturday' => 6,
+        ];
+        $count = $noClasses;
+        $now = new Carbon($startDate);
+        $classDate = [];
+        $currentTime = Carbon::now()->addHours(7);
+        $nextClass = null;
+        $classesLeft = 0;
+        while($count != 0){
+            $min = $now->copy()->addDays(8);
+            foreach($weekDays as $weekDay){
+                $t = $now->copy()->next($weekMap[$weekDay]);
+                if($t->lt($min)){
+                    $min = $t;
+                }
+            }
+            array_push($classDate, $min);
+            if($nextClass == null && $currentTime->lte($min)){
+                $nextClass = $min;
+                $classesLeft = $count;
+            }
+            $now = $min;
+            $count = $count - 1;
+        }
+        return [$classDate, $nextClass, $classesLeft];
+    }
+
+    public function requestCourse(Request $request) {
+        $data = array('course_id'=>$request->course_id,"requester_id"=>auth()->user()->id);
+        DB::table("courses_requester")->insert($data);
+        return response()->json(array('msg'=> "Done"), 200);
+    }
+
+    public function search(Request $request) {
+        $student_name = $request->input("student_name");
+        $area = $request->input("area");
+        $subject = $request->input("subject");
+        $day = $request->input("day");
+        $time = $request->input("time");
+        $num_students = $request->input("num_students");
+        $max_price = $request->input("max_price");
+        $courses = DB::table('courses')->paginate(15);
+        return view("/tutor_search_course",compact('courses'));
+    }
+
+
 }

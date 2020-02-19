@@ -4,9 +4,15 @@
 
 @section('topic', 'Dashboard')
 
+@php($user = auth() -> user())
+
 @section('menu')
-<a class="btn ownbtn" href="#">Search Courses</a>
-<a class="btn ownbtn" href="#">New Course Request</a>
+@if($user->isTutor())
+  <a class="btn ownbtn" href="/tutor-search">Search Courses</a>
+@else
+  <a class="btn ownbtn" href="/search-courses">Search Courses</a>
+@endif
+<a class="btn ownbtn" href="/new-course">New Course Request</a>
 @endsection
 
 @section('content')
@@ -55,6 +61,15 @@
 @if (isset($alert))
     <div class="alert alert-success alert-dismissible fade show">
     {{ $alert }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+@endif
+
+@if (isset($error))
+    <div class="alert alert-warning alert-dismissible fade show">
+    {{ $error }}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
