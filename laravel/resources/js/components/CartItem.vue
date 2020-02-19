@@ -64,7 +64,7 @@
             class="btn-lg coutbtn"
             style="width: 10em !important"
             v-bind:element-id="null"
-            v-on:click="checkOut()"
+            v-on:click.native="checkOut()"
           ></remove-button>
         </a>
       </div>
@@ -117,12 +117,11 @@ export default {
       this.$cookie.set("cart", tmp, 1);
     },
     checkOut: function(){
+      this.$cookie.delete('cart');
       var data = this.cart;
-      axios.get("/paymant/test", {
-        params : {
-          courseIds: data.split(",").map(x => parseInt(x))
-        }
-      }).then(response => window.location.href="/payment/{response.paymentId}/{response.sum}").catch(error => console.log(error))
+      axios.post("/api/getPayment", {
+        course_id: data.split(",").map(x => parseInt(x))
+      }).then(response => window.location.href="/payment/"+response.data.payment_id+"/"+response.data.totalprice).catch(error => console.log(error))
     }
   }
 };

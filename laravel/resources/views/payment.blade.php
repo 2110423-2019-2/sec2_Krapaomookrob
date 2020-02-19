@@ -1,14 +1,6 @@
 @extends('layouts.app')
 
 
-
-
-
-@section('menu')
-<a class="btn ownbtn" href="#">Search Courses</a>
-<a class="btn ownbtn" href="#">New Course Request</a>
-@endsection
-
 @section('content')
 
 <div class = "col-lg-3">
@@ -26,7 +18,7 @@
 
         <div class="d-flex flex-wrap">
 
-            <form name= "checkout" value = "card" method="POST" action="card" >
+            <form name= "checkout" value = "card" method="POST" action="/card" >
             @csrf
                 <input name="p" type ="hidden" value = "{{$price}}">
                 <input name="class" type ="hidden" value = "">
@@ -54,7 +46,7 @@
             <h4 class="card-title">Pay with internet banking</h4>
             <br>
             <div class="d-flex flex-wrap">
-            <form name = 'intercheckout' method="POST" action ="internet" >
+            <form name = 'intercheckout' method="POST" action ="/internet" >
             @csrf
                 <input type="radio" id ="scb" name ="internet_bnk" onclick="Button1()" value="internet_banking_scb" > SCB Easy Net<hr>
                 <input  type="radio" id = "bbl" name ="internet_bnk" onclick="Button1()" value="internet_banking_bbl"> Bualuang iBanking<hr>

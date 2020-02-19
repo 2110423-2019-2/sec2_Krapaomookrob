@@ -22,8 +22,10 @@ define('OMISE_SECRET_KEY','skey_test_5irvp3eqkwepp9mc4kn');
 class paymentGatewayController extends Controller{
 
     public function cartToPayment(Request $request){
+        //return 'xxx';
         //$course1 = array(1,2,3);
         //check course that isnt taken
+
         foreach ($request->input('course_id') as $value)
         //foreach ($course1 as $value)
         {
@@ -48,7 +50,6 @@ class paymentGatewayController extends Controller{
             Cart::create([
                 'payment_id' => $payment->id,
                 'course_id' =>  $value
-
             ]);
         }
 /*
@@ -150,11 +151,15 @@ class paymentGatewayController extends Controller{
             foreach ($cart as $value) {
 
                    // 'user_id' => auth()->user()->id,
-                   auth()->user()->registeredCourses()->attach(Course::find($value->course_id));
+                   auth()->user()->registeredCourses()->attach(Course::find($value));
 
             }
             return view('dashboard')->with('alert','Successful');
         }
+    }
+
+    public function getPaymentPage($payment_id,$totalprice){
+        return view('/payment', ['payment_id'=> $payment_id, 'totalprice' => $totalprice]);
     }
 
 }

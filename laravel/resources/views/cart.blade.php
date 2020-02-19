@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-ิ@section('title', 'My Shopping Cart')
+@section('title', 'My Shopping Cart')
 
 @section('topic', 'Cart')
 
 @section('menu')
-    <a href="#" class="btn ownbtn px-5">Back</a>
+<a href="#" class="btn ownbtn px-5">Back</a>
 @endsection
 
 @section('content')
@@ -28,4 +28,3 @@
         
     </div>
 @endsection
-

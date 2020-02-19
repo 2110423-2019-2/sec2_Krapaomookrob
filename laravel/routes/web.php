@@ -95,7 +95,9 @@ Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
 
 // Route for payment
 //Route::post('/payment', 'Frontend\paymentGatewayController@cartToPayment');
-//Route::post('/payment/{totalprice}/{payment_id}')
+Route::post('/api/getPayment', 'Frontend\paymentGatewayController@cartToPayment');
+
+Route::get('/payment/{payment_id}/{totalprice}','Frontend\paymentGatewayController@getPaymentPage');
 //post to payment
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
