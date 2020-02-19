@@ -1958,21 +1958,26 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    promoteAdmin: function promoteAdmin(user) {
+    promoteAdmin: function promoteAdmin(email) {
       var _this2 = this;
 
-      console.log(user.mail);
-      axios.get('/admin-panel/promoteAdmin/' + String(user.mail), {}).then(function (response) {
-        return _this2.status = "Admin is promoted";
+      axios.get('/admin-panel/promoteAdmin/' + String(email)).then(function (response) {
+        _this2.status = "Admin is promoted";
+      });
+      axios.get("/admin-panel/fetchUsers").then(function (response) {
+        _this2.users = response.data;
+        _this2.status = "fetch users sucess";
       });
     },
-    demoteAdmin: function demoteAdmin(user) {
+    demoteAdmin: function demoteAdmin(email) {
       var _this3 = this;
 
-      axios.get('/admin-panel/demoteAdmin/' + String(user.email), {// user_id: this.userId,
-        // course_id: this.courseId
-      }).then(function (response) {
-        return _this3.status = "Admin is promoted";
+      axios.get('/admin-panel/demoteAdmin/' + String(email)).then(function (response) {
+        _this3.status = "Admin is promoted";
+      });
+      axios.get("/admin-panel/fetchUsers").then(function (response) {
+        _this3.users = response.data;
+        _this3.status = "fetch users sucess";
       });
     }
   }
@@ -55674,7 +55679,7 @@ var render = function() {
                   attrs: { type: "button" },
                   on: {
                     click: function($event) {
-                      return _vm.promoteAdmin(user)
+                      return _vm.promoteAdmin(user.email)
                     }
                   }
                 },
@@ -55687,7 +55692,7 @@ var render = function() {
                   attrs: { type: "button" },
                   on: {
                     click: function($event) {
-                      return _vm.deomoteAdmin(user)
+                      return _vm.demoteAdmin(user.email)
                     }
                   }
                 },

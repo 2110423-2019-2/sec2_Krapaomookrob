@@ -15,8 +15,8 @@
        <td>{{ user.email }}</td> 
        <td>{{ user.role }}</td>  
        <td>
-         <button type="button" @click="promoteAdmin(user)">Promote</button>
-         <button type="button" @click="deomoteAdmin(user)">Demote</button>
+         <button type="button" @click="promoteAdmin(user.email)">Promote</button>
+         <button type="button" @click="demoteAdmin(user.email)">Demote</button>
        </td>  
     </tr>
    </tbody>
@@ -47,16 +47,23 @@ export default {
     });
   },
   methods: {
-    promoteAdmin: function(user) {
-        console.log(user.mail)
-        axios.get('/admin-panel/promoteAdmin/'+ String(user.mail), {
-        }).then((response) => this.status = "Admin is promoted")
+    promoteAdmin: function(email) {
+        axios.get('/admin-panel/promoteAdmin/'+ String(email)).then(response => {
+          this.status = "Admin is promoted"
+        })
+        axios.get("/admin-panel/fetchUsers").then(response => {
+            this.users = response.data;
+            this.status = "fetch users sucess"
+        });
     },
-    demoteAdmin: function(user) {
-        axios.get('/admin-panel/demoteAdmin/'+ String(user.email), {
-        // user_id: this.userId,
-        // course_id: this.courseId
-        }).then((response) => this.status = "Admin is promoted")
+    demoteAdmin: function(email) {
+        axios.get('/admin-panel/demoteAdmin/'+ String(email)).then(response => {
+          this.status = "Admin is promoted"
+        })
+        axios.get("/admin-panel/fetchUsers").then(response => {
+            this.users = response.data;
+            this.status = "fetch users sucess"
+        });
     }
   }
 };
