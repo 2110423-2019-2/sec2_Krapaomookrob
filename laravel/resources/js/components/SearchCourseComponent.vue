@@ -26,7 +26,6 @@
             dense
             chips
             small-chips
-            multiple
             solo
           ></v-autocomplete>
         </div>     
@@ -176,7 +175,7 @@
         fetchAreas: [],
         chooseTutor: "",
         chooseDay: [],
-        chooseArea: [],
+        chooseArea: "",
         chooseSubject: [],
         menuTime: false,
         time: "",
@@ -184,12 +183,12 @@
         maxPrice: "",
         noClass: "",
         headers: [
-          { text: 'Tutor', value: 'uname' },
-          { text: 'Available Subjects', value: 'sname' },
-          { text: 'Areas', value: 'time' },
-          { text: 'Classes', value: 'dname' },
-          { text: 'Price/Start Date', value: 'price' },
-          { text: 'Action', value: 'noClasses' },
+          { text: 'Tutor', value: 'tutor', sortable: false, width: "20%" },
+          { text: 'Available Subjects', value: 'subjects', sortable: false, width: "15%" },
+          { text: 'Areas', value: 'area', sortable: false, width: "15%" },
+          { text: 'Classes', value: 'days', sortable: false, width: "20%" },
+          { text: 'Price/Start Date', value: 'price', sortable: false, width: "15%" },
+          { text: 'Action', value: 'noClasses', sortable: false, width: "15%" },
         ],
         search_result: [],
       }

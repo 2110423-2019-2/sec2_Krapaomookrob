@@ -39,8 +39,8 @@ class SearchController extends Controller
     public function searchCourses(Request $request) {
         $tutor = $request->input('tutor');
         $area = $request->input('area');
-        $subject = $request->input('subject');
-        $day = $request->input('day');
+        $subjects = $request->input('subject');
+        $days = $request->input('day');
         $time = $request->input('time');
         $hour = $request->input('hour');
         $noClass = $request->input('noClass');
@@ -52,25 +52,17 @@ class SearchController extends Controller
             ->leftjoin('course_day', 'courses.id', '=', 'course_day.course_id')
             ->leftjoin('days', 'days.id', '=', 'course_day.day_id')
             ->leftjoin('users', 'users.id', '=', 'courses.user_id')
+            ->leftjoin('locations', 'locations.id', '=', 'courses.location_id')
             ->where('users.role', '=', 'tutor');
 
         if ($tutor) {$query = $query->where('users.name', 'like', '%' . $tutor . '%');}
-        if ($area) {
-            $areaArray = explode(',', $area);
-            $query = $query->where(function ($queryTem) use($areaArray) {
-                for ($i = 0; $i < count($areaArray); $i++){
-                    $queryTem->orwhere('courses.area', 'like',  '%' . $areaArray[$i] .'%');
-                }      
-            });
-        }
-        if ($subject) {
-            $subjectArray = explode(',', $subject);
-            $query = $query->whereIn('subjects.name', $subjectArray);
+        if ($area) {$query = $query->where('locations.name', 'like',  '%' . $area .'%');}      
+        if ($subjects) {
+            $query = $query->whereIn('subjects.name', $subjects);
         }
         // if ($day) {$query = $query->where('days.name', '=', $day);}
-        if ($day) {
-            $dayArray = explode(',', $day);
-            $query = $query->whereIn('days.name', $dayArray);
+        if ($days) {
+            $query = $query->whereIn('days.name', $days);
         }
         if ($time) {$query = $query->where('courses.time', '=', $time);}
         if ($hour) {$query = $query->where('courses.hours', '=', $hour);}
@@ -98,10 +90,10 @@ class SearchController extends Controller
             'courses.hours',
             'courses.noClasses',
             'courses.studentCount',
-            DB::raw("GROUP_CONCAT(DISTINCT subjects.name SEPARATOR ', ') as sname"),
-            DB::raw("GROUP_CONCAT(DISTINCT days.name SEPARATOR ', ') as dname"),
-            'locations.name', 
-            'users.name as uname',
+            DB::raw("GROUP_CONCAT(DISTINCT subjects.name SEPARATOR ', ') as subjects"),
+            DB::raw("GROUP_CONCAT(DISTINCT days.name SEPARATOR ', ') as days"),
+            'locations.name as area', 
+            'users.name as tutor',
             'users.education_level',
         )->groupBy('courses.id');
 
