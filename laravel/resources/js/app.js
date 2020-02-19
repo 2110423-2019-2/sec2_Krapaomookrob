@@ -28,6 +28,7 @@ Vue.component('remove-button', require('./components/RemoveButton.vue').default)
 Vue.component('new_course-component', require('./components/NewCourseComponent.vue').default);
 Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('cancel-button', require('./components/CancelButton.vue').default);
+Vue.component('admin_panel-component', require('./components/AdminPanelList.vue').default);
 
 const app = new Vue({
     el: '#app',

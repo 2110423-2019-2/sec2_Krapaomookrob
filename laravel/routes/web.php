@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -116,3 +117,11 @@ Route::patch('/profile', 'UserController@updateProfile')->name('profile.update')
 
 // Tutor Profile View
 Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('profile.tutor.show');
+Route::get('/admin-panel', function(){
+
+    return view('admin_panel');
+});
+Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
+Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
+Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
+Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
