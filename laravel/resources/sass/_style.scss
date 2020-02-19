@@ -34,6 +34,10 @@ body{background-color: $body-bg !important}
   background-image: linear-gradient(to right, #74D4D8 , #55B3E0);
 }
 
+.btn{
+  border-radius:.5rem;
+}
+
 .ownbtn:hover{
   color: #fff;
   background-image: linear-gradient(to right, #6BC7CB , #48A4D0);

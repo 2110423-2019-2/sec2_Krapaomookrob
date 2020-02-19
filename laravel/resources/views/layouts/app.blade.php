@@ -52,7 +52,7 @@
                     <a class="btn btn-light" href="#">Messages</a>
                   </li>
                   <li class="nav-item">
-                    <a class="btn btn-light" href="#">My Account</a>
+                    <a class="btn btn-light" href="/profile">My Account</a>
                   </li>
                   @if($user->isStudent())
                     <li class="nav-item">
