@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdminController;
 
 
@@ -34,6 +35,16 @@ Route::post('/api/course/new','CourseController@newCourse');
 Route::get('/new-course', function () {
     return view('new_course');
 });
+
+// Search Courses
+Route::get('/search-courses', function() {
+    return view('search_courses');
+});
+Route::get('/api/fetch-tutors','SearchController@fetchTutors');
+Route::get('/api/fetch-areas','SearchController@fetchAreas');
+Route::get('/api/fetch-days','SearchController@fetchDays');
+Route::get('/api/fetch-subjects','SearchController@fetchSubjects');
+Route::get('/api/search-courses','SearchController@searchCourses');
 
 //Login for developers
 
@@ -69,12 +80,11 @@ Route::post('/tutor-request','CourseController@requestCourse');
 
 
 // Search API and its view
-Route::get('/search', 'SearchController@searchCourse');
-Route::get('/search-courses', function() {
-    return view('searchCourses');
-});
-
-Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
+// Route::get('/search', 'SearchController@searchCourse');
+// Route::get('/search-courses', function() {
+//     return view('search_courses');
+// });
+// Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
 
 Route::get('/cart', function(){
     // route to cart oage

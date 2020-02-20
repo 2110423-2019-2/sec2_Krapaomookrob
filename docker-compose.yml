@@ -7,7 +7,6 @@ services:
             - 8000:80
         volumes:
             - ./laravel:/var/www
-        # command: npm run dev
         links:
             - mysql
         environment:
@@ -16,6 +15,7 @@ services:
             DB_USERNAME: dbuser
             DB_PASSWORD: p455w0rd
             DB_CONNECTION: mysql
+        # command: yarn run watch
 
     mysql:
         image: mysql
@@ -52,15 +52,3 @@ services:
             if [[ -f /app/.env ]]; then echo ".env file already exists";
             else cp /app/.env.example /app/.env && php artisan key:generate; fi'
         ]
-
-    # node:
-    #     # image: node:12-alpine
-    #     build:
-    #         context: docker
-    #         dockerfile: node.dockerfile
-    #     # working_dir: /app
-    #     ports:
-    #         - 3000:3000
-    #     # volumes:
-    #     #     - ./laravel:/app
-    #     command: npm run dev
