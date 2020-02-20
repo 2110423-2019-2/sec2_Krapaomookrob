@@ -156,7 +156,8 @@
       :items="search_result"
       :items-per-page="15"
       class="elevation-1"
-    ></v-data-table>
+    >
+    </v-data-table>
     
   </div>
   
@@ -183,12 +184,13 @@
         maxPrice: "",
         noClass: "",
         headers: [
-          { text: 'Tutor', value: 'tutor', sortable: false, width: "20%" },
-          { text: 'Available Subjects', value: 'subjects', sortable: false, width: "15%" },
-          { text: 'Areas', value: 'area', sortable: false, width: "15%" },
-          { text: 'Classes', value: 'days', sortable: false, width: "20%" },
-          { text: 'Price/Start Date', value: 'price', sortable: false, width: "15%" },
-          { text: 'Action', value: 'noClasses', sortable: false, width: "15%" },
+          { text: 'Tutor', value: 'tutor', sortable: false, width: "16%" },
+          { text: 'Available Subjects', value: 'subjects', sortable: false, width: "16%" },
+          { text: 'Areas', value: 'area', sortable: false, width: "16%" },
+          { text: 'Classes', value: 'days', sortable: false, width: "16%" },
+          { text: 'Price', value: 'price', sortable: false, width: "6%" },
+          { text: 'Start Date', value: 'startDate', sortable: false, width: "10%" },
+          { text: 'Action', value: 'noClasses', sortable: false, width: "16%" },
         ],
         search_result: [],
       }
