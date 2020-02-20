@@ -40,7 +40,7 @@ class CoursesTableSeeder extends Seeder
           $course = Course::create([
             'time' => '12:00:00',
             'hours' => '2',
-            'startDate' => '2020-02-04',
+            'startDate' => '2021-02-04',
             'studentCount' => 3,
             'price' => 500,
             'noClasses' => '5',
@@ -57,7 +57,7 @@ class CoursesTableSeeder extends Seeder
           $course2 = Course::create([
             'time' => '14:00:00',
             'hours' => '2',
-            'startDate' => '2020-02-04',
+            'startDate' => '2021-02-04',
             'studentCount' => 1,
             'price' => 1000,
             'noClasses' => '4',
@@ -75,7 +75,7 @@ class CoursesTableSeeder extends Seeder
           $course3 = Course::create([
             'time' => '13:00:00',
             'hours' => '1',
-            'startDate' => '2020-02-17',
+            'startDate' => '2021-02-17',
             'studentCount' => 2,
             'price' => 700,
             'noClasses' => '12',
@@ -92,7 +92,7 @@ class CoursesTableSeeder extends Seeder
           $course4 = Course::create([
             'time' => '9:00:00',
             'hours' => '2',
-            'startDate' => '2020-03-01',
+            'startDate' => '2021-03-01',
             'studentCount' => 1,
             'price' => 750,
             'noClasses' => '1',
@@ -110,7 +110,7 @@ class CoursesTableSeeder extends Seeder
             $courseI = Course::create([
               'time' => '14:00:00',
               'hours' => '2',
-              'startDate' => '2020-02-'.$i,
+              'startDate' => '2021-02-'.$i,
               'studentCount' => 3,
               'price' => 1000*($i%3) + ($i%13)*100,
               'noClasses' => $i,
@@ -124,7 +124,7 @@ class CoursesTableSeeder extends Seeder
             $courseI->days()->attach($someDaysI);
             $courseI->subjects()->attach($someSubjectsI);
 
-            $courseI->students()->attach(User::find($i % 6 + 1));
+            //$courseI->students()->attach(User::find($i % 6 + 1));
           }
 
 
@@ -132,7 +132,7 @@ class CoursesTableSeeder extends Seeder
           $course3 = Course::create([
             'time' => '13:00:00',
             'hours' => '1',
-            'startDate' => '2020-02-17',
+            'startDate' => '2021-02-17',
             'studentCount' => 2,
             'price' => 700,
             'noClasses' => '12',
@@ -149,7 +149,7 @@ class CoursesTableSeeder extends Seeder
           $course4 = Course::create([
             'time' => '9:00:00',
             'hours' => '2',
-            'startDate' => '2020-03-01',
+            'startDate' => '2021-03-01',
             'studentCount' => 1,
             'price' => 750,
             'noClasses' => '1',
