@@ -13989,6 +13989,10 @@ body {
   background-image: linear-gradient(to right, #74D4D8, #55B3E0);
 }
 
+.btn {
+  border-radius: 0.5rem;
+}
+
 .ownbtn:hover {
   color: #fff;
   background-image: -webkit-gradient(linear, left top, right top, from(#6BC7CB), to(#48A4D0));
@@ -14150,6 +14154,71 @@ button[disabled]:hover {
   margin-top: 0.25rem;
   font-size: 80%;
   color: #e3342f;
+}
+
+.ownpaginator {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0px 0px 1px #888;
+  margin-bottom: 10px;
+  margin-top: -4px;
+}
+
+.btn-circle {
+  width: 36px;
+  height: 36px;
+  padding: 9px 0px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 18px;
+  margin-left: 10px;
+}
+
+.btn-circle:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+.btn-circle.active {
+  color: #fff;
+  background-image: -webkit-gradient(linear, left top, right top, from(#74D4D8), to(#55B3E0));
+  background-image: linear-gradient(to right, #74D4D8, #55B3E0);
+}
+
+.dot-pagination {
+  padding-top: 8px;
+  margin-left: 10px;
+}
+
+.owntable {
+  margin-bottom: 0px !important;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0px 0px 1px #888;
+}
+
+.owntable td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6 !important;
+}
+
+.owntable th {
+  border-top: 0px !important;
+  padding-top: 30px !important;
+}
+
+.owntable .btn {
+  width: 90%;
+  margin-top: 16px;
+}
+
+.editt-bg {
+  color: #fff;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(#74D4D8), to(#55B3E0));
+  background-image: linear-gradient(to top, #74D4D8, #55B3E0);
 }
 
 .swal2-popup.swal2-toast {

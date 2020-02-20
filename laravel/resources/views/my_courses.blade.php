@@ -38,7 +38,7 @@
                         <a href='#' class='btn ownbtn'>Chat</a> 
                     </td>
                     <td class='col-2'>{{implode(', ', $course->subjects->pluck('name')->toArray())}}</td>
-                    <td class='col-2'> {{$course->area}}</td>
+                <td class='col-2'> {{$course->location->name . ' ' . $course->location->address}}</td>
                     <td class='col-2'>
                         {{implode(', ', $course->days->pluck('name')->toArray())}}
                         <br/>

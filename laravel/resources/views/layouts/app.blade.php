@@ -62,6 +62,11 @@
                       <a class="btn ownbtn" href="/cart">🛒 Cart</a>
                     </li>
                   @endif
+                  @if($user->isAdmin() || $user->isSuperuser())
+                    <li class="nav-item">
+                      <a class="btn btn-light" href="/admin-panel">Admin Panel</a>
+                    </li>
+                  @endif
                   <li class="nav-item">
                     <a class="btn btn-light" href="/logout">Logout</a>
                   </li>
