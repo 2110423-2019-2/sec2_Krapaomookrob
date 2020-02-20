@@ -4,6 +4,11 @@ window.Vue = require('vue');
 window.VueCookie = require('vue-cookie');
 window.Vue.use(window.VueCookie);
 
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('remove-button', require('./components/RemoveButton.vue').default);
+Vue.component('new_course-component', require('./components/NewCourseComponent.vue').default);
+Vue.component('cart-item', require('./components/CartItem.vue').default);
+
 import * as VueGoogleMaps from 'vue2-google-maps';
 Vue.use(VueGoogleMaps, {
   load: {
@@ -24,6 +29,7 @@ Vue.component('new_course-component', require('./components/NewCourseComponent.v
 Vue.component('search-course-component', require('./components/SearchCourseComponent.vue').default);
 Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('cancel-button', require('./components/CancelButton.vue').default);
+Vue.component('admin_panel-component', require('./components/AdminPanelList.vue').default);
 
 const app = new Vue({
     el: '#app',

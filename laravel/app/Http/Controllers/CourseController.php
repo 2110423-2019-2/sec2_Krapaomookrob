@@ -16,6 +16,7 @@ use App\User;
 use App\Course_subject;
 use App\Course_day;
 use App\CourseStudent;
+use App\Notification;
 
 class CourseController extends Controller
 {
@@ -70,15 +71,15 @@ class CourseController extends Controller
         $returnObj = [
             'tutor_name' => $tutorName,
             'course_id' => $course->id,
-            'area' => $course->area,
+            'area' => $course->location->name,
             'time' => $course->time,
             'hour' => $course->hours,
             'startDate' => $course->startDate,
             'price' => $course->price,
             'days' => $days,
             'subjects' => $subjects,
-            'noClass' => $course->noClass,
-            'studentCount' => $course->studentCount
+            'noClass' => $course->noClasses,
+            'studentCount' => $course->studentCount 
         ];
 
         return $returnObj;
@@ -90,6 +91,14 @@ class CourseController extends Controller
         $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
         $registeredCourse->status = 'refunding';
         $registeredCourse->save();
+        
+        //  create cancel notification
+        $username = User::where('id','=',$registeredCourse->user_id)->first()->name;
+        $notification = new Notification;
+        $notification->receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
+        $notification->message = "{$username} have cancel the course";
+        $notification->save();
+
         return response($registeredCourse, 200);
     }
 
@@ -108,10 +117,10 @@ class CourseController extends Controller
         $isFinished = [];
         $classesLeft = [];
         if($user->isStudent()){
-            $courses = $user->registeredCourses()->with(['days', 'subjects'])->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
+            $courses = $user->registeredCourses()->with(['days', 'subjects', 'location'])->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
         }
         else if($user->isTutor()){
-            $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
+            $courses = Course::with(['days', 'subjects', 'location'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
         }
         foreach($courses as $course){
             $classes = $this->allClasses($course->startDate,  $course->days->pluck('name')->toArray(), $course->noClasses);

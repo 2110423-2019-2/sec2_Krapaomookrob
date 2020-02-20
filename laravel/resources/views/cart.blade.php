@@ -1,18 +1,14 @@
 @extends('layouts.app')
 
-ิ@section('title', 'My Shopping Cart')
+@section('title', 'My Shopping Cart')
 
 @section('topic', 'Cart')
 
 @section('menu')
-
-    <a href="#" class="btn ownbtn px-5">Back</a>
-
+<a href="#" class="btn ownbtn px-5">Back</a>
 @endsection
 
 @section('content')
-    {{-- content of cart --}}
-    
     <div class="card pb-2">
         <div class="card-body">
             <h4 class="card-title">Courses in Cart</h4>
@@ -31,15 +27,4 @@
         </div>
         
     </div>
-
 @endsection
-    
-<script>
-
-    // declare delete cart function here
-    function checkOutCart() {
-      console.log("delete cookie!");
-      Vue.cookie.delete("cart");
-    }
-</script>
-

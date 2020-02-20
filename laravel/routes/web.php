@@ -13,9 +13,20 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AdminController;
 
-Route::get('/', function () {
-    return view('dashboard');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', function () {
+        return view('dashboard');
+    });
+});
+
+Route::get('/api/course/subjects','CourseController@fetchSubjects');
+Route::get('/api/course/days','CourseController@fetchDays');
+Route::post('/api/course/new','CourseController@newCourse');
+Route::get('/new-course', function () {
+    return view('new_course');
 });
 
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
@@ -43,7 +54,7 @@ Route::get('/login-dev/{id}', 'Auth\LoginController@loginDeveloper');
 
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
 Route::get('/user-role', function () {
     if (Gate::allows('update-role')) return view('user_role');
     abort(403, 'Unauthorized action.');
@@ -87,6 +98,20 @@ Route::get('/payment', function () {
     return view('payment');
 });
 
+Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
+
+Route::get('/cart', function(){
+    // route to cart oage
+    return view('cart');
+});
+
+Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
+
+// Route for payment
+//Route::post('/payment', 'Frontend\paymentGatewayController@cartToPayment');
+Route::post('/api/getPayment', 'Frontend\paymentGatewayController@cartToPayment');
+
+Route::get('/payment/{payment_id}/{totalprice}','Frontend\paymentGatewayController@getPaymentPage');
 //post to payment
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
@@ -105,3 +130,11 @@ Route::patch('/profile', 'UserController@updateProfile')->name('profile.update')
 
 // Tutor Profile View
 Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('profile.tutor.show');
+Route::get('/admin-panel', function(){
+
+    return view('admin_panel');
+});
+Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
+Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
+Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
+Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
