@@ -14,8 +14,11 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AdminController;
 
-Route::get('/', function () {
-    return view('dashboard');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', function () {
+        return view('dashboard');
+    });
 });
 
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
@@ -40,7 +43,7 @@ Route::get('/login-dev/{id}', 'Auth\LoginController@loginDeveloper');
 
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
 Route::get('/user-role', function () {
     if (Gate::allows('update-role')) return view('user_role');
     abort(403, 'Unauthorized action.');
