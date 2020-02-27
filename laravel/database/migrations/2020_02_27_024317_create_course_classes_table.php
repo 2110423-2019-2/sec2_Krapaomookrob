@@ -15,8 +15,9 @@ class CreateCourseClassesTable extends Migration
     {
         Schema::create('course_classes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->dateTime('start');
-            $table->dateTime('end');
+            $table->date('date');
+            $table->time('time');
+            $table->integer('hours');
             $table->unsignedBigInteger('course_id');
             $table->timestamps();
             $table->foreign('course_id')->references('id')->on('courses');
