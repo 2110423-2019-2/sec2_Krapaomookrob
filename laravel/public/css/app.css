@@ -13985,6 +13985,7 @@ body {
 
 .ownbtn {
   color: #fff;
+  border-radius: 5px;
   background-image: -webkit-gradient(linear, left top, right top, from(#74D4D8), to(#55B3E0));
   background-image: linear-gradient(to right, #74D4D8, #55B3E0);
 }

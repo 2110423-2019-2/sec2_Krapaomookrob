@@ -150,15 +150,30 @@
   
     <br>
     <h1>Search Result</h1>
-    
+
     <v-data-table
       :headers="headers"
       :items="search_result"
       :items-per-page="15"
       class="elevation-1"
     >
+      <template v-slot:item.action="{ item }">
+        <v-icon
+          small
+          class="btn ownbtn"
+          @click="regisNow(item)"
+        >
+        </v-icon>
+        <v-icon
+          small
+          class="btn ownbtn"
+          @click="addToCart(item)"
+        >
+        </v-icon>
+      </template>
     </v-data-table>
     
+    <chat-button></chat-button>
   </div>
   
 
@@ -190,7 +205,7 @@
           { text: 'Classes', value: 'days', sortable: false, width: "16%" },
           { text: 'Price', value: 'price', sortable: false, width: "6%" },
           { text: 'Start Date', value: 'startDate', sortable: false, width: "10%" },
-          { text: 'Action', value: 'noClasses', sortable: false, width: "16%" },
+          { text: 'Action', value: 'action', sortable: false, width: "16%" },
         ],
         search_result: [],
       }
@@ -218,7 +233,13 @@
           this.search_result = response.data
         })
         .catch(error => console.log(error))
-      }   
+      },
+      
+      regisNow(item) {
+      },
+
+      addToCart(item) {
+      },   
     }
   }
 </script>
