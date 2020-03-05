@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 class NotificationController extends Controller
 {
     //
+
     public function getNotification(Request $request) {
         
         $user_id = $request->user()->id;
 
-        $notifications = Notification::select('message','status','created_at')->where('receiver_id','=',$user_id)->get()->all();
+        $notifications = Notification::select('title','message','status','created_at')->where('receiver_id','=',$user_id)->get()->all();
 
         $numNewNoti = 0;
         $notiData = array();
@@ -27,5 +28,13 @@ class NotificationController extends Controller
             'numNewNoti' => $numNewNoti,
             'notifications' => $notiData
         ];
+    }
+
+    public static function createNotification($receiver_id, $title, $message){
+        $newNoti = new Notification;
+        $newNoti->receiver_id = $receiver_id;
+        $newNoti->title = $title;
+        $newNoti->message = $message;
+        $newNoti->save();
     }
 }

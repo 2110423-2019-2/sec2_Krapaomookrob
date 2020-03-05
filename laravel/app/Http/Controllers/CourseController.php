@@ -94,10 +94,10 @@ class CourseController extends Controller
         
         //  create cancel notification
         $username = User::where('id','=',$registeredCourse->user_id)->first()->name;
-        $notification = new Notification;
-        $notification->receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
-        $notification->message = "{$username} have cancel the course";
-        $notification->save();
+        $title = "Request to teach";
+        $message = "{$username} have cancel the course";
+        $receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
+        NotificationController::createNotification($receiver_id, $title, $message);
 
         return response($registeredCourse, 200);
     }
@@ -171,6 +171,14 @@ class CourseController extends Controller
     public function requestCourse(Request $request) {
         $data = array('course_id'=>$request->course_id,"requester_id"=>auth()->user()->id);
         DB::table("courses_requester")->insert($data);
+
+        // create Notification 
+        $username = User::where('id','=',auth()->user()->id)->first()->name;
+        $message = "{$username} have request to teach your course";
+        $title = "Request to teach";
+        $receiver_id = Course::where('id','=',$request->course_id)->first()->user_id;
+        NotificationController::createNotification($receiver_id, $title, $message);
+
         return response()->json(array('msg'=> "Done"), 200);
     }
 

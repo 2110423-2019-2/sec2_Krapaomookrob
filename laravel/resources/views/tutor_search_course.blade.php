@@ -145,6 +145,6 @@
             }
         });
         return false;
-    }
+    };
 </script>
 @endsection

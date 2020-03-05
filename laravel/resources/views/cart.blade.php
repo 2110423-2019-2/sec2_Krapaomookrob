@@ -20,10 +20,7 @@
                 <div class="col-lg">Price/Start Date</div>
                 <div class="col-lg"></div>
             </div>
-            
-            <div id='app'>
-                <cart-item button-type="cancelbtn"></cart-item>
-            </div>
+            <cart-item button-type="cancelbtn"></cart-item>
         </div>
         
     </div>
