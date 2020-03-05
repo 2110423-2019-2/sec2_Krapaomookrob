@@ -14222,6 +14222,26 @@ button[disabled]:hover {
   background-image: linear-gradient(to top, #74D4D8, #55B3E0);
 }
 
+.chatBtn {
+  height: 25px;
+  width: 100px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid LightGrey;
+}
+
+.addToCartBtn {
+  border: 1px solid LightGrey;
+  background-color: white;
+}
+
+.actionBtn {
+  height: 30px;
+  width: 130px;
+  margin: 3px;
+  border-radius: 5px;
+}
+
 .swal2-popup.swal2-toast {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;

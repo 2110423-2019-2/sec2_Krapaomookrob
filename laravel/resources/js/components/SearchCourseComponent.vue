@@ -157,23 +157,32 @@
       :items-per-page="15"
       class="elevation-1"
     >
-      <template v-slot:item.action="{ item }">
-        <v-icon
-          small
-          class="btn ownbtn"
-          @click="regisNow(item)"
-        >
-        </v-icon>
-        <v-icon
-          small
-          class="btn ownbtn"
-          @click="addToCart(item)"
-        >
-        </v-icon>
+      <template v-slot:item.tutor="{ item }">
+        <b>{{item.tutor}}</b> <br>
+        <chat-button v-bind:userid="item.user_id"></chat-button>
       </template>
+
+      <template v-slot:item.days="{ item }">
+        {{item.subjects}} <br>
+        {{getPeriodTimeFormat(item.time, item.hours)}} <br>
+        <div v-if="item.noClasses == 1">{{item.noClasses}} Class</div>
+        <div v-else>{{item.noClasses}} Classes</div>
+      </template>
+
+      <template v-slot:item.priceAndStartDate="{ item }">
+        {{item.price}} THB<br>
+        Starts on {{getDateFormat(item.startDate)}}
+      </template>
+
+      <template v-slot:item.action="{ item }">
+        <div class='my-2'>
+          <regis-now-button v-bind:courseid="item.id"></regis-now-button>
+          <add-to-cart-button v-bind:courseid="item.id"></add-to-cart-button>
+        </div>
+      </template>
+
     </v-data-table>
     
-    <chat-button></chat-button>
   </div>
   
 
@@ -181,6 +190,7 @@
 
 <script>
   import axios from 'axios'
+  import moment from 'moment'
 
   export default {
     data () {
@@ -203,8 +213,7 @@
           { text: 'Available Subjects', value: 'subjects', sortable: false, width: "16%" },
           { text: 'Areas', value: 'area', sortable: false, width: "16%" },
           { text: 'Classes', value: 'days', sortable: false, width: "16%" },
-          { text: 'Price', value: 'price', sortable: false, width: "6%" },
-          { text: 'Start Date', value: 'startDate', sortable: false, width: "10%" },
+          { text: 'Price/Start Date', value: 'priceAndStartDate', sortable: false, width: "16%" },
           { text: 'Action', value: 'action', sortable: false, width: "16%" },
         ],
         search_result: [],
@@ -234,12 +243,15 @@
         })
         .catch(error => console.log(error))
       },
-      
-      regisNow(item) {
+
+      getPeriodTimeFormat(start, hour){
+        start = '01-01-2000 ' + start
+        return moment(String(start)).format('HH:mm') + '-' + moment(String(start)).add(hour, 'hours').format('HH:mm')
       },
 
-      addToCart(item) {
-      },   
+      getDateFormat(date){
+        return moment(String(date)).format('d MMM YYYY')
+      }
     }
   }
 </script>

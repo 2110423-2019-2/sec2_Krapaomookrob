@@ -30,6 +30,8 @@ Vue.component('search-course-component', require('./components/SearchCourseCompo
 Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('cancel-button', require('./components/CancelButton.vue').default);
 Vue.component('chat-button', require('./components/ChatButton.vue').default);
+Vue.component('regis-now-button', require('./components/RegisNowButton.vue').default);
+Vue.component('add-to-cart-button', require('./components/AddToCartButton.vue').default);
 Vue.component('admin_panel-component', require('./components/AdminPanelList.vue').default);
 
 const app = new Vue({

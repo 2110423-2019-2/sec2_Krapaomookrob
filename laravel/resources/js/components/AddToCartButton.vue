@@ -1,5 +1,5 @@
 <template>
-    <button class="chatBtn" @click="popUpChat()">Chat</button>
+    <button class="addToCartBtn actionBtn" @click="popUpChat()">Add To Cart</button>
 </template>
 
 <script>
@@ -8,10 +8,10 @@
   export default {
     components: {
     },
-    props: ['userid'],
+    props: ['courseid'],
     data () {
       return {
-        userId: this.userid,
+        courseId: this.courseid,
       }
     },
     mounted() {
