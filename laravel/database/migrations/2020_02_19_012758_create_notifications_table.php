@@ -16,6 +16,7 @@ class CreateNotificationsTable extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('receiver_id');
+            $table->text('title')->nullable();
             $table->text('message')->nullable();
             $table->enum('status',['new','read'])->default('new');
             $table->foreign('receiver_id')->references('id')->on('users');
