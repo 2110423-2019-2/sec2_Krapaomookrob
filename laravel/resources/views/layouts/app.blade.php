@@ -63,6 +63,11 @@
                         <a class="btn ownbtn" href="/cart">🛒 Cart</a>
                       </li>
                     @endif
+                    @if($user->isAdmin() || $user->isSuperuser())
+                    <li class="nav-item">
+                      <a class="btn btn-light" href="/admin-panel">Admin Panel</a>
+                    </li>
+                    @endif
                     <li class="nav-item">
                       <a class="btn btn-light" href="/logout">Logout</a>
                     </li>
@@ -72,20 +77,6 @@
                         <a class="btn btn-light" href="/login">Login</a>
                     </li>
                   @endif
-                  @if($user->isAdmin() || $user->isSuperuser())
-                    <li class="nav-item">
-                      <a class="btn btn-light" href="/admin-panel">Admin Panel</a>
-                    </li>
-                  @endif
-                  <li class="nav-item">
-                    <a class="btn btn-light" href="/logout">Logout</a>
-                  </li>
-                {{-- Navbar for guest --}}
-                @else
-                  <li class="nav-item">
-                      <a class="btn btn-light" href="/login">Login</a>
-                  </li>
-                @endif
               </ul>
             </div>
           </nav>
