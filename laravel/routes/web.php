@@ -12,9 +12,14 @@
 */
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AdminController;
 
-Route::get('/', function () {
-    return view('dashboard');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', function () {
+        return view('dashboard');
+    });
 });
 
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
@@ -30,6 +35,16 @@ Route::post('/api/course/new','CourseController@newCourse');
 Route::get('/new-course', function () {
     return view('new_course');
 });
+
+// Search Courses
+Route::get('/search-courses', function() {
+    return view('search_courses');
+});
+Route::get('/api/fetch-tutors','SearchController@fetchTutors');
+Route::get('/api/fetch-areas','SearchController@fetchAreas');
+Route::get('/api/fetch-days','SearchController@fetchDays');
+Route::get('/api/fetch-subjects','SearchController@fetchSubjects');
+Route::get('/api/search-courses','SearchController@searchCourses');
 
 //Login for developers
 
@@ -39,7 +54,7 @@ Route::get('/login-dev/{id}', 'Auth\LoginController@loginDeveloper');
 
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
 Route::get('/user-role', function () {
     if (Gate::allows('update-role')) return view('user_role');
     abort(403, 'Unauthorized action.');
@@ -65,12 +80,11 @@ Route::post('/tutor-request','CourseController@requestCourse');
 
 
 // Search API and its view
-Route::get('/search', 'SearchController@searchCourse');
-Route::get('/search-courses', function() {
-    return view('searchCourses');
-});
-
-Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
+// Route::get('/search', 'SearchController@searchCourse');
+// Route::get('/search-courses', function() {
+//     return view('search_courses');
+// });
+// Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
 
 Route::get('/cart', function(){
     // route to cart oage
@@ -112,3 +126,11 @@ Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('pr
 
 // Notification
 Route::get('/api/notification', 'NotificationController@getNotification')->name('notification.index');
+Route::get('/admin-panel', function(){
+
+    return view('admin_panel');
+});
+Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
+Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
+Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
+Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');

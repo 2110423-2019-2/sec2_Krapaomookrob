@@ -117,10 +117,10 @@ class CourseController extends Controller
         $isFinished = [];
         $classesLeft = [];
         if($user->isStudent()){
-            $courses = $user->registeredCourses()->with(['days', 'subjects'])->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
+            $courses = $user->registeredCourses()->with(['days', 'subjects', 'location'])->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
         }
         else if($user->isTutor()){
-            $courses = Course::with(['days', 'subjects'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
+            $courses = Course::with(['days', 'subjects', 'location'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
         }
         foreach($courses as $course){
             $classes = $this->allClasses($course->startDate,  $course->days->pluck('name')->toArray(), $course->noClasses);
