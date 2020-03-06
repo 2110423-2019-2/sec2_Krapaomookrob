@@ -137,10 +137,11 @@ class CourseController extends Controller
         return response($registeredCourse, 200);
     }
 
-    public function getStatus(Request $request){
-        $user_id = $request->user_id;
-        $course_id = $request->course_id;
-        $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
+    public function getStatus($course_id){
+        $registeredCourse = '';
+        if(auth()->user()->role == 'student'){
+            $registeredCourse = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first();
+        }
         return response($registeredCourse->status, 200);
     }
 
@@ -159,10 +160,12 @@ class CourseController extends Controller
         }
         foreach($courses as $course){
             $now = Carbon::now()->addHours(7);
+            $nextClass = $course->courseClasses->sortBy('date')->where('date', '>=', $now)->first();
+            $lastClass = $course->courseClasses->sortBy('date')->last();
             array_push($classDateList, $course->courseClasses->sortBy('date')->pluck('date')->all());
-            array_push($nextClasses, $course->courseClasses->sortBy('date')->where('date', '>=', $now)->only('date')->first());
+            array_push($nextClasses, $nextClass?$nextClass->date:NULL);
             array_push($classesLeft, $course->courseClasses->where('date', '>=', $now)->count());
-            array_push($isFinished,  $course->courseClasses->sortBy('date')->last()->date < $now);
+            array_push($isFinished, $lastClass?$lastClass->date < $now:NULL);
         }
         return view('my_courses', ['courses' => $courses, 'classDateList' => $classDateList, 'nextClasses' => $nextClasses, 'isFinished' => $isFinished, 'classesLeft' => $classesLeft]);
     }
