@@ -93,25 +93,27 @@ export default {
     // get course info
     let cartItems = this.$cookie.get("cart");
     this.cart = cartItems;
-
-    for (var item of cartItems.split(",")) {
-      if (this.info == null) {
-        axios.get("api/course/" + String(item)).then(response => {
-          this.info = [response.data];
-          this.totalPrice += response.data.price;
-        });
-      } else {
-        axios.get("api/course/" + String(item)).then(response => {
-          this.info.push(response.data);
-          this.totalPrice += response.data.price;
-        });
+    if (!_.isNull(cartItems)){
+      for (var item of cartItems.split(",")) {
+        if (this.info == null) {
+          axios.get("api/course/" + String(item)).then(response => {
+            this.info = [response.data];
+            this.totalPrice += response.data.price;
+          });
+        } else {
+          axios.get("api/course/" + String(item)).then(response => {
+            this.info.push(response.data);
+            this.totalPrice += response.data.price;
+          });
+        }
       }
     }
   },
   methods: {
     removeCart: function(elementId) {
       // no null delete cased
-      let tmp = this.$cookie.get("cart").split(",");
+      var cookie = this.$cookie.get("cart");
+      let tmp = cookie.split(",");
       this.$cookie.delete("cart");
       tmp.splice(tmp.indexOf(String(elementId)), 1);
       this.$cookie.set("cart", tmp, 1);
