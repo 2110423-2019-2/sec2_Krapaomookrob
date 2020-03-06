@@ -20,12 +20,6 @@ class SearchController extends Controller
         return $tutors;
     }
 
-    public function fetchAreas() {
-        $areas = Location::all()
-            ->pluck('name');
-        return $areas;
-    }
-
     public function fetchDays(){
         $days = Day::all()->pluck('name');
         return $days;
@@ -38,7 +32,9 @@ class SearchController extends Controller
 
     public function searchCourses(Request $request) {
         $tutor = $request->input('tutor');
-        $area = $request->input('area');
+        $area = json_decode($request->input('area'));
+        $lat = $area->lat;
+        $long = $area->lng;
         $subjects = $request->input('subject');
         $days = $request->input('day');
         $time = $request->input('time');
@@ -54,24 +50,18 @@ class SearchController extends Controller
             ->leftjoin('users', 'users.id', '=', 'courses.user_id')
             ->leftjoin('locations', 'locations.id', '=', 'courses.location_id')
             ->where('users.role', '=', 'tutor');
-
+        
         if ($tutor) {$query = $query->where('users.name', 'like', '%' . $tutor . '%');}
-        if ($area) {$query = $query->where('locations.name', 'like',  '%' . $area .'%');}      
-        if ($subjects) {
-            $query = $query->whereIn('subjects.name', $subjects);
-        }
-        // if ($day) {$query = $query->where('days.name', '=', $day);}
-        if ($days) {
-            $query = $query->whereIn('days.name', $days);
-        }
+        if ($subjects) {$query = $query->whereIn('subjects.name', $subjects);}
+        if ($days) {$query = $query->whereIn('days.name', $days);}
         if ($time) {$query = $query->where('courses.time', '=', $time);}
         if ($hour) {$query = $query->where('courses.hours', '=', $hour);}
         if ($noClass) {$query = $query->where('courses.noClasses', '=', $noClass);}
         if ($maxPrice) {$query = $query->where('courses.price', '<=', $maxPrice);}
         
+        $query = $this->scopeDistance($query, $lat, $long);
         $query = $query->select('courses.id')->distinct()->pluck('courses.id');
         
-
         $query_2 = DB::table('courses')
             ->whereIn('courses.id', $query)
             ->leftjoin('course_subject', 'courses.id', '=', 'course_subject.course_id')
@@ -80,7 +70,7 @@ class SearchController extends Controller
             ->leftjoin('days', 'days.id', '=', 'course_day.day_id')
             ->leftjoin('users', 'users.id', '=', 'courses.user_id')
             ->leftjoin('locations', 'locations.id', '=', 'courses.location_id');
-
+            
         $query_2 = $query_2->select(
             'courses.id', 
             'courses.user_id', 
@@ -95,8 +85,23 @@ class SearchController extends Controller
             'locations.name as area', 
             'users.name as tutor',
             'users.education_level',
-        )->groupBy('courses.id');
-
+            )->groupBy('courses.id');
+            
         return $query_2->get();
+    }
+    
+    private function scopeDistance($query, $lat, $lng) {
+        $unit = 6378.10;
+        $lat = (float) $lat;
+        $lng = (float) $lng;
+        $radius = (double) 1;
+        $distance = "($unit * acos(cos(radians(" . $lat . ")) 
+                    * cos(radians(`latitude`)) 
+                    * cos(radians(`longitude`) 
+                    - radians(" . $lng . ")) 
+                    + sin(radians(" . $lat . ")) 
+                    * sin(radians(`latitude`))))";
+        return $query->selectRaw("{$distance} AS distance")
+                    ->whereRaw("{$distance} < ?", [$radius]);
     }
 }

@@ -1,107 +1,106 @@
 <template>
   <div class="frame p-4">
     <div class="row">
-      <div class="col-lg-3">
-        
-        <div class="form-group">
-          <h5>Tutor</h5>
-          <v-autocomplete
-            v-model="chooseTutor"
-            :items="fetchTutors"
-            label="Not Specified"
-            dense
-            chips
-            small-chips
-            solo
-          ></v-autocomplete>
+      <div class="row px-3">
+        <div class="col-lg-3 py-0">
+          
+          <div class="form-group m-0">
+            <h5>Tutor</h5>
+            <v-autocomplete
+              v-model="chooseTutor"
+              :items="fetchTutors"
+              label="Not Specified"
+              dense
+              chips
+              small-chips
+              solo
+            ></v-autocomplete>
+          </div>
         </div>
 
+        <div class="col-lg-3 py-0">
+          <div class="form-group">
+            <h5>Subjects</h5>
+            <v-autocomplete
+              v-model="chooseSubject"
+              :items="fetchSubjects"
+              label="Not Specified"
+              dense
+              chips
+              small-chips
+              multiple
+              solo
+            ></v-autocomplete>
+          </div>     
+        </div>
+
+        <div class="col-lg-3 py-0">
+          <div class="form-group">
+            <h5>Day</h5>
+            <v-autocomplete
+              v-model="chooseDay"
+              :items="fetchDays"
+              prepend-inner-icon="event"
+              label="Not Specified"
+              dense
+              chips
+              small-chips
+              multiple
+              solo
+            ></v-autocomplete>
+          </div>     
+        </div>
+
+        <div class="col-lg-3 py-0">
+          <div class="form-group">
+            <h5>Time</h5>
+            <v-menu
+              ref="menuTime"
+              v-model="menuTime"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="time"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="time"
+                    label="Not Specified"
+                    prepend-inner-icon="access_time"
+                    readonly
+                    v-on="on"
+                    dense
+                    chips
+                    small-chips
+                    multiple
+                    solo
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-if="menuTime"
+                  v-model="time"
+                  full-width
+                  @click:minute="$refs.menuTime.save(time)"
+                ></v-time-picker>
+            </v-menu>
+          </div>     
+        </div>
+      </div>
+
+      <div class="col-lg-9 py-0">
         <div class="form-group">
           <h5>Area</h5>
-          <v-autocomplete
-            v-model="chooseArea"
-            :items="fetchAreas"
-            label="Not Specified"
-            prepend-inner-icon="place"
-            dense
-            chips
-            small-chips
-            solo
-          ></v-autocomplete>
-        </div>     
-      </div>
+          <gmap-autocomplete class="form-control" @place_changed="setPlace"></gmap-autocomplete>
+        </div>    
+        <gmap-map :center="center" :zoom="12" style="width:100%;  height: 300px;">
+          <gmap-marker :key="index" v-for="(m, index) in markers" :position="m.position" @click="center=m.position"></gmap-marker>
+        </gmap-map> 
+      </div>     
 
-      <div class="col-lg-3">
-        <div class="form-group">
-          <h5>Subjects</h5>
-          <v-autocomplete
-            v-model="chooseSubject"
-            :items="fetchSubjects"
-            label="Not Specified"
-            dense
-            chips
-            small-chips
-            multiple
-            solo
-          ></v-autocomplete>
-        </div>     
-      </div>
-
-      <div class="col-lg-3">
-        <div class="form-group">
-          <h5>Day</h5>
-          <v-autocomplete
-            v-model="chooseDay"
-            :items="fetchDays"
-            prepend-inner-icon="event"
-            label="Not Specified"
-            dense
-            chips
-            small-chips
-            multiple
-            solo
-          ></v-autocomplete>
-        </div>     
-      </div>
-
-      <div class="col-lg-3">
-
-        <div class="form-group">
-          <h5>Time</h5>
-          <v-menu
-            ref="menuTime"
-            v-model="menuTime"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            :return-value.sync="time"
-            transition="scale-transition"
-            offset-y
-            max-width="290px"
-            min-width="290px"
-          >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="time"
-                  label="Not Specified"
-                  prepend-inner-icon="access_time"
-                  readonly
-                  v-on="on"
-                  dense
-                  chips
-                  small-chips
-                  multiple
-                  solo
-                ></v-text-field>
-              </template>
-              <v-time-picker
-                v-if="menuTime"
-                v-model="time"
-                full-width
-                @click:minute="$refs.menuTime.save(time)"
-              ></v-time-picker>
-          </v-menu>
-        </div>     
-
+      <div class="col-lg-3 py-0">
         <div class="form-group">
         <h5>Hours/Class</h5>
           <v-autocomplete
@@ -148,6 +147,7 @@
       </div>
     </div>
   
+
     <br>
     <h1>Search Result</h1>
 
@@ -198,7 +198,6 @@
         fetchSubjects: [],
         fetchTutors: [],
         fetchDays: [],
-        fetchAreas: [],
         chooseTutor: "",
         chooseDay: [],
         chooseArea: "",
@@ -212,25 +211,27 @@
           { text: 'Tutor', value: 'tutor', sortable: false, width: "16%" },
           { text: 'Available Subjects', value: 'subjects', sortable: false, width: "16%" },
           { text: 'Areas', value: 'area', sortable: false, width: "16%" },
-          { text: 'Classes', value: 'days', sortable: false, width: "16%" },
+          { text: 'Classes', value: 'days', sortable: false, width: "20%" },
           { text: 'Price/Start Date', value: 'priceAndStartDate', sortable: false, width: "16%" },
           { text: 'Action', value: 'action', sortable: false, width: "16%" },
         ],
         search_result: [],
+        // G-MAP
+        center: {lat: 13.7384627, lng: 100.5320458},
+        markers: [],
       }
     },
     mounted() {
       axios.get('/api/fetch-days').then(response => this.fetchDays = response.data)
       axios.get('/api/fetch-subjects').then(response => this.fetchSubjects = response.data)
       axios.get('/api/fetch-tutors').then(response => this.fetchTutors = response.data)
-      axios.get('/api/fetch-areas').then(response => this.fetchAreas = response.data)
     },
 
     methods: {
       searchCourse() {
         axios.get('/api/search-courses', {params: {
           tutor: this.chooseTutor,
-          area: this.chooseArea,
+          area: this.center,
           subject: this.chooseSubject,
           day: this.chooseDay,
           time: this.time,
@@ -251,6 +252,20 @@
 
       getDateFormat(date){
         return moment(String(date)).format('d MMM YYYY')
+      },
+
+      // G-MAP
+      setPlace(place) {
+        this.currentPlace = place
+        const marker = {
+          lat: this.currentPlace.geometry.location.lat(),
+          lng: this.currentPlace.geometry.location.lng()
+        }
+        this.markers = [{position: marker}]
+        this.chooseArea = this.currentPlace.name
+        this.areaAddress = this.currentPlace.formatted_address
+        this.areaLocationId = this.currentPlace.id
+        this.center = marker
       }
     }
   }
