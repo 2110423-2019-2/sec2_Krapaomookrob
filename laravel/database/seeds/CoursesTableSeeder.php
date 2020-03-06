@@ -6,6 +6,7 @@ use App\Day;
 use App\Subject;
 use App\Location;
 use App\User;
+use App\Http\Controllers\CourseController;
 
 class CoursesTableSeeder extends Seeder
 {
@@ -53,6 +54,7 @@ class CoursesTableSeeder extends Seeder
 
           $course->days()->attach($someDays);
           $course->subjects()->attach($someSubjects);
+          CourseController::newClasses($course);
 
           $course2 = Course::create([
             'time' => '14:00:00',
@@ -70,6 +72,7 @@ class CoursesTableSeeder extends Seeder
 
           $course2->days()->attach($someDays2);
           $course2->subjects()->attach($someSubjects2);
+          CourseController::newClasses($course2);
 
 
           $course3 = Course::create([
@@ -88,6 +91,7 @@ class CoursesTableSeeder extends Seeder
 
           $course3->days()->attach($someDays3);
           $course3->subjects()->attach($someSubjects3);
+          CourseController::newClasses($course3);
 
           $course4 = Course::create([
             'time' => '9:00:00',
@@ -105,12 +109,13 @@ class CoursesTableSeeder extends Seeder
 
           $course4->days()->attach($someDays4);
           $course4->subjects()->attach($someSubjects4);
+          CourseController::newClasses($course4);
 
           for($i = 1; $i <= 27; $i++){
             $courseI = Course::create([
               'time' => '14:00:00',
               'hours' => '2',
-              'startDate' => '2021-02-'.$i,
+              'startDate' => '2020-03-'.$i,
               'studentCount' => 3,
               'price' => 1000*($i%3) + ($i%13)*100,
               'noClasses' => $i,
@@ -124,7 +129,8 @@ class CoursesTableSeeder extends Seeder
             $courseI->days()->attach($someDaysI);
             $courseI->subjects()->attach($someSubjectsI);
 
-            //$courseI->students()->attach(User::find($i % 6 + 1));
+            $courseI->students()->attach(User::find($i % 6 + 1));
+            CourseController::newClasses($courseI);
           }
 
 
@@ -145,6 +151,7 @@ class CoursesTableSeeder extends Seeder
 
           $course3->days()->attach($someDays3);
           $course3->subjects()->attach($someSubjects3);
+          CourseController::newClasses($course3);
 
           $course4 = Course::create([
             'time' => '9:00:00',
@@ -162,7 +169,6 @@ class CoursesTableSeeder extends Seeder
 
           $course4->days()->attach($someDays4);
           $course4->subjects()->attach($someSubjects4);
-
-
+          CourseController::newClasses($course4);
     }
 }
