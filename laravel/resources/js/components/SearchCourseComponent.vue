@@ -163,7 +163,7 @@
       </template>
 
       <template v-slot:item.days="{ item }">
-        {{item.subjects}} <br>
+        {{item.days}} <br>
         {{getPeriodTimeFormat(item.time, item.hours)}} <br>
         <div v-if="item.noClasses == 1">{{item.noClasses}} Class</div>
         <div v-else>{{item.noClasses}} Classes</div>
