@@ -67,7 +67,7 @@
                             <div class="row justify-content-md-center">
                                 <p class="text-success">Finished</p>
                             </div>
-                        @elseif(!$isFinished[$index] & auth()->user()->isStudent())
+                        @elseif(!$isFinished[$index])
                             <cancel-button userid={{auth()->user()->id}} courseid={{$course->id}}></cancel-button>
                         @endif
                     </td>
