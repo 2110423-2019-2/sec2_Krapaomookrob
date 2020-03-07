@@ -13954,6 +13954,10 @@ body {
   background-color: #F2F3F5 !important;
 }
 
+.main-body {
+  background-color: #F2F3F5 !important;
+}
+
 ::-moz-selection {
   background-color: #9561e2;
   color: #ffffff;
@@ -13984,7 +13988,8 @@ body {
 }
 
 .ownbtn {
-  color: #fff;
+  color: #fff !important;
+  border-radius: 5px;
   background-image: -webkit-gradient(linear, left top, right top, from(#74D4D8), to(#55B3E0));
   background-image: linear-gradient(to right, #74D4D8, #55B3E0);
 }
@@ -13994,13 +13999,13 @@ body {
 }
 
 .ownbtn:hover {
-  color: #fff;
+  color: #fff !important;
   background-image: -webkit-gradient(linear, left top, right top, from(#6BC7CB), to(#48A4D0));
   background-image: linear-gradient(to right, #6BC7CB, #48A4D0);
 }
 
 .ownbtn:focus {
-  border-color: #65C4DB;
+  border-color: #65C4DB !important;
 }
 
 .nav-item {
@@ -14008,7 +14013,7 @@ body {
 }
 
 .theme {
-  color: #59B7DF;
+  color: #59B7DF !important;
 }
 
 .fbbtn {
@@ -14021,8 +14026,8 @@ body {
   display: inline-block;
   font-size: 17px;
   line-height: 20px;
-  color: white;
-  background-color: #3B5998;
+  color: white !important;
+  background-color: #3B5998 !important;
   text-align: center;
   text-decoration: none;
 }
@@ -14077,13 +14082,13 @@ body {
   border-radius: 0.25rem;
   -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  color: #fff;
+  color: #fff !important;
   background-image: -webkit-gradient(linear, left top, right top, from(#74D4D8), to(#55B3E0));
   background-image: linear-gradient(to right, #74D4D8, #55B3E0);
 }
 
 .omise-checkout-button:hover {
-  color: #fff;
+  color: #fff !important;
   background-image: -webkit-gradient(linear, left top, right top, from(#6BC7CB), to(#48A4D0));
   background-image: linear-gradient(to right, #6BC7CB, #48A4D0);
 }
@@ -14182,7 +14187,7 @@ button[disabled]:hover {
 }
 
 .btn-circle.active {
-  color: #fff;
+  color: #fff !important;
   background-image: -webkit-gradient(linear, left top, right top, from(#74D4D8), to(#55B3E0));
   background-image: linear-gradient(to right, #74D4D8, #55B3E0);
 }
@@ -14195,8 +14200,8 @@ button[disabled]:hover {
 .owntable {
   margin-bottom: 0px !important;
   border-radius: 4px;
-  background-color: white;
-  box-shadow: 0px 0px 1px #888;
+  background-color: white !important;
+  box-shadow: 0px 0px 1px #888 !important;
 }
 
 .owntable td {
@@ -14216,7 +14221,7 @@ button[disabled]:hover {
 }
 
 .editt-bg {
-  color: #fff;
+  color: #fff !important;
   background-image: -webkit-gradient(linear, left bottom, left top, from(#74D4D8), to(#55B3E0));
   background-image: linear-gradient(to top, #74D4D8, #55B3E0);
 }

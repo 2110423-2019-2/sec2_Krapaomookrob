@@ -34,7 +34,11 @@ Vue.component('admin_panel-component', require('./components/AdminPanelList.vue'
 
 const app = new Vue({
     el: '#app',
-    vuetify: new Vuetify(),
+    vuetify: new Vuetify({
+      theme: {
+        disable: true,
+      }
+    }),
     data: {
         activeRemove: 'cancelbtn',
         activeOwn: 'ownbtn'
