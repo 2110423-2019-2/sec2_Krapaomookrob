@@ -29,13 +29,6 @@ Route::get('/new-course', function () {
     return view('new_course');
 });
 
-Route::get('/api/course/subjects','CourseController@fetchSubjects');
-Route::get('/api/course/days','CourseController@fetchDays');
-Route::post('/api/course/new','CourseController@newCourse');
-Route::get('/new-course', function () {
-    return view('new_course');
-});
-
 // Search Courses
 Route::get('/search-courses', function() {
     return view('search_courses');
@@ -79,13 +72,6 @@ Route::post('/tutor-search','CourseController@search');
 Route::post('/tutor-request','CourseController@requestCourse');
 
 
-// Search API and its view
-// Route::get('/search', 'SearchController@searchCourse');
-// Route::get('/search-courses', function() {
-//     return view('search_courses');
-// });
-// Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
-
 Route::get('/cart', function(){
     // route to cart oage
     return view('cart');
@@ -116,6 +102,7 @@ Route::get('/my-courses', 'CourseController@myCoursesIndex');
 Route::post('/api/course/cancel','CourseController@cancelCourse');
 Route::get('/api/course/status/{course_id}','CourseController@getStatus');
 Route::get('/api/user/role','UserController@getRole');
+Route::post('/api/class/postpone', 'CourseController@postponeClass');
 
 // My Profile View
 Route::get('/profile', 'UserController@viewProfile')->name('profile.show');

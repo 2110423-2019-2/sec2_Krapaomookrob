@@ -116,10 +116,10 @@ class CourseController extends Controller
             'noClass' => $course->noClasses,
             'studentCount' => $course->studentCount 
         ];
-
+        
         return $returnObj;
     }
-
+    
     public function cancelCourse(Request $request){
         $user_id = $request->user_id;
         $course_id = $request->course_id;
@@ -133,8 +133,13 @@ class CourseController extends Controller
         $message = "{$username} have cancel the course";
         $receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
         NotificationController::createNotification($receiver_id, $title, $message);
-
+        
         return response($registeredCourse, 200);
+    }
+    
+    public function postponeClass(Request $request){
+        // $course_id = $request->course_id;
+        return response($request->all(), 200);
     }
 
     public function getStatus($course_id){
