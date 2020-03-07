@@ -116,7 +116,8 @@ Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage'
 //My Courses
 Route::get('/my-courses', 'CourseController@myCoursesIndex');
 Route::post('/api/course/cancel','CourseController@cancelCourse');
-Route::post('/api/course/status','CourseController@getStatus');
+Route::get('/api/course/status/{course_id}','CourseController@getStatus');
+Route::get('/api/user/role','UserController@getRole');
 
 // My Profile View
 Route::get('/profile', 'UserController@viewProfile')->name('profile.show');

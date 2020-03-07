@@ -2,10 +2,7 @@
   <div>
     <div class='col'>
       <div class='row justify-content-center'>
-        <button class="btn ownbtn"  v-if="status==='registered'">Postpone</button>
-      </div>
-      <div class='row justify-content-center'>
-        <button class="btn btn-danger"  v-if="status==='registered'" data-toggle="modal" :data-target="'#cancelModal'+courseId">Cancel</button>
+        <button class="btn btn-danger"  v-if="status==='registered' && role==='student'" data-toggle="modal" :data-target="'#cancelModal'+courseId">Cancel</button>
         <p v-else class="text-danger text-capitalize">{{status}}</p>
       </div>
     </div>
@@ -50,13 +47,15 @@
         userId: this.userid,
         courseId: this.courseid,
         status: '',
+        role: ''
       }
     },
     mounted() {
-      axios.post('/api/course/status', {
-        user_id: this.userId,
-        course_id: this.courseId
-      }).then(response => this.status = response.data)
+      axios.get('/api/user/role')
+        .then(response => this.role = response.data)  
+      axios.get('/api/course/status/'+this.courseId)
+        .then(response => this.status = response.data)
+
     },
 
     methods: {
