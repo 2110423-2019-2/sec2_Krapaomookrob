@@ -89,4 +89,8 @@ class UserController extends Controller
             ]);
         return redirect("/profile");
     }
+
+    public function getRole(){
+        return  response(auth()->user()->role, 200);
+    }
 }
