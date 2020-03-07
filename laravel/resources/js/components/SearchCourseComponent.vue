@@ -93,10 +93,10 @@
       <div class="col-lg-9 py-0">
         <div class="form-group">
           <h5>Area</h5>
-          <gmap-autocomplete class="form-control" @place_changed="setPlace"></gmap-autocomplete>
+          <gmap-autocomplete class="form-control" :value="areaAddress" @place_changed="setPlace"></gmap-autocomplete>
         </div>    
         <gmap-map :center="center" :zoom="12" style="width:100%;  height: 300px;">
-          <gmap-marker :key="index" v-for="(m, index) in markers" :position="m.position" @click="center=m.position"></gmap-marker>
+          <gmap-marker :key="index" v-for="(m, index) in markers" :position="m.position" :draggable="false" @click="center=m.position" @drag="updateCoordinates"></gmap-marker>
         </gmap-map> 
       </div>     
 
@@ -219,19 +219,22 @@
         // G-MAP
         center: {lat: 13.7384627, lng: 100.5320458},
         markers: [],
+        areaAddress: '',
+        areaLocationId: '',
       }
     },
     mounted() {
       axios.get('/api/fetch-days').then(response => this.fetchDays = response.data)
       axios.get('/api/fetch-subjects').then(response => this.fetchSubjects = response.data)
       axios.get('/api/fetch-tutors').then(response => this.fetchTutors = response.data)
+      this.markers = [{position: this.center}]
     },
 
     methods: {
       searchCourse() {
         axios.get('/api/search-courses', {params: {
           tutor: this.chooseTutor,
-          area: this.center,
+          area: this.markers[0]['position'],
           subject: this.chooseSubject,
           day: this.chooseDay,
           time: this.time,
@@ -266,6 +269,17 @@
         this.areaAddress = this.currentPlace.formatted_address
         this.areaLocationId = this.currentPlace.id
         this.center = marker
+      },
+
+      updateCoordinates(location) {
+        const marker = {
+            lat: location.latLng.lat(),
+            lng: location.latLng.lng(),
+        }
+        this.markers = [{position: marker}]
+        this.chooseArea = location.name
+        this.areaAddress = location.formatted_address
+        this.areaLocationId = location.id
       }
     }
   }
