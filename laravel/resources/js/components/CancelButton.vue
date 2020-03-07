@@ -2,9 +2,6 @@
   <div>
     <div class='col'>
       <div class='row justify-content-center'>
-        <button class="btn ownbtn">Postpone</button>
-      </div>
-      <div class='row justify-content-center'>
         <button class="btn btn-danger"  v-if="status==='registered' && role==='student'" data-toggle="modal" :data-target="'#cancelModal'+courseId">Cancel</button>
         <p v-else class="text-danger text-capitalize">{{status}}</p>
       </div>
