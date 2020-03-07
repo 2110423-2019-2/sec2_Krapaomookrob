@@ -9,7 +9,7 @@
     </div>
 </v-btn>
 <v-expand-transition>
-    <v-card class="mx-auto" width="400" v-show="expand" :elevation="1" tile  style="position:absolute">
+    <v-card class="mx-auto" width="400" v-show="expand" :elevation="1" tile  style="position:absolute; z-index:99 !important;">
         <v-list class="scroll-y">
             <v-subheader>NOTIFICATIONS</v-subheader>
             <div
