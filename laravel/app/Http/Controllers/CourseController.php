@@ -138,16 +138,75 @@ class CourseController extends Controller
     }
     
     public function postponeClass(Request $request){
-        // $course_id = $request->course_id;
-        return response($request->all(), 200);
+        $class_id = $request->classId;
+        $class = CourseClass::where('id', $class_id)->first();
+        if ($class->status === 'Postponed'){
+            return response("the class was already postponed", 401);
+        }
+        
+        $weekMap = [
+            'Sunday' => 0,
+            'Monday' => 1,
+            'Tuesday' => 2,
+            'Wednesday' => 3,
+            'Thursday' => 4,
+            'Friday' => 5,
+            'Saturday' => 6,
+        ];
+        $course_id = $class->course_id;
+        $course = Course::find($course_id);
+        $weekDays = $course->days->pluck('name')->toArray();
+        $date = new Carbon($class->date);
+        $class->status = 'Postponed';
+        $class->save();
+        
+        while(True){
+            $min = $date->copy()->addDays(8);
+            foreach($weekDays as $weekDay){
+                $t = $date->copy()->next($weekMap[$weekDay]);
+                if($t->lt($min)){
+                    $min = $t;
+                }
+            }
+            $existence = CourseClass::where('date', $min)->where('course_id', $course_id)->first();
+            if ($existence === null) {
+                $courseClass = new CourseClass;
+                $courseClass->date = $min;
+                $courseClass->time = $course->time;
+                $courseClass->course_id = $course->id;
+                $courseClass->hours = $course->hours;
+                $courseClass->save();
+                break;
+            }
+            $date = $min;
+        }
+        
+        $title = 'Postponement';
+        $message = 'The class on ' . date("j F Y", strtotime($class->date)) 
+                    . ' has been postponed by ' . auth()->user()->name
+                    . ', the extended class will be in ' . date("j F Y", strtotime($date));
+        NotificationController::multiNotify($course_id, $title, $message);
+        return response("completed", 200);
     }
 
-    public function getStatus($course_id){
+    public function getCourseStatus($course_id){
         $registeredCourse = '';
         if(auth()->user()->role == 'student'){
             $registeredCourse = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first();
         }
         return response($registeredCourse->status, 200);
+    }
+    
+    public function getClassStatus($class_id){
+        $class = CourseClass::where('id', $class_id)->first();
+        // check whether user owns the course
+        $course_id = $class->course_id;
+        $course = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first();
+        if ($course) {
+            return $class->status;
+        } else {
+            return response("access denied", 401);
+        }
     }
 
     public function myCoursesIndex(){

@@ -14,7 +14,7 @@ class UpdateCourseClassesTable extends Migration
     public function up()
     {
         Schema::table('course_classes', function (Blueprint $table) {
-            $table->enum('status',['registered', 'postponed', 'cancelled'])->default('registered');
+            $table->enum('status',['Registered', 'Postponed'])->default('Registered');
         });
     }
 

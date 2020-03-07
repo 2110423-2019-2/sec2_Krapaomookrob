@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Notification;
 use Illuminate\Http\Request;
 
+use App\Course;
+use App\CourseStudent;
+
+
 class NotificationController extends Controller
 {
     //
@@ -36,5 +40,18 @@ class NotificationController extends Controller
         $newNoti->title = $title;
         $newNoti->message = $message;
         $newNoti->save();
+    }
+
+    public static function multiNotify($course_id, $title, $message){
+        // notify everyone enrolled to the course
+
+        $teacher_id = Course::where('id', $course_id)->first()->user_id;
+        self::createNotification($teacher_id, $title, $message);
+        
+        $students = CourseStudent::where('course_id', $course_id)->pluck('user_id')->toArray();
+        foreach($students as $student_id){
+            self::createNotification($student_id, $title, $message);
+        }
+
     }
 }

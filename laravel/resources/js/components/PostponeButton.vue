@@ -1,5 +1,5 @@
 <template>
-    <button class="chatBtn" @click="postponeRequest()">Chat</button>
+    <button class="chatBtn" @click="postponeRequest()">{{status}}</button>
 </template>
 
 <script>
@@ -8,21 +8,23 @@
   export default {
     components: {
     },
-    props: ['classId'],
+    props: ['classid'],
     data () {
       return {
-        userId: this.userid,
+        classId: this.classid,
         status: '',
       }
     },
     mounted() {
+        axios.get('/api/class/status/' + this.classId)
+        .then(response => this.status = response.data)
     },
 
     methods: {
         postponeRequest: function(event) {
-            axios.post('api/class/postpone', {
-                class_id: this.classId,
-            }).then((response) => this.status = "Postponement is requested")
+            axios.post('/api/class/postpone', {
+                classId: this.classId,
+            }).then((response) => this.status = "Postponed")
         }
         
     }

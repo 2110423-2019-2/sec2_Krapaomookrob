@@ -100,7 +100,8 @@ Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage'
 //My Courses
 Route::get('/my-courses', 'CourseController@myCoursesIndex');
 Route::post('/api/course/cancel','CourseController@cancelCourse');
-Route::get('/api/course/status/{course_id}','CourseController@getStatus');
+Route::get('/api/course/status/{course_id}','CourseController@getCourseStatus');
+Route::get('/api/class/status/{class_id}','CourseController@getClassStatus');
 Route::get('/api/user/role','UserController@getRole');
 Route::post('/api/class/postpone', 'CourseController@postponeClass');
 
