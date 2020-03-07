@@ -1,5 +1,19 @@
 <template>
   <div>
+    <!-- test area -->
+    <!-- <remove-button
+            button-text="Test1"
+            v-bind:class="buttonType"
+            v-bind:element-id="1"
+            v-on:click.native="addToCart(1)"
+    ></remove-button>
+    <remove-button
+            button-text="Test2"
+            v-bind:class="buttonType"
+            v-bind:element-id="2"
+            v-on:click.native="addToCart(2)"
+    ></remove-button>
+ -->
     <div
       class="row course-item mb-2 pb-2 border-bottom"
       v-for="entry in this.info"
@@ -89,41 +103,29 @@ export default {
   props: ["buttonType"],
 
   mounted: function() {
-    var self = this;
-    // get course info
-    let cartItems = this.$cookie.get("cart");
-    this.cart = cartItems;
-    if (!_.isNull(cartItems)){
-      for (var item of cartItems.split(",")) {
-        if (this.info == null) {
-          axios.get("api/course/" + String(item)).then(response => {
-            this.info = [response.data];
-            this.totalPrice += response.data.price;
-          });
-        } else {
-          axios.get("api/course/" + String(item)).then(response => {
-            this.info.push(response.data);
-            this.totalPrice += response.data.price;
-          });
-        }
-      }
-    }
+    axios.get('api/cart').then(response => {
+      this.info = response.data.info,
+      this.totalPrice = response.data.totalPrice,
+      this.cart = response.data.cartString
+    });
   },
   methods: {
-    removeCart: function(elementId) {
+    removeCart: function(course_id) {
       // no null delete cased
-      var cookie = this.$cookie.get("cart");
-      let tmp = cookie.split(",");
-      this.$cookie.delete("cart");
-      tmp.splice(tmp.indexOf(String(elementId)), 1);
-      this.$cookie.set("cart", tmp, 1);
+      axios.post('api/cart/remove', {
+        course_id: course_id
+      }).catch(error => console.log(error))
     },
     checkOut: function(){
-      this.$cookie.delete('cart');
       var data = this.cart;
       axios.post("/api/getPayment", {
         course_id: data.split(",").map(x => parseInt(x))
       }).then(response => window.location.href="/payment/"+response.data.payment_id+"/"+response.data.totalprice).catch(error => console.log(error))
+    },
+    addToCart: function(course_id){
+      axios.post('api/cart/add', {
+        course_id: course_id
+      }).then(response => console.log(response)).catch(error => console.log(error))
     }
   }
 };

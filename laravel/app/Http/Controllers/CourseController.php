@@ -55,7 +55,7 @@ class CourseController extends Controller
         return response('OK', 200);
     }
 
-    public function getCourseInfo($courseId) {
+    public static function getCourseInfo($courseId) {
         // find course
         $course = Course::find($courseId);
 

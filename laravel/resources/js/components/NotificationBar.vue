@@ -10,9 +10,9 @@
 </v-btn>
 <v-expand-transition>
     <v-card class="mx-auto" width="400" v-show="expand" :elevation="1" tile  style="position:absolute; z-index:99 !important;">
-        <v-list class="scroll-y">
+        <v-list class="overflow-y-auto" style="max-height: 400px">
             <v-subheader>NOTIFICATIONS</v-subheader>
-            <div
+            <template
             v-if="numNewNoti > 0" 
             v-for="notification in this.notifications">
                 <v-list-item>
@@ -21,14 +21,14 @@
                         <v-list-item-subtitle>{{notification.message}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
-            </div>
-            <div v-if="numNewNoti == 0">
+            </template>
+            <template v-if="numNewNoti == 0">
                 <v-list-item>
                     <v-list-item-content>
                         No New Notifications
                     </v-list-item-content>
                 </v-list-item>
-            </div>
+            </template>
         </v-list>
     </v-card>
 </v-expand-transition>

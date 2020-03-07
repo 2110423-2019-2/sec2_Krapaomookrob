@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -9,6 +10,9 @@ use App\course;
 use App\Cart;
 use App\User;
 use App\CourseStudent;
+use App\Http\Controllers\CartController;
+use Illuminate\Support\Facades\Cookie;
+
 require_once dirname(__FILE__).'/../../../../vendor/autoload.php';
 
 use OmiseCharge;
@@ -58,10 +62,11 @@ class paymentGatewayController extends Controller{
             'totalprice' => $totalprice
         ];
         */
+        $cookie = Cookie::forget(CartController::getUserCart(auth()->user()->id,$request)[0]);
         return response()->json([
                 'payment_id' => $payment->id,
                 'totalprice' => $totalprice
-              ]);
+              ])->withCookie($cookie);
      //   return view('payment')->with('payment',$pay);
 
     }
