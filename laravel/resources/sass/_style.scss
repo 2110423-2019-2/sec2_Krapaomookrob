@@ -1,5 +1,9 @@
 body{background-color: $body-bg !important}
 
+.main-body{
+  background-color:  $body-bg !important;
+}
+
 ::-moz-selection{
     background-color:$purple;
     color:#ffffff;
@@ -29,7 +33,7 @@ body{background-color: $body-bg !important}
 }
 
 .ownbtn{
-  color: #fff;
+  color: #fff !important;
   border-radius: 5px;
   background-image: linear-gradient(to right, #74D4D8 , #55B3E0);
 }
@@ -39,12 +43,12 @@ body{background-color: $body-bg !important}
 }
 
 .ownbtn:hover{
-  color: #fff;
+  color: #fff !important;
   background-image: linear-gradient(to right, #6BC7CB , #48A4D0);
 }
 
 .ownbtn:focus{
-  border-color:#65C4DB;
+  border-color:#65C4DB !important;
 }
 
 .nav-item{
@@ -52,7 +56,7 @@ body{background-color: $body-bg !important}
 }
 
 .theme{
-  color: $theme;
+  color: $theme !important;
 }
 
 .fbbtn{
@@ -65,8 +69,8 @@ body{background-color: $body-bg !important}
   display: inline-block;
   font-size: 17px;
   line-height: 20px;
-  color: white;
-  background-color: #3B5998;
+  color: white !important;
+  background-color: #3B5998 !important;
   text-align: center;
   text-decoration: none;
 }
@@ -121,11 +125,11 @@ body{background-color: $body-bg !important}
     border-radius: 0.25rem;
     -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    color: #fff;
+    color: #fff !important;
     background-image: linear-gradient(to right, #74D4D8 , #55B3E0);
 }
 .omise-checkout-button:hover{
-    color: #fff;
+    color: #fff !important;
     background-image: linear-gradient(to right, #6BC7CB , #48A4D0);
   }
 
@@ -219,7 +223,7 @@ button[disabled]:hover{
     text-decoration: none;
 }
 .btn-circle.active{
-    color: #fff;
+    color: #fff !important;
     background-image: linear-gradient(to right, #74D4D8 , #55B3E0);
 }
 .dot-pagination{
@@ -230,8 +234,8 @@ button[disabled]:hover{
 .owntable{
     margin-bottom: 0px !important;
     border-radius: 4px;
-    background-color: white;
-    box-shadow: 0px 0px 1px #888;
+    background-color: white !important;
+    box-shadow: 0px 0px 1px #888 !important;
 }
 
 .owntable td{
@@ -252,7 +256,7 @@ button[disabled]:hover{
 }
 
 .editt-bg{
-  color: #fff;
+  color: #fff !important;
   background-image: linear-gradient(to top, #74D4D8 , #55B3E0);
 }
 

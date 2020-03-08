@@ -7,13 +7,100 @@ use App\Payment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use illuminate\Http\Response;
+use Illuminate\Support\Facades\Cookie;
 
 class CartController extends Controller
 {
+    const MAX = 1000000;
+    const MIN = 0;
+    const MINUTES =2;
 
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public static function getUserCart($uid, $request){
+        $cartId = null;
+        $hasCart = false;
+        if(!Cookie::has('cart'.$uid)){
+            $cartId = rand(self::MIN,self::MAX);
+            $cookieCartId = cookie('cart'.strval($uid),$cartId, self::MINUTES);
+
+        }else{
+            $hasCart = True;
+            $cartId = $request->cookie('cart'.strval($uid));
+        }
+        return [
+            $cartId,
+            $hasCart ? 'Success' : $cookieCartId
+        ];
+    }
+
+    public function addToCart(Request $request){
+        $hasCart = false;
+
+        list($cartId, $res) = self::getUserCart(auth()->user()->id, $request);
+
+        if ($res== 'Success') $hasCart=true;
+
+
+        if(Cookie::has($cartId)){
+            $value = $request->cookie($cartId);
+            $value .= strval($request->input('course_id')).',';
+        }else{
+            $value = $request->input('course_id').',';
+        }
+
+        $cookie = cookie($cartId, $value, self::MINUTES);
+        
+        return $hasCart ? response(200)->withCookie($cookie) : response(200)->withCookie($res)->withCookie($cookie);
+    }
+
+    public function getCartItem(Request $request){
+
+        list($cartId, $res) = self::getUserCart(auth()->user()->id, $request);
+
+        // if ($res != 'Success') return 'Error: create cart';
+
+        $value = $request->cookie($cartId);
+        $courses = array();
+        $totalPrice = 0;
+        $cartString = null;
+        // return $value;
+        if ($value != null || $value != ''){
+            $cartString = substr($value,0,-1);
+            $items = explode(',', $cartString);
+            foreach($items as $course_id){
+                if ($course_id != null || $course_id != ''){
+                    $course = CourseController::getCourseInfo(intval($course_id));
+                    array_push($courses,$course);
+                    $totalPrice += $course['price'];
+                }
+            }
+        }
+        return [
+            'info' => $courses,
+            'totalPrice' => $totalPrice,
+            'cartString' => $cartString
+        ];
+    }
+
+    public function removeFromCart(Request $request){
+
+        list($cartId, $res) = self::getUserCart(auth()->user()->id, $request);
+
+        $value = $request->cookie($cartId);
+        $items = explode(',', substr($value,0,-1));
+        $cid = strval($request->input('course_id'));
+        $key = array_search($cid,$items);
+        if( ( $key !== FALSE) ){
+            unset($items[$key]);
+        }
+
+        $value = join(',',$items).',';
+        $cookie = cookie($cartId, $value, self::MINUTES);
+        return response(200)->cookie($cookie);
     }
 
     /**
