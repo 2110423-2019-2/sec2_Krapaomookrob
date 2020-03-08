@@ -9,6 +9,7 @@ Vue.component('remove-button', require('./components/RemoveButton.vue').default)
 Vue.component('new_course-component', require('./components/NewCourseComponent.vue').default);
 Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('notification-bar',require('./components/NotificationBar.vue').default);
+Vue.component('my_calendar-component', require('./components/MyCalendarComponent.vue').default);
 
 import * as VueGoogleMaps from 'vue2-google-maps';
 Vue.use(VueGoogleMaps, {
