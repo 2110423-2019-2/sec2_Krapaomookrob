@@ -79,4 +79,8 @@ class User extends Authenticatable
     public function notifications() {
         return $this->belongsToMany(Notification::class);
     }
+
+    public function requestPaymentRequests(){
+        return $this->hasMany('App\PaymentRequest', 'requested_by');
+    }
 }
