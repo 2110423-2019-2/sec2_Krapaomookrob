@@ -41,7 +41,10 @@ const app = new Vue({
     vuetify: new Vuetify({
       theme: {
         disable: true,
-      }
+      },
+      icons: {
+        iconfont: 'mdi',
+      },
     }),
     data: {
         activeRemove: 'cancelbtn',
