@@ -20,6 +20,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', function () {
         return view('dashboard');
     });
+
+    Route::get('/tutor/payment-request', function () {
+        return view('tutor_payment_request');
+    });
 });
 
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
@@ -137,3 +141,8 @@ Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
 Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
 Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
+
+// Tutor Payment Request
+Route::get('/api/user/bank-account', 'UserController@getBankAccount');
+
+
