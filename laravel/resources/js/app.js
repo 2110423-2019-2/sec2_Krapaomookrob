@@ -38,7 +38,11 @@ Vue.component('tutor-payment-request', require('./components/TutorPaymentRequest
 
 const app = new Vue({
     el: '#app',
-    vuetify: new Vuetify(),
+    vuetify: new Vuetify({
+      theme: {
+        disable: true,
+      }
+    }),
     data: {
         activeRemove: 'cancelbtn',
         activeOwn: 'ownbtn'

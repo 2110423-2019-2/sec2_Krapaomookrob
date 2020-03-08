@@ -95,7 +95,9 @@ Route::get('/cart', function(){
     return view('cart');
 });
 
-Route::get('/api/course/{courseId}', 'CourseController@getCourseInfo');
+Route::get('/api/cart', 'CartController@getCartItem');
+Route::post('/api/cart/remove', 'CartController@removeFromCart');
+Route::post('/api/cart/add', 'CartController@addToCart');
 
 // Route for payment
 Route::get('/payment', function () {
