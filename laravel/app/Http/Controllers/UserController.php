@@ -100,9 +100,8 @@ class UserController extends Controller
     }
 
     public function addBalance(Request $request){
-        $user = auth()->user();
+        $user = User::findOrFail($request->id);
         $user->balance = $user->balance + $request->amount;
         $user->save();
-        return $user->balance;
     }
 }
