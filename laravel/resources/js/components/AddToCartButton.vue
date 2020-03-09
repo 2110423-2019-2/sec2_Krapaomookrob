@@ -1,6 +1,6 @@
 <template>
-    <button class="addToCartBtn actionBtn" :disabled="isClicked" @click="isClicked = !isClicked; buttonAction()">
-      <span style="white-space: normal;">{{!isClicked? 'Add To Cart':'Remove From Cart'}}</span>
+    <button class="addToCartBtn actionBtn" :disabled="this.clicked || isClicked" @click="isClicked = !isClicked; buttonAction()">
+      <span style="white-space: normal;">Add To Cart</span>
     </button>
 </template>
 
@@ -18,7 +18,7 @@
       }
     },
     mounted: function (){
-
+      
     },
 
     methods: {

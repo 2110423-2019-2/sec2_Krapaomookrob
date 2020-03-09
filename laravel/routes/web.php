@@ -14,7 +14,7 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\CartController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', function () {
@@ -94,6 +94,7 @@ Route::get('/cart', function(){
 Route::get('/api/cart', 'CartController@getCartItem');
 Route::post('/api/cart/remove', 'CartController@removeFromCart');
 Route::post('/api/cart/add', 'CartController@addToCart');
+Route::get('/api/cart/current', 'CartController@getCurrentCart');
 
 // Route for payment
 Route::get('/payment', function () {

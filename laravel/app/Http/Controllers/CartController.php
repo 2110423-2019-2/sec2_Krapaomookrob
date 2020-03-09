@@ -103,6 +103,14 @@ class CartController extends Controller
         return response(200)->cookie($cookie);
     }
 
+    public function getCurrentCart(Request $request){
+        list($cartId, $res) = self::getUserCart(auth()->user()->id, $request);
+        $cart = $request->cookie($cartId);  // eg. cart = 1,2,3,
+        $cart = substr($cart,0,-1);
+        $cartArray = array_map('intval',explode(',',$cart));
+        return $cartArray;
+    }
+
     /**
      * Display a listing of the resource.
      *
