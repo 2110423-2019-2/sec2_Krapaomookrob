@@ -3,20 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Day;
-use App\Location;
-use App\Subject;
 use Auth;
 use Carbon\Carbon;
-
-use App\Course;
-use App\User;
-use App\Course_subject;
-use App\Course_day;
-use App\CourseStudent;
-use App\CourseClass;
 
 class CalendarController extends Controller
 {
