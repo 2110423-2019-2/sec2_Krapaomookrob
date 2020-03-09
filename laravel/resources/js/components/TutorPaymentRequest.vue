@@ -6,7 +6,8 @@
           <div class="col">
             <label class="font-weight-bold">Amount</label>
             <input type="text" class="form-control" disable v-model='amount' id="InputAmount"  aria-describedby="amountHelp">
-            <small id="amountHelp" class="form-text text-muted">You can't make the withdrawal amount exceeding the balance</small>
+            <small id="amountHelp" class="text-danger">{{errMsg.amount}}</small>
+            <small class="text-muted">Insert amount which is multiple of 100</small>
           </div>
           <div class="col">
             <label class="font-weight-bold">Balance</label>
@@ -17,6 +18,25 @@
           <button class="w-50 btn ownbtn m-2" data-toggle="modal" data-target="#withdrawModal">Withdraw</button>
         </div>
       </div>
+      <h1 class='mt-6'>Request History</h1>
+      <table id=app class="table owntable mt-5">
+        <thead>
+            <tr class='d-flex'>
+            <th scope="col" class='col-3'>Request ID</th>
+            <th scope="col" class='col-3'>Amount</th>
+            <th scope="col" class='col-3'>Created at</th>
+            <th scope="col" class='col-3'>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr class='d-flex' v-for="request in requests">
+            <td scope="row" class='col-3'>{{request.id}}</td>
+            <td class='col-3'>{{request.amount.toLocaleString()}}</td>
+            <td class='col-3'>{{request.created_at}}</td>
+            <td class='col-3'>{{request.status}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class='col-lg-3'>
       <div class="card mb-3">
@@ -31,7 +51,7 @@
       </div>
     </div>
 
-
+    <!--- Confirm Modal-->
     <div id="withdrawModal" class="modal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -57,6 +77,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -68,11 +89,16 @@
     },
     data () {
       return {
-        accountName: null,
-        accountNumber: null,
-        bank: null,
-        amount: null,
+        accountName: '',
+        accountNumber: '',
+        bank: '',
+        amount: '',
         balance: 25000,
+        requests: [],
+        errMsg: {
+          amount: ''
+        },
+
       }
     },
     mounted() {
@@ -81,10 +107,27 @@
           this.accountNumber = response.data.account_number;
           this.bank = response.data.bank;
       })
+      axios.get('/api/payment-request/my-requests').then( (response) =>{
+          this.requests = response.data;
+      })
+    },
+    watch:{
+      amount: function(val){
+          const result = val.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          Vue.nextTick(() => this.amount = result);
+          }
     },
     methods: {
         withdraw: function(event) {
-            alert("withdraw");
+            axios.post('/api/payment-request/create', {
+              amount: this.amount.replace(/,/g, ''),
+            }).then( (response) => {
+                window.location.href = "/";
+            }).catch( (error) => {
+                if(error.response.data.errors.amount){
+                  this.errMsg.amount = error.response.data.errors.amount[0]
+                }
+              });
         }
     }
   }

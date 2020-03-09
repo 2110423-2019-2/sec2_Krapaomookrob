@@ -93,4 +93,9 @@ class UserController extends Controller
     public function getRole(){
         return  response(auth()->user()->role, 200);
     }
+
+    public function getBankAccount(){
+        $ba = auth()->user()->BankAccount;
+        return response($ba, 200);
+    }
 }

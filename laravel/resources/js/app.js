@@ -35,6 +35,7 @@ Vue.component('regis-now-button', require('./components/RegisNowButton.vue').def
 Vue.component('add-to-cart-button', require('./components/AddToCartButton.vue').default);
 Vue.component('admin_panel-component', require('./components/AdminPanelList.vue').default);
 Vue.component('tutor-payment-request', require('./components/TutorPaymentRequest.vue').default);
+Vue.component('admin-payment-request', require('./components/AdminPaymentRequest.vue').default);
 
 const app = new Vue({
     el: '#app',

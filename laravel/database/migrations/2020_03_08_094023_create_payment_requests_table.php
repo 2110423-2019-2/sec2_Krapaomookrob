@@ -16,7 +16,8 @@ class CreatePaymentRequestsTable extends Migration
         Schema::create('payment_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('amount');
-            $table->string('status')->enum(['requested', 'transferred'])->default('requested');
+            $table->enum('status',['init','failed', 'expired', 'pending', 'reversed', 'successful'])->default('init');
+            $table->string('omise_id')->nullable();
             $table->unsignedBigInteger('transferred_by')->nullable();
             $table->unsignedBigInteger('requested_by');
             $table->unsignedBigInteger('bank_account');

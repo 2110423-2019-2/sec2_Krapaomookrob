@@ -35,7 +35,7 @@
                     </li>
                     @if($user->isTutor())
                       <li class="nav-item">
-                        <a class="btn ownbtn" href="#">Request Payment</a>
+                        <a class="btn ownbtn" href="/tutor/payment-request">Request Payment</a>
                       </li>
                     @endif
                     <li class="nav-item active">
