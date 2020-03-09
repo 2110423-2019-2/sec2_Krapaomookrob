@@ -17,11 +17,7 @@
             <v-spacer></v-spacer>
             <v-menu bottom right>
               <template v-slot:activator="{ on }">
-                <v-btn
-                  outlined
-                  color="grey darken-2"
-                  v-on="on"
-                >
+                <v-btn outlined color="grey darken-2" v-on="on">
                   <span>{{ typeToLabel[type] }}</span>
                   <v-icon right>mdi-menu-down</v-icon>
                 </v-btn>
@@ -55,49 +51,7 @@
             @click:event="showEvent"
             @click:more="viewDay"
             @click:date="viewDay"
-            @change="updateRange"
           ></v-calendar>
-          <v-menu
-            v-model="selectedOpen"
-            :close-on-content-click="false"
-            :activator="selectedElement"
-            offset-x
-          >
-            <v-card
-              color="grey lighten-4"
-              min-width="350px"
-              flat
-            >
-              <v-toolbar
-                :color="selectedEvent.color"
-                dark
-              >
-                <v-btn icon>
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-btn icon>
-                  <v-icon>mdi-heart</v-icon>
-                </v-btn>
-                <v-btn icon>
-                  <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
-              </v-toolbar>
-              <v-card-text>
-                <span v-html="selectedEvent.details"></span>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                  text
-                  color="secondary"
-                  @click="selectedOpen = false"
-                >
-                  Cancel
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-menu>
         </v-sheet>
       </v-col>
     </v-row>
@@ -123,7 +77,7 @@
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      events: [],
+      events: [{"name":"Holiday","start":"2020-3-5 7:45","end":"2020-3-5 8:30","color":"indigo"},{"name":"PTO","start":"2020-3-18","end":"2020-3-19","color":"orange"},{"name":"PTO","start":"2020-3-14 11:0","end":"2020-3-14 11:30","color":"orange"},{"name":"Meeting","start":"2020-3-28 6:0","end":"2020-3-28 7:45","color":"orange"},{"name":"Holiday","start":"2020-3-14 12:0","end":"2020-3-14 12:30","color":"cyan"},{"name":"PTO","start":"2020-3-8 22:15","end":"2020-3-8 23:30","color":"deep-purple"},{"name":"Birthday","start":"2020-3-26 0:0","end":"2020-3-26 1:0","color":"grey darken-1"},{"name":"Party","start":"2020-3-24 15:30","end":"2020-3-24 17:0","color":"indigo"},{"name":"Conference","start":"2020-3-4 7:30","end":"2020-3-4 9:15","color":"orange"},{"name":"Conference","start":"2020-3-27","end":"2020-3-29","color":"blue"},{"name":"PTO","start":"2020-3-16 9:15","end":"2020-3-16 11:15","color":"deep-purple"},{"name":"Party","start":"2020-3-7 2:0","end":"2020-3-7 4:0","color":"cyan"},{"name":"Event","start":"2020-3-17 18:0","end":"2020-3-17 19:0","color":"green"},{"name":"Conference","start":"2020-3-30","end":"2020-3-31","color":"blue"},{"name":"Party","start":"2020-3-25 16:45","end":"2020-3-25 18:30","color":"green"},{"name":"PTO","start":"2020-3-6 13:30","end":"2020-3-6 14:0","color":"green"},{"name":"Event","start":"2020-3-23 12:15","end":"2020-3-23 14:0","color":"deep-purple"},{"name":"PTO","start":"2020-3-24 23:30","end":"2020-3-25 1:30","color":"deep-purple"},{"name":"Travel","start":"2020-3-15 14:15","end":"2020-3-15 15:0","color":"blue"},{"name":"Event","start":"2020-3-31 0:45","end":"2020-3-31 2:30","color":"indigo"},{"name":"Birthday","start":"2020-3-2 5:15","end":"2020-3-2 6:30","color":"deep-purple"},{"name":"Birthday","start":"2020-3-18","end":"2020-3-19","color":"indigo"},{"name":"Event","start":"2020-3-2 1:30","end":"2020-3-2 3:15","color":"deep-purple"},{"name":"Holiday","start":"2020-3-6","end":"2020-3-8","color":"grey darken-1"},{"name":"Party","start":"2020-3-16 10:45","end":"2020-3-16 12:15","color":"blue"},{"name":"Birthday","start":"2020-3-11 3:15","end":"2020-3-11 4:15","color":"blue"},{"name":"Event","start":"2020-3-21 2:45","end":"2020-3-21 3:45","color":"blue"},{"name":"Meeting","start":"2020-3-22 3:30","end":"2020-3-22 4:0","color":"grey darken-1"},{"name":"Birthday","start":"2020-3-11 16:0","end":"2020-3-11 16:30","color":"grey darken-1"},{"name":"Holiday","start":"2020-3-23 11:45","end":"2020-3-23 13:0","color":"blue"},{"name":"PTO","start":"2020-3-31 16:0","end":"2020-3-31 17:30","color":"orange"},{"name":"Birthday","start":"2020-3-30","end":"2020-3-30","color":"cyan"},{"name":"Birthday","start":"2020-3-31 9:30","end":"2020-3-31 11:15","color":"orange"},{"name":"Birthday","start":"2020-3-12","end":"2020-3-12","color":"green"},{"name":"Event","start":"2020-3-18","end":"2020-3-20","color":"cyan"},{"name":"Holiday","start":"2020-3-20 15:15","end":"2020-3-20 16:30","color":"indigo"},{"name":"Event","start":"2020-3-27 1:45","end":"2020-3-27 2:45","color":"cyan"},{"name":"Conference","start":"2020-3-13 13:30","end":"2020-3-13 14:0","color":"indigo"},{"name":"Meeting","start":"2020-3-16 17:45","end":"2020-3-16 19:15","color":"orange"},{"name":"Meeting","start":"2020-3-2 6:0","end":"2020-3-2 6:30","color":"indigo"},{"name":"Birthday","start":"2020-3-5","end":"2020-3-7","color":"green"},{"name":"Meeting","start":"2020-3-13 15:0","end":"2020-3-13 16:45","color":"deep-purple"},{"name":"Travel","start":"2020-3-20","end":"2020-3-22","color":"orange"},{"name":"Party","start":"2020-3-5","end":"2020-3-6","color":"green"},{"name":"Party","start":"2020-3-27 3:15","end":"2020-3-27 4:30","color":"deep-purple"},{"name":"Birthday","start":"2020-3-4","end":"2020-3-7","color":"blue"},{"name":"Conference","start":"2020-3-21 10:0","end":"2020-3-21 11:15","color":"orange"},{"name":"PTO","start":"2020-3-4 17:15","end":"2020-3-4 17:45","color":"orange"},{"name":"PTO","start":"2020-3-4","end":"2020-3-4","color":"green"}],
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
     }),
@@ -181,22 +135,6 @@
       },
       next () {
         this.$refs.calendar.next()
-      },
-      showEvent ({ nativeEvent, event }) {
-        const open = () => {
-          this.selectedEvent = event
-          this.selectedElement = nativeEvent.target
-          setTimeout(() => this.selectedOpen = true, 10)
-        }
-
-        if (this.selectedOpen) {
-          this.selectedOpen = false
-          setTimeout(open, 10)
-        } else {
-          open()
-        }
-
-        nativeEvent.stopPropagation()
       },
       updateRange ({ start, end }) {
         const events = []
