@@ -8,6 +8,17 @@ use App\PaymentRequest;
 
 class PaymentRequestController extends Controller
 {
+    
+    public function tutorIndex(){
+        if(auth()->user()->isTutor()) return view('tutor_payment_request');
+        abort(401, "User can't perform this actions");
+    }
+
+    public function adminIndex(){
+        if(auth()->user()->isAdmin() | auth()->user()->isSuperuser()) return view('admin_payment_request');
+        abort(401, "User can't perform this actions");
+    }
+    
     public function create(Request $request){
         /** 
          * Mock up balance

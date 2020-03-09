@@ -8,7 +8,5 @@
 @endsection
 
 @section('content')
-    <div id="app">
-        <tutor-payment-request></tutor-payment-request>
-    </div>
+    <tutor-payment-request></tutor-payment-request>
 @endsection

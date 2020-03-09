@@ -20,14 +20,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', function () {
         return view('dashboard');
     });
-
-    Route::get('/tutor/payment-request', function () {
-        return view('tutor_payment_request');
-    });
-
-    Route::get('/admin/payment-request', function () {
-        return view('admin_payment_request');
-    });
+    Route::get('/tutor/payment-request', 'PaymentRequestController@tutorIndex');
+    Route::get('/admin/payment-request', 'PaymentRequestController@adminIndex');
 });
 
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
@@ -148,12 +142,10 @@ Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
 Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
 Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
 
-// Tutor Payment Request
+//Payment Request
 Route::get('/api/user/bank-account', 'UserController@getBankAccount');
 Route::post('/api/payment-request/create', 'PaymentRequestController@create');
 Route::get('/api/payment-request/my-requests', 'PaymentRequestController@getMyRequests');
-
-// Admin Payment Request
 Route::get('/api/payment-request/initRequests', 'PaymentRequestController@getInitRequests');
 
 
