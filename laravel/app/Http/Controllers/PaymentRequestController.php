@@ -32,6 +32,6 @@ class PaymentRequestController extends Controller
     }
 
     public function getInitRequests(){
-        return response(Paymment::where('status', '=', 'init'), 200);
+        return response(PaymentRequest::where('status', '=', 'init')->get(), 200);
     }
 }
