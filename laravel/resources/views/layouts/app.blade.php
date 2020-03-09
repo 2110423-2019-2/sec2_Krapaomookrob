@@ -31,7 +31,7 @@
                   @if(!empty($user))
                     <li class="nav-item active">
                       <small class="d-block">Hello, <span class="theme">{{$user->name}}</span></small>
-                      <small class="d-block">You have <span class="theme">1023 Available Credits</span></small>
+                      <small class="d-block">You have <span class="theme">{{$user->balance}} Available Credits</span></small>
                     </li>
                     @if($user->isTutor())
                       <li class="nav-item">

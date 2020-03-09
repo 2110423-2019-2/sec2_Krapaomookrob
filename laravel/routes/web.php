@@ -132,10 +132,13 @@ Route::get('/api/notification', 'NotificationController@getNotification')->name(
 
 // Admin panel
 Route::get('/admin-panel', function(){
-
     return view('admin_panel');
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
 Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
 Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
+
+// Wallet
+Route::get('/api/get-balance', 'UserController@getBalance');
+Route::post('/api/add-balance', 'UserController@addBalance');
