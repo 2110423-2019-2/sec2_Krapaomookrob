@@ -99,7 +99,7 @@ class UsersTableSeeder extends Seeder
             BankAccount::create([
                 'account_number' => '356213245' . substr($user->id, -1),
                 'account_name' => $user->name,
-                'bank' =>  'Kasikorn',
+                'bank' =>  'scb',
                 'user_id' => $user->id,
             ]);
         }

@@ -148,4 +148,6 @@ Route::post('/api/payment-request/create', 'PaymentRequestController@create');
 Route::get('/api/payment-request/my-requests', 'PaymentRequestController@getMyRequests');
 Route::get('/api/payment-request/initRequests', 'PaymentRequestController@getInitRequests');
 
-
+//transfer
+Route::post('/transfer','Frontend\paymentGatewayController@createTransferOmise');
+Route::post('/checktransfer','Frontend\paymentGatewayController@checkTransfer');
