@@ -176,8 +176,8 @@
 
       <template v-slot:item.action="{ item }">
         <div class='my-2'>
-          <regis-now-button v-bind:courseid="item.id"></regis-now-button>
-          <add-to-cart-button v-bind:courseid="item.id"></add-to-cart-button>
+          <regis-now-button v-bind:courseid="item.id" v-on:click.native='registerNow(item.id)'></regis-now-button>
+          <add-to-cart-button v-bind:courseid="item.id" :clicked="false"></add-to-cart-button>
         </div>
       </template>
 
@@ -266,6 +266,22 @@
         this.areaAddress = this.currentPlace.formatted_address
         this.areaLocationId = this.currentPlace.id
         this.center = marker
+      },
+      addToCart: function(course_id){
+        axios.post('api/cart/add', {
+          course_id: course_id
+        }).then(response => console.log(response)).catch(error => console.log(error))
+      },
+
+      removeCart: function(course_id) {
+        axios.post('api/cart/remove', {
+          course_id: course_id
+        }).catch(error => console.log(error))
+      },
+      registerNow: function(course_id){
+        axios.post('api/cart/add', {
+          course_id: course_id
+        }).then(response => console.log(response)).catch(error => console.log(error)).then(window.location.href="/cart")
       }
     }
   }

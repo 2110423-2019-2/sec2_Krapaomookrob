@@ -269,13 +269,13 @@ button[disabled]:hover{
 }
 
 .addToCartBtn{
-  border: 1px solid LightGrey;
-  background-color: white;
+  border: 1px solid LightGrey !important;
+  background-color: white !important;
 }
 
 .actionBtn{
-  height: 30px;
-  width: 130px;
-  margin: 3px;
-  border-radius: 5px;
+  height: 30px !important;
+  width: 130px !important;
+  margin: 3px !important;
+  border-radius: 5px !important;
 }

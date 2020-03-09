@@ -10,7 +10,7 @@
 </v-btn>
 <v-expand-transition>
     <v-card class="mx-auto" width="400" v-show="expand" :elevation="1" tile  style="position:absolute; z-index:99 !important;">
-        <v-list class="overflow-y-auto" style="max-height: 400px">
+        <v-list class="overflow-y-auto" style="max-height: 400px" :subheader="true">
             <v-subheader>NOTIFICATIONS</v-subheader>
             <template
             v-if="numNewNoti > 0" 

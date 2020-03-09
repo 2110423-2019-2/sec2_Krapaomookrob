@@ -47,16 +47,6 @@ const app = new Vue({
         activeOwn: 'ownbtn'
       },
     methods: {
-      addCart: function(elementId){
-        // set cookie for '1' day
-        if (this.$cookie.get('cart') == null){
-          this.$cookie.set('cart',[elementId] ,1);  // TODO:insert first item
-        }else{
-          let tmp = this.$cookie.get('cart');
-          this.$cookie.delete('cart');
-          tmp.push(elementId);                      // TODO:insert new item
-          this.$cookie.set('cart',tmp,1);
-        }
-      }
+
     }
 });
