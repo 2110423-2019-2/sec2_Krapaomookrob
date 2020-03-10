@@ -34,6 +34,7 @@ Vue.component('chat-button', require('./components/ChatButton.vue').default);
 Vue.component('regis-now-button', require('./components/RegisNowButton.vue').default);
 Vue.component('add-to-cart-button', require('./components/AddToCartButton.vue').default);
 Vue.component('admin_panel-component', require('./components/AdminPanelList.vue').default);
+Vue.component('report-list', require('./components/ReportList.vue').default);
 
 const app = new Vue({
     el: '#app',

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\BankAccount;
+use App\Report;
 
 class UserController extends Controller
 {
@@ -92,5 +93,15 @@ class UserController extends Controller
 
     public function getRole(){
         return  response(auth()->user()->role, 200);
+    }
+
+    public function sendReport(Request $request){
+        //validation should be implemented in the future.
+        Report::create([
+            'sender_id' => auth()->user()->id,
+            'title' => $request->title,
+            'message' => $request->message,
+        ]);
+        return redirect('/');
     }
 }

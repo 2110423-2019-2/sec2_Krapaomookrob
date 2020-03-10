@@ -139,3 +139,13 @@ Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
 Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
 Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
+
+// Admin Report List
+Route::get('/admin-panel/reportList', function(){
+    return view('admin_panel_report');
+});
+Route::get('/admin-panel/getReports', 'AdminController@getReports');
+Route::get('/admin-panel/readReport/{id}', 'AdminController@readReport');
+
+//  Report via Contact Admin
+Route::post('/report','UserController@sendReport');

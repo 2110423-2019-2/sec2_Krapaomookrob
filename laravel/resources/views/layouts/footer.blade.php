@@ -20,26 +20,14 @@
             </div>
             <!-- Modal Body -->
             <div class="modal-body" style="color: black;">
-                <div class="form-group px-3">
+                <form action="/report" enctype="multipart/form-data" method="post">
+                  @csrf
                   <h6>Message</h6>
-                  <textarea class="form-control px-3" id="reportMessage" type="text" name="reportMessage" autofocus></textarea>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-footer" id="modal_footer">
-                        {{-- <input id="btnSubmit" href="#" name="btnSubmit" value="submit" class="btn ownbtn" type="submit"> --}}
-                        <a href="/" id="btnSubmit" class="btn btn-default-border-blk">Donate</a>
-                    </div>
-                </div>
+                  <textarea class="form-control px-3" id="message" type="text" name="message" autofocus></textarea>
+                  <button class="btn ownbtn my-3 col-2 offset-9">Submit</button>
+                </form>
+              </div>
             </div>
         </div>
     </div>
 </footer>
-
-@section('content')
-<div class="container">
-  <form action="/profile" enctype="multipart/form-data" method="post">
-    @csrf
-    @method('PATCH')
-    </div>
-</div>
-@endsection
