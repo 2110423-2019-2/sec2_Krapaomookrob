@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\BankAccount;
+use App\Transaction;
 
 class UserController extends Controller
 {
@@ -104,17 +105,39 @@ class UserController extends Controller
         return $user->balance;
     }
 
+
+    public function addBalance($id,$amount){
+        $user = User::findOrFail($id);
+        if ($amount >= 0){
+            $user->balance = $user->balance + $amount;
+            $transaction = Transaction::create(['user_id' => $id, 'amount' => $amount, 'method' => 'add']);
+            $user->save();
+            return response('Add balance successfully.', 200);
+        } else {
+            return response('Invalid amount of money.', 400);
+        }
+    }
+
+    public function withBalance($id,$amount){
+        $user = User::findOrFail($id);
+        if ($amount >= 0 && $user->balance >= $amount){
+            $user->balance = $user->balance - $amount;
+            $transaction = Transaction::create(['user_id' => $id, 'amount' => $amount, 'method' => 'withdraw']);
+            $user->save();
+            return response('Withdraw balance successfully.', 200);
+        } else {
+            return response('Not enough money or invalid amount of money.', 400);
+        }
+    }
+
     public function updateBalance(Request $request){
         $user = User::findOrFail($request->id);
-        if ($request->type == "add"){
-            if ($request->amount >= 0){
-                $user->balance = $user->balance + $request->amount;
-            }
-        } elseif ($request->type == "withdraw"){
-            if ($request->amount >= 0 && $user->balance >= $request->amount){
-                $user->balance = $user->balance - $request->amount;
-            }
-        } 
-        $user->save();
+        if ($request->method == "add"){
+            $this->addBalance($request->id, $request->amount);
+        } elseif ($request->method == "withdraw"){
+            $this->withBalance($request->id, $request->amount);
+        } else {
+            return response('Invalid request method.', 400);
+        }
     }
 }
