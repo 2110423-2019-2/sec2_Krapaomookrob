@@ -13,7 +13,7 @@ class CartController extends Controller
 {
     const MAX = 1000000;
     const MIN = 0;
-    const MINUTES =2;
+    const MINUTES =180;         // cookie lifetime(minute)
 
     public function __construct()
     {
