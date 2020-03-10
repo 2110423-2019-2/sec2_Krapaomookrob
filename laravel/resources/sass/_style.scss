@@ -138,7 +138,7 @@ body{background-color: $body-bg !important}
 }
 button:disabled,
 button[disabled]:hover{
-    color: #808588;
+    color: #808588 !important;
     background-image: linear-gradient(to right, #b9bbb6 , #b9bbb6);
 }
 
@@ -150,32 +150,32 @@ button[disabled]:hover{
 }
 
 .cancelbtn{
-  color: rgb(242, 87, 87);
+  color: rgb(242, 87, 87) !important;
   background-color: #fff;
   border: solid 1px rgba(200, 200, 200, 0.6);
 }
 
 .cancelbtn:hover{
-  color: #fff;
+  color: #fff !important;
   background-color: rgb(242, 87, 87);
   border: solid 1px rgb(242, 87, 87);
 }
 
 .cancelbtn:focus{
-  color: #fff;
+  color: #fff !important;
   background-color: rgb(242, 87, 87);
   border: solid 1px rgb(242, 87, 87);
 }
 
 .coutbtn{
-  color: #fff;
+  color: #fff !important;
   background-color: rgb(242, 87, 87);
   border: solid 1px rgb(242, 87, 87);
   border-radius: 10px;
 }
 
 .coutbtn:hover{
-  color: #fff;
+  color: #fff !important;
   background-color: rgb(218, 66, 66);
   border: solid 1px rgb(218, 66, 66);
   border-radius: 10px;
@@ -197,13 +197,13 @@ button[disabled]:hover{
   width: 100%;
   margin-top: 0.25rem;
   font-size: 80%;
-  color: #e3342f;
+  color: #e3342f !important;
 }
 
 .ownpaginator {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
-    box-shadow: 0px 0px 1px #888;
+    box-shadow: 0px 0px 1px #888 !important;
     margin-bottom: 10px;
     margin-top: -4px;
 }
@@ -214,7 +214,7 @@ button[disabled]:hover{
     text-align: center;
     font-size: 12px;
     line-height: 1.42857;
-    border: 1px solid rgba(0, 0, 0, 0.125);
+    border: 1px solid rgba(0, 0, 0, 0.125) !important;
     border-radius: 18px;
     margin-left: 10px;
 }
@@ -263,9 +263,9 @@ button[disabled]:hover{
 .chatBtn{
   height: 25px;
   width: 100px;
-  background-color: white;
+  background-color: white !important;
   border-radius: 5px;
-  border: 1px solid LightGrey;
+  border: 1px solid LightGrey !important;
 }
 
 .addToCartBtn{

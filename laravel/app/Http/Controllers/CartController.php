@@ -25,6 +25,9 @@ class CartController extends Controller
         $hasCart = false;
         if(!Cookie::has('cart'.$uid)){
             $cartId = rand(self::MIN,self::MAX);
+            while(Cookie::has($cartId)){
+                $cartId = rand(self::MIN,self::MAX);
+            }
             $cookieCartId = cookie('cart'.strval($uid),$cartId, self::MINUTES);
 
         }else{
