@@ -101,7 +101,17 @@ class UserController extends Controller
 
     public function addBalance(Request $request){
         $user = User::findOrFail($request->id);
-        $user->balance = $user->balance + $request->amount;
-        $user->save();
+        if ($request->amount >= 0){
+            $user->balance = $user->balance + $request->amount;
+            $user->save();
+        }
+    }
+
+    public function withdrawBalance(Request $request){
+        $user = User::findOrFail($request->id);
+        if ($request->amount >= 0 && $user->balance >= $request->amount){
+            $user->balance = $user->balance - $request->amount;
+            $user->save();
+        }
     }
 }
