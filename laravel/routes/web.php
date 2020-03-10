@@ -141,4 +141,4 @@ Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
 
 // Wallet
 Route::get('/api/get-balance', 'UserController@getBalance');
-Route::post('/api/add-balance', 'UserController@addBalance');
+Route::post('/api/update-balance', 'UserController@updateBalance');

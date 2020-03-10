@@ -17,7 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->integer('amount');
-            $table->integer('type');
+            $table->string('method');
             $table->timestamps();
         });
     }
