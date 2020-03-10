@@ -20,13 +20,9 @@ class PaymentRequestController extends Controller
     }
     
     public function create(Request $request){
-        /** 
-         * Mock up balance
-         */
-        $balance = 30000;
-
+        
         $validatedData = $request->validate([
-            'amount' => 'required|integer|between:1,' . $balance,
+            'amount' => 'required|integer|between:1,' . auth()->user()->balance,
         ]);
 
         if(!auth()->user()->BankAccount){
@@ -38,7 +34,7 @@ class PaymentRequestController extends Controller
             'requested_by' => auth()->user()->id,
             'bank_account' => auth()->user()->BankAccount->id
         ]);
-
+        
         return response("Create payment request successfully.",200);
     }
 

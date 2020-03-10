@@ -93,6 +93,7 @@
   export default {
     components: {
     },
+    props: ['userid'],
     data () {
       return {
         accountName: '',
@@ -105,19 +106,19 @@
           amount: '',
           bankAccount: '',
         },
-
+        userId: this.userid,
       }
     },
     mounted() {
-      axios.get('/api/user/bank-account').then( (response) =>{
+      axios.get('/api/user/bank-account').then((response) => {
           this.accountName = response.data.account_name;
           this.accountNumber = response.data.account_number;
           this.bank = response.data.bank;
       })
-      axios.get('/api/payment-request/my-requests').then( (response) =>{
+      axios.get('/api/payment-request/my-requests').then( (response) => {
           this.requests = response.data;
       })
-      axios.get('/api/user/balance').then( (response) =>{
+      axios.get('/api/get-balance').then((response) =>{
           this.balance = response.data;
       })
     },
@@ -129,10 +130,17 @@
     },
     methods: {
         withdraw: function(event) {
+            const withdrawAmount = this.amount.replace(/,/g, '');
             axios.post('/api/payment-request/create', {
-              amount: this.amount.replace(/,/g, ''),
+              amount: withdrawAmount,
             }).then( (response) => {
+              if(response.status==200){
+                axios.post('/api/withdraw-balance', {
+                  id: this.userID,
+                  amount: withdrawAmount
+                });
                 window.location.href = "/";
+              }
             }).catch( (error) => {
                 if(error.response.data.errors.amount){
                   this.errMsg.amount = error.response.data.errors.amount[0]

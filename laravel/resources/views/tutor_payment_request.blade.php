@@ -8,5 +8,5 @@
 @endsection
 
 @section('content')
-    <tutor-payment-request></tutor-payment-request>
+    <tutor-payment-request userid={{auth()->user()->id}}></tutor-payment-request>
 @endsection
