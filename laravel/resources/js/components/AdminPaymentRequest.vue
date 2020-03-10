@@ -1,5 +1,12 @@
 <template>
+  
   <v-card>
+  <div class="alert alert-warning alert-dismissible fade show" v-if="errorMessage">
+    {{ errorMessage }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
     <v-card-title>
       Payment Requests From Tutors
       <v-spacer></v-spacer>
@@ -56,17 +63,25 @@ export default {
         ],
         requests: [
         ],
+        csrf: document.head.querySelector('meta[name="csrf-token"]').content,
+        errorMessage: null,
       }
     },
 
   mounted: function() {
-    axios.get('/api/payment-request/initRequests').then( (response) => {
+    axios.get('/checktransfer').then( (response) => {
       this.requests = response.data;
     });
   },
   methods: {
     transfer: function(item) {
-      alert('ID:' + item.id + '\nAmount: ' + item.amount);
+      axios.post('/transfer', {
+        paymentReqID: item.id
+      }).then((response) => {
+          window.open(response.data, '_blank');
+      }).catch((error) => {
+          this.errorMessage = error.response.data;
+      })
     }
     
   }

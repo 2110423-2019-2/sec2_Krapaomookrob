@@ -134,7 +134,7 @@ class paymentGatewayController extends Controller{
     public function createTransferOmise(Request $request){
         $payReq = PaymentRequest::find($request->input('paymentReqID'));
         if($payReq['omise_id']!=null){
-            return view('admin_payment_request')->with('error','Already transfer');
+            return response('Request ID ' . $payReq['id'] . ' is already transfer' , 403);
         }
         $user = User::find($payReq['requested_by']);
         $money = $payReq['amount'];
@@ -168,7 +168,7 @@ class paymentGatewayController extends Controller{
 
         $http = sprintf("https://dashboard.omise.co/test/transfers/%s",$transfer['id']);
 
-        return redirect($http);
+        return response($http, 200);
 
     }
 
@@ -199,8 +199,8 @@ class paymentGatewayController extends Controller{
         }
         $arr =  PaymentRequest::where('status','!=', 'successful')->get();
         $data = response()->json($arr);
-        //dd($data);
-        return response($data, 200);
+        // dd($data);
+        return response($arr, 200);
 
     }
 

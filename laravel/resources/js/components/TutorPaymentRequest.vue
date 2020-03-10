@@ -7,7 +7,7 @@
             <label class="font-weight-bold">Amount</label>
             <input type="text" class="form-control" disable v-model='amount' id="InputAmount"  aria-describedby="amountHelp">
             <small id="amountHelp" class="text-danger">{{errMsg.amount}}</small>
-            <small class="text-muted">Insert amount which is multiple of 100</small>
+            <small class="text-muted">There is 3.65% transfer fee.</small>
           </div>
           <div class="col">
             <label class="font-weight-bold">Balance</label>
@@ -45,8 +45,14 @@
           <h5 class="card-title">{{bank}}</h5>
           <p class="card-text">
             Name: {{accountName}}
-            Account Number: {{accountNumber}}
           </p>
+          <p class="card-text">
+            Account No: {{accountNumber}}
+          </p>
+          <div class='d-flex justify-content-center'>
+            <a href='/profile/edit'>Edit</a>
+          </div>
+          <small class="text-danger">{{errMsg.bankAccount}}</small>
         </div>
       </div>
     </div>
@@ -93,10 +99,11 @@
         accountNumber: '',
         bank: '',
         amount: '',
-        balance: 25000,
+        balance: '',
         requests: [],
         errMsg: {
-          amount: ''
+          amount: '',
+          bankAccount: '',
         },
 
       }
@@ -109,6 +116,9 @@
       })
       axios.get('/api/payment-request/my-requests').then( (response) =>{
           this.requests = response.data;
+      })
+      axios.get('/api/user/balance').then( (response) =>{
+          this.balance = response.data;
       })
     },
     watch:{
@@ -126,6 +136,9 @@
             }).catch( (error) => {
                 if(error.response.data.errors.amount){
                   this.errMsg.amount = error.response.data.errors.amount[0]
+                }
+                if(error.response.data.errors.bankAccount){
+                  this.errMsg.bankAccount = error.response.data.errors.bankAccount[0]
                 }
               });
         }

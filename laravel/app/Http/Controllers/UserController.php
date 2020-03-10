@@ -98,4 +98,12 @@ class UserController extends Controller
         $ba = auth()->user()->BankAccount;
         return response($ba, 200);
     }
+
+    public function getBalance(){
+        /**
+         * Mock-up balance
+         */
+        $balance = 30000;
+        return response($balance, 200);
+    }
 }

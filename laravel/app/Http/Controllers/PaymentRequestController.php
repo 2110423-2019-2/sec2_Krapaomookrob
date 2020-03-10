@@ -23,11 +23,15 @@ class PaymentRequestController extends Controller
         /** 
          * Mock up balance
          */
-        $balance = 25000;
+        $balance = 30000;
 
         $validatedData = $request->validate([
             'amount' => 'required|integer|between:1,' . $balance,
         ]);
+
+        if(!auth()->user()->BankAccount){
+            return response(['message' => 'You need to add bank account information.', 'errors' => ['bankAccount' => ['Bank account information is required']]] ,422);
+        }
 
         PaymentRequest::create([
             'amount' => $request->amount,
