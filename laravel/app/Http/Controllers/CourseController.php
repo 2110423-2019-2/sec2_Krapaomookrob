@@ -105,11 +105,11 @@ class CourseController extends Controller
     }
 
     public function getStatus($course_id){
-        $registeredCourse = '';
+        $status = '';
         if(auth()->user()->role == 'student'){
-            $registeredCourse = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first();
+            $status = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first()->status;
         }
-        return response($registeredCourse->status, 200);
+        return response($status, 200);
     }
 
     public function myCoursesIndex(){
