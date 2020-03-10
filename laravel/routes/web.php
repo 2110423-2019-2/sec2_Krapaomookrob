@@ -132,6 +132,7 @@ Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('pr
 
 // Notification
 Route::get('/api/notification', 'NotificationController@getNotification')->name('notification.index');
+Route::get('/api/notification/markRead', 'NotificationController@markRead');
 
 // Admin panel
 Route::get('/admin-panel', function(){
