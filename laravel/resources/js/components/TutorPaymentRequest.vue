@@ -138,7 +138,7 @@
                 axios.post('/api/update-balance', {
                   id: this.userId,
                   amount: withdrawAmount,
-                  type: 'withdraw'
+                  method: 'withdraw'
                 }).then( (response) => {
                   window.location.href = "/";
                 });

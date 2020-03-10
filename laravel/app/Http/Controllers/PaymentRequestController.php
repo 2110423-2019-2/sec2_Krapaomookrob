@@ -22,7 +22,7 @@ class PaymentRequestController extends Controller
     public function create(Request $request){
         
         $validatedData = $request->validate([
-            'amount' => 'required|integer|between:1,' . auth()->user()->balance,
+            'amount' => 'required|integer|min:1|max:' . auth()->user()->balance,
         ]);
 
         if(!auth()->user()->BankAccount){
