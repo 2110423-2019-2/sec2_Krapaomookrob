@@ -39,7 +39,7 @@ const app = new Vue({
     el: '#app',
     vuetify: new Vuetify({
       theme: {
-        disable: true,
+        disable: false,
       }
     }),
     data: {

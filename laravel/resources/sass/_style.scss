@@ -42,6 +42,10 @@ body{background-color: $body-bg !important}
   border-radius:.5rem;
 }
 
+.btn-nav{
+  color: #000 !important;
+}
+
 .ownbtn:hover{
   color: #fff !important;
   background-image: linear-gradient(to right, #6BC7CB , #48A4D0);

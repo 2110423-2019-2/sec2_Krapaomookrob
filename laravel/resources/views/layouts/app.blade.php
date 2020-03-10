@@ -39,21 +39,21 @@
                       </li>
                     @endif
                     <li class="nav-item active">
-                      <a class="btn btn-light" href="/">Dashboard</a>
+                      <a class="btn btn-light btn-nav" href="/">Dashboard</a>
                     </li>
                     @if($user->isTutor() || $user->isStudent())
                       <li class="nav-item">
-                        <a class="btn btn-light" href="/my-courses">My Courses</a>
+                        <a class="btn btn-light btn-nav" href="/my-courses">My Courses</a>
                       </li>
                       <li class="nav-item dropdown">
-                        <a class="btn btn-light" href="#">My Calendar</a>
+                        <a class="btn btn-light btn-nav" href="#">My Calendar</a>
                       </li>
                     @endif
                     <li class="nav-item">
-                      <a class="btn btn-light" href="#">Messages</a>
+                      <a class="btn btn-light btn-nav" href="#">Messages</a>
                     </li>
                     <li class="nav-item">
-                      <a class="btn btn-light" href="/profile">My Account</a>
+                      <a class="btn btn-light btn-nav" href="/profile">My Account</a>
                     </li>
                     @if($user->isStudent() || $user->isTutor())
                       <li class="nav-item">
@@ -65,11 +65,11 @@
                     @endif
                     @if($user->isAdmin() || $user->isSuperuser())
                     <li class="nav-item">
-                      <a class="btn btn-light" href="/admin-panel">Admin Panel</a>
+                      <a class="btn btn-light btn-nav" href="/admin-panel">Admin Panel</a>
                     </li>
                     @endif
                     <li class="nav-item">
-                      <a class="btn btn-light" href="/logout">Logout</a>
+                      <a class="btn btn-light btn-nav" href="/logout">Logout</a>
                     </li>
                   {{-- Navbar for guest --}}
                   @else
