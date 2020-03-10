@@ -73,12 +73,7 @@
       },
       start: null,
       end: null,
-      selectedEvent: {},
-      selectedElement: null,
-      selectedOpen: false,
-      events:  [],
-      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-      names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party']
+      events:  []
     }),
     computed: {
       title () {
@@ -136,17 +131,7 @@
       next () {
         this.$refs.calendar.next()
       },
-      nth (d) {
-        return d > 3 && d < 21 ? 'th' : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
-      },
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
-      },
-      formatDate (a, withTime) {
-        return withTime
-          ? `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
-          : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`
-      },
+
     },
   }
 </script>
