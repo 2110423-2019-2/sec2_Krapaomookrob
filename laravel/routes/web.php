@@ -134,7 +134,6 @@ Route::get('/api/notification', 'NotificationController@getNotification')->name(
 
 // Admin panel
 Route::get('/admin-panel', function(){
-
     return view('admin_panel');
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
@@ -151,3 +150,7 @@ Route::get('/api/payment-request/my-requests', 'PaymentRequestController@getMyRe
 //transfer
 Route::post('/transfer','Frontend\paymentGatewayController@createTransferOmise');
 Route::get('/checktransfer','Frontend\paymentGatewayController@checkTransfer');
+
+// Wallet
+Route::get('/api/get-balance', 'UserController@getBalance');
+Route::post('/api/add-balance', 'UserController@addBalance');

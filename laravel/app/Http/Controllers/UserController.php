@@ -97,13 +97,25 @@ class UserController extends Controller
     public function getBankAccount(){
         $ba = auth()->user()->BankAccount;
         return response($ba, 200);
-    }
 
     public function getBalance(){
-        /**
-         * Mock-up balance
-         */
-        $balance = 30000;
-        return response($balance, 200);
+        $user = auth()->user();
+        return $user->balance;
+    }
+
+    public function addBalance(Request $request){
+        $user = User::findOrFail($request->id);
+        if ($request->amount >= 0){
+            $user->balance = $user->balance + $request->amount;
+            $user->save();
+        }
+    }
+
+    public function withdrawBalance(Request $request){
+        $user = User::findOrFail($request->id);
+        if ($request->amount >= 0 && $user->balance >= $request->amount){
+            $user->balance = $user->balance - $request->amount;
+            $user->save();
+        }
     }
 }
