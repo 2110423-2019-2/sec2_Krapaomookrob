@@ -35,4 +35,8 @@ class AdminController extends Controller
             return $user;
         // }
     }
+
+    public function getAllReports(){
+        
+    }
 }

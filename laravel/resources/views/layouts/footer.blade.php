@@ -26,11 +26,20 @@
                 </div>
                 <div class="modal-body">
                     <div class="modal-footer" id="modal_footer">
-                        <input id="btnSubmit" href="#" name="btnSubmit" value="Donate" class="btn ownbtn" type="submit">
-                        {{-- <a id="btnDonate" class="btn btn-default-border-blk">Donate</a> --}}
+                        {{-- <input id="btnSubmit" href="#" name="btnSubmit" value="submit" class="btn ownbtn" type="submit"> --}}
+                        <a href="/" id="btnSubmit" class="btn btn-default-border-blk">Donate</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </footer>
+
+@section('content')
+<div class="container">
+  <form action="/profile" enctype="multipart/form-data" method="post">
+    @csrf
+    @method('PATCH')
+    </div>
+</div>
+@endsection
