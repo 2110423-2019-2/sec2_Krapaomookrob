@@ -46,7 +46,7 @@
                         <a class="btn btn-light btn-nav" href="/my-courses">My Courses</a>
                       </li>
                       <li class="nav-item dropdown">
-                        <a class="btn btn-light" href="/my-calendar">My Calendar</a>
+                        <a class="btn btn-light btn-nav" href="/my-calendar">My Calendar</a>
                       </li>
                     @endif
                     <li class="nav-item">
