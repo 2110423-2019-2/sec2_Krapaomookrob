@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\BankAccount;
+use App\Transaction;
 
 class UserController extends Controller
 {
@@ -104,10 +105,12 @@ class UserController extends Controller
         if ($request->type == "add"){
             if ($request->amount >= 0){
                 $user->balance = $user->balance + $request->amount;
+                $transaction = Transaction::create(['user_id' => $request->id, 'amount' => $request->amount, 'type' => $request->type]);
             }
         } elseif ($request->type == "withdraw"){
             if ($request->amount >= 0 && $user->balance >= $request->amount){
                 $user->balance = $user->balance - $request->amount;
+                $transaction = Transaction::create(['user_id' => $request->id, 'amount' => $request->amount, 'type' => $request->type]);
             }
         } 
         $user->save();
