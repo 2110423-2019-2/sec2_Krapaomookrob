@@ -135,11 +135,13 @@
               amount: withdrawAmount,
             }).then( (response) => {
               if(response.status==200){
-                axios.post('/api/withdraw-balance', {
-                  id: this.userID,
-                  amount: withdrawAmount
+                axios.post('/api/update-balance', {
+                  id: this.userId,
+                  amount: withdrawAmount,
+                  type: 'withdraw'
+                }).then( (response) => {
+                  window.location.href = "/";
                 });
-                window.location.href = "/";
               }
             }).catch( (error) => {
                 if(error.response.data.errors.amount){
