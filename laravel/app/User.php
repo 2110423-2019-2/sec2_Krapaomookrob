@@ -79,4 +79,9 @@ class User extends Authenticatable
     public function notifications() {
         return $this->belongsToMany(Notification::class);
     }
+
+    public function classes()
+    {
+        return $this->hasManyThrough('App\CourseClass', 'App\Course');
+    }
 }

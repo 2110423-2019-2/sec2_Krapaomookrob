@@ -14,6 +14,7 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CalendarController;
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -139,3 +140,8 @@ Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
 Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
 Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
+
+Route::get('/my-calendar', function () {
+    return view('my_calendar');
+});
+Route::get('/api/my-calendar', 'CalendarController@getMyClasses');
