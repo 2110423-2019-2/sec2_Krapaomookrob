@@ -182,6 +182,7 @@ class CourseController extends Controller
     public function myCoursesIndex(){
         $user = auth()->user();
         $courses;
+        $students = [];
         $classDateList = [];
         $nextClasses = [];
         $isFinished = [];
@@ -193,6 +194,7 @@ class CourseController extends Controller
             $courses = Course::with(['days', 'subjects', 'location'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
         }
         foreach($courses as $course){
+            array_push($students,$course->students);
             $now = Carbon::now()->addHours(7);
             $nextClass = $course->courseClasses->sortBy('date')->where('date', '>=', $now)->first();
             $lastClass = $course->courseClasses->sortBy('date')->last();
@@ -201,14 +203,14 @@ class CourseController extends Controller
             array_push($classesLeft, $course->courseClasses->where('date', '>=', $now)->count());
             array_push($isFinished, $lastClass?$lastClass->date < $now:NULL);
         }
-        return view('my_courses', ['courses' => $courses, 'classDateList' => $classDateList, 'nextClasses' => $nextClasses, 'isFinished' => $isFinished, 'classesLeft' => $classesLeft]);
+        return view('my_courses', ['courses' => $courses, 'classDateList' => $classDateList, 'nextClasses' => $nextClasses, 'isFinished' => $isFinished, 'classesLeft' => $classesLeft, 'students' => $students]);
     }
 
     public function requestCourse(Request $request) {
         $data = array('course_id'=>$request->course_id,"requester_id"=>auth()->user()->id);
         DB::table("courses_requester")->insert($data);
 
-        // create Notification 
+        // create Notification
         $username = User::where('id','=',auth()->user()->id)->first()->name;
         $message = "{$username} have request to teach your course";
         $title = "Request to teach";
