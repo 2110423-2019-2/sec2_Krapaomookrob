@@ -68,9 +68,6 @@
                 :color="selectedEvent.color"
                 dark
               >
-                <v-btn icon>
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
                 <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon
@@ -201,6 +198,9 @@
         axios.post('/api/class/postpone', {
           classId: class_id,
         }).then((response) => this.status = "Postponed")
+        
+        axios.get('/api/my-calendar').then(response => this.events = response.data)
+        this.$refs.calendar.checkChange()
       },
     },
     computed: {
