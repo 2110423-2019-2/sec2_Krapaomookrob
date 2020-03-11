@@ -31,7 +31,6 @@ Vue.component('new_course-component', require('./components/NewCourseComponent.v
 Vue.component('search-course-component', require('./components/SearchCourseComponent.vue').default);
 Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('cancel-button', require('./components/CancelButton.vue').default);
-Vue.component('postpone-button', require('./components/PostponeButton.vue').default);
 Vue.component('chat-button', require('./components/ChatButton.vue').default);
 Vue.component('regis-now-button', require('./components/RegisNowButton.vue').default);
 Vue.component('add-to-cart-button', require('./components/AddToCartButton.vue').default);
