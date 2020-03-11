@@ -10,6 +10,8 @@ use App\Day;
 use App\User;
 use App\Location;
 use App\Subject;
+use App\CourseStudent;
+
 
 class SearchController extends Controller
 {
@@ -87,6 +89,10 @@ class SearchController extends Controller
             'users.education_level',
             )->groupBy('courses.id');
             
+        // for filtering only not registered course
+        $registered_course = CourseStudent::all()->pluck('course_id'); 
+        $query_2 = $query_2->whereNotIn('courses.id', $registered_course);
+
         return $query_2->get();
     }
     
