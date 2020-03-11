@@ -17,6 +17,11 @@ body{background-color: $body-bg !important}
   background-color:$white;
 }
 
+#footer{
+  background-color:$black;
+  color:#74D4D8;
+}
+
 .card{
   margin-top: 1rem;
 }
@@ -282,4 +287,9 @@ button[disabled]:hover{
   width: 130px !important;
   margin: 3px !important;
   border-radius: 5px !important;
+}
+
+.bg-black{
+  background-color: black;
+  color: #fff;
 }

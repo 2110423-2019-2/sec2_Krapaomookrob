@@ -119,6 +119,11 @@ Route::patch('/profile', 'UserController@updateProfile')->name('profile.update')
 
 // Tutor Profile View
 Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('profile.tutor.show');
+Route::get('/tutor/star/{user}', 'ReviewController@getRating');
+
+//  Review & Rating Course
+Route::get('/review-course/{courseId}', 'ReviewController@viewReviewCourse');
+Route::post('/api/review/course', 'ReviewController@createReviewCourse');
 
 // Notification
 Route::get('/api/notification', 'NotificationController@getNotification')->name('notification.index');
@@ -147,6 +152,15 @@ Route::get('/checktransfer','Frontend\paymentGatewayController@checkTransfer');
 Route::get('/api/get-balance', 'UserController@getBalance');
 Route::post('/api/update-balance', 'UserController@updateBalance');
 
+// Admin Report List
+Route::get('/admin-panel/reportList', function(){
+    return view('admin_panel_report');
+});
+Route::get('/admin-panel/getReports', 'AdminController@getReports');
+Route::get('/admin-panel/readReport/{id}', 'AdminController@readReport');
+
+//  Report via Contact Admin
+Route::post('/report','UserController@sendReport');
 Route::get('/my-calendar', function () {
     return view('my_calendar');
 });
