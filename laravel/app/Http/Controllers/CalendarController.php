@@ -37,7 +37,7 @@ class CalendarController extends Controller
       }else{
         $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.nickname from course_classes classes
                                 inner join courses on classes.course_id = courses.id
-                                inner join course_student student on classes.id = student.course_id
+                                inner join course_student student on courses.id = student.course_id
                                 left join users on courses.user_id = users.id
                                 where student.user_id = ? and student.status = ?', [$user->id, 'registered']);
         foreach($classes as $class){
