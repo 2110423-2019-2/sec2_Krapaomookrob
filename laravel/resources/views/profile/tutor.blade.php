@@ -47,6 +47,8 @@
         </div>
         <div class="card-body col-8 mx-3 mb-5 mt-5 dash">
           <h4 class="card-title">Reviews</h4>
+          {{-- This is Star Display tutorid --}}
+        {{-- <star-display tutorid = "{{$user -> id}}"></star-display> --}}
           <div class="card p-2 border-0">
             <div class="d-flex justify-content-start align-center">
                 <h6 class = "my-0" style = "color: lightgrey;">OVERALL RATING</h6>
@@ -57,14 +59,10 @@
               <div class="card col-12 mb-3 border-0" style = "background-color: #EEEEEE;">
                 <div class="container px-3 py-0 d-flex">
                   <div class="card-body px-3 py-0">
-                    <div class="row justify-content-between">
+                    <div class="row">
                       <div class="d-flex align-center">
-                      <div>
                       <h6 class = "my-0">{{$review -> name}}</h6>
-                      </div>
-                      <div class = "ml-auto p-2">
-                        <star-rating-score rating ="{{$review -> rating}}"></star-rating-score>
-                      </div>
+                      <star-rating-score rating ="{{$review -> rating}}"></star-rating-score>
                       </div>
                     </div>
                     <div class="row">

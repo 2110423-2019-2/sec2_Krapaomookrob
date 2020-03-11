@@ -129,6 +129,7 @@ Route::patch('/profile', 'UserController@updateProfile')->name('profile.update')
 
 // Tutor Profile View
 Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('profile.tutor.show');
+Route::get('/tutor/star/{user}', 'ReviewController@getRating');
 
 //  Review & Rating Course
 Route::get('/review-course/{courseId}', 'ReviewController@viewReviewCourse');
