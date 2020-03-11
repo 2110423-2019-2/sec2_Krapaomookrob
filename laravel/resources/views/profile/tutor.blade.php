@@ -6,7 +6,7 @@
 @section('topic', 'Tutor Profile')
 
 @section('content')
-<div id = "app" class="container">
+<div class="container">
   <div class="row justify-content-center">
     <div class="card col-12 p-0">
       <div class="card-header editt-bg m-0 p-0">
@@ -47,61 +47,31 @@
         </div>
         <div class="card-body col-8 mx-3 mb-5 mt-5 dash">
           <h4 class="card-title">Reviews</h4>
+          {{-- This is Star Display tutorid --}}
+        {{-- <star-display tutorid = "{{$user -> id}}"></star-display> --}}
           <div class="card p-2 border-0">
-
-            <h6 class = "my-0" style = "color: lightgrey;">OVERALL RATING</h6>
-            <div style = "color: grey;">
-              <star-rating :rating="3.8" :star-size="25" :border-width="0"  :rounded-corners="false" :read-only="true" :increment="0.01"></star-rating>
+            <div class="d-flex justify-content-start align-center">
+                <h6 class = "my-0" style = "color: lightgrey;">OVERALL RATING</h6>
+                <star-rating-score rating ="{{$rating}}"></star-rating-score>
             </div>
-            <div class="container overflow-auto px-0 mt-3" style = "height: 30vh">
+            <div class="container overflow-auto px-0" style = "height: 30vh">
+              @foreach($reviews as $review)
               <div class="card col-12 mb-3 border-0" style = "background-color: #EEEEEE;">
-                <div class="container d-flex">
-                  <div class="card-body">
-                    <div class="row flex">
-                      <h6 class = "my-0">Review Subject</h6>
-                      <div class="ml-auto">
-                        <star-rating :rating="3.8" :star-size="15" :inline="true" :border-width="0" :rounded-corners="false" :read-only="true" :increment="0.01"></star-rating>
+                <div class="container px-3 py-0 d-flex">
+                  <div class="card-body px-3 py-0">
+                    <div class="row">
+                      <div class="d-flex align-center">
+                      <h6 class = "my-0">{{$review -> name}}</h6>
+                      <star-rating-score rating ="{{$review -> rating}}"></star-rating-score>
                       </div>
                     </div>
                     <div class="row">
-                      <span class = "" style = "color: #999999; font-weight: 200;">Review Content. Lorem ipsum dolor sit amet</span>
+                      <span class = "" style = "color: #999999; font-weight: 200;">{{$review -> message}}</span>
                     </div>
                   </div>
                 </div>
               </div>
-              
-              <div class="card col-12 mb-3  border-0" style = "background-color: #EEEEEE;">
-                <div class="container d-flex">
-                  <div class="card-body">
-                    <div class="row flex">
-                      <h6 class = "my-0">Review Subject</h6>
-                      <div class="ml-auto">
-                        <star-rating :rating="3.8" :star-size="15" :inline="true" :border-width="0" :rounded-corners="false" :read-only="true" :increment="0.01"></star-rating>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <span class = "" style = "color: #999999; font-weight: 200;">Review Content. Lorem ipsum dolor sit amet</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card col-12 mb-3  border-0" style = "background-color: #EEEEEE;">
-                <div class="container d-flex">
-                  <div class="card-body">
-                    <div class="row flex">
-                      <h6 class = "my-0">Review Subject</h6>
-                      <div class="ml-auto">
-                        <star-rating :rating="3.8" :star-size="15" :inline="true" :border-width="0" :rounded-corners="false" :read-only="true" :increment="0.01"></star-rating>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <span class = "" style = "color: #999999; font-weight: 200;">Review Content. Lorem ipsum dolor sit amet</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+              @endforeach
             </div>
 
           </div>
@@ -110,5 +80,4 @@
     </div>
   </div>
 </div>
-<script src = "{{mix('js/app.js')}}"></script>
 @endsection

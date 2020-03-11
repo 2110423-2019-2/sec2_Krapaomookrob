@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\User;
 use App\BankAccount;
 use App\Transaction;
+use App\Report;
+use App\Http\Controllers\ReviewController;
 
 class UserController extends Controller
 {
@@ -40,7 +42,7 @@ class UserController extends Controller
     }
 
     public function viewTutorProfile(User $user){
-
+        
         $role = ($user -> role)?($user -> role):"-";
         $username = ($user -> name)?($user -> name):"-";
         $phone = ($user -> phone)?($user -> phone):"-";
@@ -50,8 +52,10 @@ class UserController extends Controller
         $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
         $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
         $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
+        $rating = ReviewController::getRating($user -> id);
+        $reviews = ReviewController::getReviews($user -> id);
 
-        return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank'));
+        return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviews'));
     }
 
     public function editProfile(User $user){
@@ -93,6 +97,16 @@ class UserController extends Controller
 
     public function getRole(){
         return  response(auth()->user()->role, 200);
+    }
+
+    public function sendReport(Request $request){
+        //validation should be implemented in the future.
+        Report::create([
+            'sender_id' => auth()->user()->id,
+            'title' => $request->title,
+            'message' => $request->message,
+        ]);
+        return redirect('/');
     }
 
     public function getBankAccount(){

@@ -22,8 +22,7 @@ Vue.use(VueGoogleMaps, {
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
 
-import StarRating from 'vue-star-rating'
-Vue.component('star-rating', require('vue-star-rating').default);
+
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('remove-button', require('./components/RemoveButton.vue').default);
@@ -37,6 +36,11 @@ Vue.component('add-to-cart-button', require('./components/AddToCartButton.vue').
 Vue.component('admin_panel-component', require('./components/AdminPanelList.vue').default);
 Vue.component('tutor-payment-request', require('./components/TutorPaymentRequest.vue').default);
 Vue.component('admin-payment-request', require('./components/AdminPaymentRequest.vue').default);
+Vue.component('report-list', require('./components/ReportList.vue').default);
+Vue.component('star-rating-button', require('./components/StarRatingComponent.vue').default);
+Vue.component('star-rating-score', require('./components/StarRatingScoreComponent.vue').default);
+Vue.component('star-display', require('./components/StarRatingDisplayComponent.vue').default);
+
 
 //according https://github.com/vuetifyjs/vuetify/issues/9999
 const ignoreWarnMessage = 'The .native modifier for v-on is only valid on components but it was used on <div>.';
