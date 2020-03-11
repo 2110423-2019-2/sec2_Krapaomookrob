@@ -10,7 +10,7 @@ use App\course;
 use App\Cart;
 use App\User;
 use App\CourseStudent;
-use App\Notification;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Cookie;
 
@@ -162,7 +162,7 @@ class paymentGatewayController extends Controller{
                 //Notification
                 $user = auth()->user();
                 $user_id = $user->id;
-                $course = Course::find($value);
+                $course = Course::find($value)->first();
                 $tutor_id = $course->user_id;
                 $user_name = $user->name;
                 $title = "Course registration";
