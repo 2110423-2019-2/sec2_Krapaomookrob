@@ -150,3 +150,12 @@ Route::get('/my-calendar', function () {
     return view('my_calendar');
 });
 Route::get('/api/my-calendar', 'CalendarController@getMyClasses');
+
+// My Course Request
+Route::get('/my-course-requests', function(){
+    return view('my_course_request');
+});
+Route::get('/api/course-requests', 'CourseRequesterController@getRequestFromTutor');
+Route::get('/api/get-my-course-request','CourseController@getMyCourseRequest');
+Route::post('api/decline-request', 'CourseRequesterController@declineRequest');
+Route::post('api/accept-request', 'CourseRequesterController@acceptRequest');
