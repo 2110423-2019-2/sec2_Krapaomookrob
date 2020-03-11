@@ -22,6 +22,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', function () {
         return view('dashboard');
     });
+    Route::get('/tutor/payment-request', 'PaymentRequestController@tutorIndex');
+    Route::get('/admin/payment-request', 'PaymentRequestController@adminIndex');
 });
 
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
@@ -135,13 +137,26 @@ Route::get('/api/notification', 'NotificationController@getNotification')->name(
 
 // Admin panel
 Route::get('/admin-panel', function(){
-
     return view('admin_panel');
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
 Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
 Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
+
+//Payment Request
+Route::get('/api/user/bank-account', 'UserController@getBankAccount');
+Route::get('/api/user/balance', 'UserController@getBalance');
+Route::post('/api/payment-request/create', 'PaymentRequestController@create');
+Route::get('/api/payment-request/my-requests', 'PaymentRequestController@getMyRequests');
+
+//transfer
+Route::post('/transfer','Frontend\paymentGatewayController@createTransferOmise');
+Route::get('/checktransfer','Frontend\paymentGatewayController@checkTransfer');
+
+// Wallet
+Route::get('/api/get-balance', 'UserController@getBalance');
+Route::post('/api/update-balance', 'UserController@updateBalance');
 
 Route::get('/my-calendar', function () {
     return view('my_calendar');
