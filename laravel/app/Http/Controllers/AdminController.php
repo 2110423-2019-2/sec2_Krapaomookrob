@@ -35,4 +35,16 @@ class AdminController extends Controller
             return $user;
         // }
     }
+
+    public function getReports(){
+        //$reports = DB::table('reports')->join('users','reports.sender_id','=','users.id')->get();
+        $reports = DB::table('users')->join('reports','reports.sender_id','=','users.id')->get();
+        // dd($reports);
+        return $reports;
+    }
+
+    public function readReport($id){
+        $report = DB::table('reports')->where('id','=',$id)->update(['status' => 'read']);
+        return $report;
+    }
 }

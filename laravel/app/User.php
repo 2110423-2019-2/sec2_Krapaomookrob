@@ -84,9 +84,17 @@ class User extends Authenticatable
         return $this->hasMany('App\PaymentRequest', 'requested_by');
     }
 
+    public function Report(){
+        return $this->hasMany(Report::class);
+    }
+
     public function classes()
     {
         return $this->hasManyThrough('App\CourseClass', 'App\Course');
+    }
+
+    public function reviews(){
+        return $this->hasMany(Review::class);
     }
     
     public function transactions() {

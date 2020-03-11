@@ -13,7 +13,7 @@
     </head>
 
     <body>
-      <v-app class="main-body" id="app">
+      <div class="main-body">
         <header id="header">
           <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light px-0">
@@ -90,7 +90,7 @@
           </div>
           @yield('content')
         </div>
-      </v-app>
+      </div>
         <script src="{{mix('js/app.js')}}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous"></script>
         {{-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> --}}

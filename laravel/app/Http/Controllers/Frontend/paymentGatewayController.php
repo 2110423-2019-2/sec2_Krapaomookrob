@@ -11,6 +11,7 @@ use App\Cart;
 use App\User;
 use App\CourseStudent;
 use App\PaymentRequest;
+
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Cookie;
 use App\BankAccount;
@@ -225,7 +226,19 @@ class paymentGatewayController extends Controller{
             foreach ($cart as $value) {
 
                    // 'user_id' => auth()->user()->id,
-                   auth()->user()->registeredCourses()->attach(Course::find($value));
+                auth()->user()->registeredCourses()->attach(Course::find($value));
+
+                //Notification
+                $user = auth()->user();
+                $user_id = $user->id;
+                $course = Course::find($value)->first();
+                $tutor_id = $course->user_id;
+                $user_name = $user->name;
+                $title = "Course registration";
+                $user_message = "New course has been registered successful.";
+                $tutor_message = "{$user_name} have register your course.";
+                NotificationController::createNotification($user_id, $title, $user_message);
+                NotificationController::createNotification($tutor_id, $title, $tutor_message);
 
             }
             return view('dashboard')->with('alert','Successful');

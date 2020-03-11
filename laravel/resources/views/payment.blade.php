@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.forPayment')
 
 
 @section('content')
@@ -80,6 +80,3 @@
     </div>
 </div>
 @endsection
-
-
-
