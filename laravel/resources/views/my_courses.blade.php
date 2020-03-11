@@ -31,11 +31,14 @@
                         @if(auth()->user()->isTutor())
                             <p class='font-weight-bold mb-0'>Course ID {{$course->id}} </p>
                             <p>Number of students {{$course->studentCount}} </p>
+                            @foreach($students[$index] as $student)
+                                <p class='mb-0'>{{$student->name}}</p>
+                            @endforeach
                         @else
                             <p class='font-weight-bold mb-0'> {{$course->user->nickname}} </p>
                             <p> {{$course->user->education_level}} </p>
                         @endif
-                        <a href='#' class='btn ownbtn'>Chat</a> 
+                        <a href='#' class='btn ownbtn'>Chat</a>
                     </td>
                     <td class='col-2'>{{implode(', ', $course->subjects->pluck('name')->toArray())}}</td>
                 <td class='col-2'> {{$course->location->name . ' ' . $course->location->address}}</td>
@@ -62,7 +65,7 @@
                         @endif
                     </td>
                     <td class="col-2">
-                        
+
                         @if($isFinished[$index])
                             <div class="row justify-content-md-center">
                                 <p class="text-success">Finished</p>
