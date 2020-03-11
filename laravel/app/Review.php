@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    protected $fillable = [
-        'id', 'student_id', 'course_id', 'tutor_id', 'message', 'rating'
-    ];
+
+    protected $guarded = [];
+
+    public function courseStudent(){
+        return $this->belongsTo(CourseStudent::class);
+    }
 
     public function student(){
         return $this->belongsTo(User::class);
@@ -19,6 +22,6 @@ class Review extends Model
     }
 
     public function course(){
-        return $this->belongsTo(CourseStudent::class);
+        return $this->belongsTo(Course::class);
     }
 }

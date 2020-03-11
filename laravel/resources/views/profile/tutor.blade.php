@@ -51,9 +51,9 @@
 
             <h6 class = "my-0" style = "color: lightgrey;">OVERALL RATING</h6>
             <div style = "color: grey;">
-              <star-rating :rating="3.8" :star-size="25" :border-width="0"  :rounded-corners="false" :read-only="true" :increment="0.01"></star-rating>
+              <star-rating-score rating ="{{$rating}}"></star-rating-score>
             </div>
-            <div class="container overflow-auto px-0 mt-3" style = "height: 30vh">
+            <div class="container overflow-auto px-0" style = "height: 30vh">
               <div class="card col-12 mb-3 border-0" style = "background-color: #EEEEEE;">
                 <div class="container d-flex">
                   <div class="card-body">

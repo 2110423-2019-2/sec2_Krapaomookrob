@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\BankAccount;
 use App\Report;
+use App\Http\Controllers\ReviewController;
 
 class UserController extends Controller
 {
@@ -40,7 +41,7 @@ class UserController extends Controller
     }
 
     public function viewTutorProfile(User $user){
-
+        
         $role = ($user -> role)?($user -> role):"-";
         $username = ($user -> name)?($user -> name):"-";
         $phone = ($user -> phone)?($user -> phone):"-";
@@ -50,8 +51,9 @@ class UserController extends Controller
         $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
         $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
         $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
+        $rating = ReviewController::getRating($user -> id);
 
-        return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank'));
+        return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating'));
     }
 
     public function editProfile(User $user){

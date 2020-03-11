@@ -21,7 +21,6 @@ class CreateReviewsTable extends Migration
             $table->unsignedBigInteger('tutor_id');
             $table->text('message');
             $table->tinyInteger('rating');
-            $table->timestamps();
             $table->foreign('student_id')->references('id')->on('users');
             $table->foreign('course_id')->references('id')->on('courses');
             $table->foreign('tutor_id')->references('id')->on('users');

@@ -88,4 +88,8 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough('App\CourseClass', 'App\Course');
     }
+
+    public function reviews(){
+        return $this->hasMany(Review::class);
+    }
 }

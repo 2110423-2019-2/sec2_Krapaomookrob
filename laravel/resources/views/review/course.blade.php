@@ -20,13 +20,7 @@
           <div class="row justify-content-center">
             <div class="font-weight-light">course ID: {{ $course -> id }}</div>
           </div>
-          <form action="/report" enctype="multipart/form-data" method="post">
-            @csrf
-            <h6>Review Message</h6>
-            <textarea class="form-control px-5" id="message" type="text" name="message" autofocus></textarea>
-            <star-rating-button></star-rating-button>
-            <div class="d-flex justify-content-end"><button class="btn btn-light mt-3 ">Rate</button></div>
-          </form>
+          <div class="py-3"><star-rating-button courseid = "{{ $course -> id }}" studentid = "{{ $student -> id }}" tutorid = "{{ $tutor -> id }}"></star-rating-button></div>
         </div>
       </div>
     </div>
