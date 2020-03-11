@@ -21,8 +21,7 @@ Vue.use(VueGoogleMaps, {
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
 
-import StarRating from 'vue-star-rating'
-Vue.component('star-rating', require('vue-star-rating').default);
+
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('remove-button', require('./components/RemoveButton.vue').default);
@@ -35,6 +34,7 @@ Vue.component('regis-now-button', require('./components/RegisNowButton.vue').def
 Vue.component('add-to-cart-button', require('./components/AddToCartButton.vue').default);
 Vue.component('admin_panel-component', require('./components/AdminPanelList.vue').default);
 Vue.component('report-list', require('./components/ReportList.vue').default);
+Vue.component('star-rating-button', require('./components/StarRatingComponent.vue').default);
 
 const app = new Vue({
     el: '#app',

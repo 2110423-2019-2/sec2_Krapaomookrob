@@ -6,7 +6,7 @@
 @section('topic', 'Tutor Profile')
 
 @section('content')
-<div id = "app" class="container">
+<div class="container">
   <div class="row justify-content-center">
     <div class="card col-12 p-0">
       <div class="card-header editt-bg m-0 p-0">
@@ -110,5 +110,4 @@
     </div>
   </div>
 </div>
-<script src = "{{mix('js/app.js')}}"></script>
 @endsection

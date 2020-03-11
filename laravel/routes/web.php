@@ -127,6 +127,10 @@ Route::patch('/profile', 'UserController@updateProfile')->name('profile.update')
 // Tutor Profile View
 Route::get('/tutor/profile/{user}', 'UserController@viewTutorProfile')->name('profile.tutor.show');
 
+//  Review & Rating Course
+Route::get('/review-course/{courseId}', 'ReviewController@viewReviewCourse')->name('reviewcourse.show');
+Route::post('/review-course/{courseId}', 'ReviewController@createReviewCourse')->name('reviewcourse.create');
+
 // Notification
 Route::get('/api/notification', 'NotificationController@getNotification')->name('notification.index');
 
