@@ -28,7 +28,7 @@ class ReviewController extends Controller
         $this -> middleware('auth');
     }
 
-    public function viewReviewCourse($courseId){
+    public static function viewReviewCourse($courseId){
         $course = Course::find($courseId);
         $tutor = User::find($course -> user_id);
         $student = auth() -> user();
@@ -37,7 +37,7 @@ class ReviewController extends Controller
         return view('review.course',compact('course', 'tutor', 'student'));
     }
 
-    public function createReviewCourse(Request $request){
+    public static function createReviewCourse(Request $request){
         Review::updateOrCreate([
             'student_id' => $request->studentid,
             'course_id' => $request->courseid,
@@ -49,9 +49,17 @@ class ReviewController extends Controller
     }
 
     public static function getRating($tutorId){
-        $results = DB::Table('reviews')->select('rating')->where('tutor_id',$tutorId)->get();
-        $averageStar = $results -> avg('rating');
-        //dd($average);
-        return $averageStar;
+        $ratings = DB::Table('reviews')->select('rating')->where('tutor_id',$tutorId)->get();
+        $averageStar = $ratings -> avg('rating');
+        return number_format((float)$averageStar, 2, '.','');
+    }
+
+    public static function getReviews($tutorId){
+        $reviews = DB::Table('reviews')
+                        ->join('users','reviews.student_id','=','users.id')
+                        ->select('message','rating','student_id','name')
+                        ->where('tutor_id',$tutorId)
+                        ->get();
+        return $reviews;
     }
 }

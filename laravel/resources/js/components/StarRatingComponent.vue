@@ -6,7 +6,7 @@
         v-model="rating"
         background-color="yellow lighten-3"
         color="yellow"
-        medium>
+        large>
     </v-rating>
 </div>
 <div class="d-flex justify-content-end"><a class="btn btn-light" @click="submitReview">Submit</a></div>

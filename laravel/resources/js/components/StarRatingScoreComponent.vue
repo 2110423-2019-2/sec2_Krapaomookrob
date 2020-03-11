@@ -1,12 +1,12 @@
 <template>
-<div class="d-flex justify-content-start pt-3">
+<div class="d-flex">
   <span class="align-center">
     <div><v-rating
         readonly
         half-increments
         v-model="rating"
-        background-color="yellow lighten-3"
-        color="yellow"
+        background-color="#fad06a"
+        color="#fad06a"
         medium>
     </v-rating>
     </div>

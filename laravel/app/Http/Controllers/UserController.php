@@ -52,8 +52,9 @@ class UserController extends Controller
         $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
         $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
         $rating = ReviewController::getRating($user -> id);
+        $reviews = ReviewController::getReviews($user -> id);
 
-        return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating'));
+        return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviews'));
     }
 
     public function editProfile(User $user){
