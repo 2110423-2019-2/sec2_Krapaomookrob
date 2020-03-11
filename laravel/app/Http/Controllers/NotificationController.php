@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Auth;
 use Carbon\Carbon;
 
+use App\Course;
+use App\CourseStudent;
+
+
 class NotificationController extends Controller
 {
     //
@@ -56,5 +60,17 @@ class NotificationController extends Controller
         $user = Auth::user();
         $user_id = $user->id;
         Notification::where('receiver_id','=',$user_id)->where('status','=','new')->update(['status' => 'read']);
+    }
+  
+    public static function multiNotify($course_id, $title, $message){
+        // notify everyone enrolled to the course
+
+        $teacher_id = Course::where('id', $course_id)->first()->user_id;
+        self::createNotification($teacher_id, $title, $message);
+        
+        $students = CourseStudent::where('course_id', $course_id)->pluck('user_id')->toArray();
+        foreach($students as $student_id){
+            self::createNotification($student_id, $title, $message);
+        }
     }
 }
