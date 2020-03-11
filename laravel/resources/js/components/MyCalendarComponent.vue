@@ -83,7 +83,6 @@
                 Tutor: {{selectedEvent.name}}<br>
                 Time: {{selectedEvent.time}}<br>
                 Location: {{selectedEvent.location}}
-                {{selectedEvent.class_id}}
               </v-card-text>
               <v-card-actions>
                 <v-btn
