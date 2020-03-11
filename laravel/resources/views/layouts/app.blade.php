@@ -13,7 +13,7 @@
     </head>
 
     <body>
-      <div id="app">
+      <v-app class="main-body" id="app">
         <header id="header">
           <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light px-0">
@@ -31,29 +31,29 @@
                   @if(!empty($user))
                     <li class="nav-item active">
                       <small class="d-block">Hello, <span class="theme">{{$user->name}}</span></small>
-                      <small class="d-block">You have <span class="theme">1023 Available Credits</span></small>
+                      <small class="d-block">You have <span class="theme">{{$user->balance}} Available Credits</span></small>
                     </li>
                     @if($user->isTutor())
                       <li class="nav-item">
-                        <a class="btn ownbtn" href="#">Request Payment</a>
+                        <a class="btn ownbtn" href="/tutor/payment-request">Request Payment</a>
                       </li>
                     @endif
                     <li class="nav-item active">
-                      <a class="btn btn-light" href="/">Dashboard</a>
+                      <a class="btn btn-light btn-nav" href="/">Dashboard</a>
                     </li>
                     @if($user->isTutor() || $user->isStudent())
                       <li class="nav-item">
-                        <a class="btn btn-light" href="/my-courses">My Courses</a>
+                        <a class="btn btn-light btn-nav" href="/my-courses">My Courses</a>
                       </li>
                       <li class="nav-item dropdown">
-                        <a class="btn btn-light" href="#">My Calendar</a>
+                        <a class="btn btn-light btn-nav" href="/my-calendar">My Calendar</a>
                       </li>
                     @endif
                     <li class="nav-item">
-                      <a class="btn btn-light" href="#">Messages</a>
+                      <a class="btn btn-light btn-nav" href="#">Messages</a>
                     </li>
                     <li class="nav-item">
-                      <a class="btn btn-light" href="/profile">My Account</a>
+                      <a class="btn btn-light btn-nav" href="/profile">My Account</a>
                     </li>
                     @if($user->isStudent() || $user->isTutor())
                       <li class="nav-item">
@@ -65,11 +65,11 @@
                     @endif
                     @if($user->isAdmin() || $user->isSuperuser())
                     <li class="nav-item">
-                      <a class="btn btn-light" href="/admin-panel">Admin Panel</a>
+                      <a class="btn btn-light btn-nav" href="/admin-panel">Admin Panel</a>
                     </li>
                     @endif
                     <li class="nav-item">
-                      <a class="btn btn-light" href="/logout">Logout</a>
+                      <a class="btn btn-light btn-nav" href="/logout">Logout</a>
                     </li>
                   {{-- Navbar for guest --}}
                   @else
@@ -77,10 +77,10 @@
                         <a class="btn btn-light" href="/login">Login</a>
                     </li>
                   @endif
-              </ul>
-            </div>
-          </nav>
-        </div>
+                </ul>
+              </div>
+            </nav>
+          </div>
       </header>
 
         <div class="container">
@@ -90,13 +90,13 @@
           </div>
           @yield('content')
         </div>
-      </div>
+      </v-app>
         <script src="{{mix('js/app.js')}}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous"></script>
         {{-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> --}}
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/544fc5cc4f.js" crossorigin="anonymous"></script>
-      
+
     </body>
 </html>

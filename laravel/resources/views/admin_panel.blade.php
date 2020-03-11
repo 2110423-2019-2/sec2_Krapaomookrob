@@ -6,7 +6,7 @@
 
 @section('menu')
 <a class="btn ownbtn" href="#">Manage Admin</a>
-<a class="btn ownbtn" href="#">For etc</a>
+<a class="btn ownbtn" href="/admin/payment-request">Payment Requests</a>
 @endsection
 
 @section('content')

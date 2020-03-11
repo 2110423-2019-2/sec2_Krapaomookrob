@@ -57,40 +57,7 @@ class CourseController extends Controller
         return response('OK', 200);
     }
 
-    public static function newClasses($course){
-        $weekMap = [
-            'Sunday' => 0,
-            'Monday' => 1,
-            'Tuesday' => 2,
-            'Wednesday' => 3,
-            'Thursday' => 4,
-            'Friday' => 5,
-            'Saturday' => 6,
-        ];
-        $weekDays = $course->days->pluck('name')->toArray();
-        $count = $course->noClasses;
-        $now = new Carbon($course->startDate);
-        $now->subDays(1);
-        while($count != 0){
-            $min = $now->copy()->addDays(8);
-            foreach($weekDays as $weekDay){
-                $t = $now->copy()->next($weekMap[$weekDay]);
-                if($t->lt($min)){
-                    $min = $t;
-                }
-            }
-            $courseClass = new CourseClass;
-            $courseClass->date = $min;
-            $courseClass->time = $course->time;
-            $courseClass->course_id = $course->id;
-            $courseClass->hours = $course->hours;
-            $courseClass->save();
-            $now = $min;
-            $count = $count - 1;
-        }
-    }
-
-    public function getCourseInfo($courseId) {
+    public static function getCourseInfo($courseId) {
         // find course
         $course = Course::find($courseId);
 
@@ -192,9 +159,9 @@ class CourseController extends Controller
     public function getCourseStatus($course_id){
         $registeredCourse = '';
         if(auth()->user()->role == 'student'){
-            $registeredCourse = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first();
+            $status = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first()->status;
         }
-        return response($registeredCourse->status, 200);
+        return response($status, 200);
     }
     
     public function getClassStatus($class_id){
@@ -260,5 +227,36 @@ class CourseController extends Controller
         return view("/tutor_search_course",compact('courses'));
     }
 
-
+    public static function newClasses($course){
+        $weekMap = [
+            'Sunday' => 0,
+            'Monday' => 1,
+            'Tuesday' => 2,
+            'Wednesday' => 3,
+            'Thursday' => 4,
+            'Friday' => 5,
+            'Saturday' => 6,
+        ];
+        $weekDays = $course->days->pluck('name')->toArray();
+        $count = $course->noClasses;
+        $now = new Carbon($course->startDate);
+        $now->subDays(1);
+        while($count != 0){
+            $min = $now->copy()->addDays(8);
+            foreach($weekDays as $weekDay){
+                $t = $now->copy()->next($weekMap[$weekDay]);
+                if($t->lt($min)){
+                    $min = $t;
+                }
+            }
+            $courseClass = new CourseClass;
+            $courseClass->date = $min;
+            $courseClass->time = $course->time;
+            $courseClass->course_id = $course->id;
+            $courseClass->hours = $course->hours;
+            $courseClass->save();
+            $now = $min;
+            $count = $count - 1;
+        }
+    }
 }

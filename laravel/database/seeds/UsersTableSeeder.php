@@ -49,6 +49,7 @@ class UsersTableSeeder extends Seeder
             'image' => 'https://graph.facebook.com/v3.3/2685763254794575/picture?type=normal',
             'password' => bcrypt(rand(1000, 9999)),
             'role' => 'tutor',
+            'balance' => 8000,
             'education_level' => 'Chula Engineering',
             'nickname' => 'Somchang'
         ]);
@@ -59,6 +60,7 @@ class UsersTableSeeder extends Seeder
             'image' => 'https://graph.facebook.com/v3.3/2685763254794575/picture?type=normal',
             'password' => bcrypt(rand(1000, 9999)),
             'role' => 'tutor',
+            'balance' => 10000,
             'education_level' => 'Chula Engineering',
             'nickname' => 'Somry'
         ]);
@@ -69,6 +71,7 @@ class UsersTableSeeder extends Seeder
             'image' => 'https://graph.facebook.com/v3.3/2685763254794575/picture?type=normal',
             'password' => bcrypt(rand(1000, 9999)),
             'role' => 'tutor',
+            'balance' => 5000,
             'education_level' => 'Chula Engineering',
             'nickname' => 'Somwan'
         ]);
@@ -99,7 +102,7 @@ class UsersTableSeeder extends Seeder
             BankAccount::create([
                 'account_number' => '356213245' . substr($user->id, -1),
                 'account_name' => $user->name,
-                'bank' =>  'Kasikorn',
+                'bank' =>  'scb',
                 'user_id' => $user->id,
             ]);
         }

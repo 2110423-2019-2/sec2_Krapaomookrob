@@ -1,5 +1,9 @@
 body{background-color: $body-bg !important}
 
+.main-body{
+  background-color:  $body-bg !important;
+}
+
 ::-moz-selection{
     background-color:$purple;
     color:#ffffff;
@@ -29,7 +33,7 @@ body{background-color: $body-bg !important}
 }
 
 .ownbtn{
-  color: #fff;
+  color: #fff !important;
   border-radius: 5px;
   background-image: linear-gradient(to right, #74D4D8 , #55B3E0);
 }
@@ -38,13 +42,17 @@ body{background-color: $body-bg !important}
   border-radius:.5rem;
 }
 
+.btn-nav{
+  color: #000 !important;
+}
+
 .ownbtn:hover{
-  color: #fff;
+  color: #fff !important;
   background-image: linear-gradient(to right, #6BC7CB , #48A4D0);
 }
 
 .ownbtn:focus{
-  border-color:#65C4DB;
+  border-color:#65C4DB !important;
 }
 
 .nav-item{
@@ -52,7 +60,7 @@ body{background-color: $body-bg !important}
 }
 
 .theme{
-  color: $theme;
+  color: $theme !important;
 }
 
 .fbbtn{
@@ -65,8 +73,8 @@ body{background-color: $body-bg !important}
   display: inline-block;
   font-size: 17px;
   line-height: 20px;
-  color: white;
-  background-color: #3B5998;
+  color: white !important;
+  background-color: #3B5998 !important;
   text-align: center;
   text-decoration: none;
 }
@@ -121,11 +129,11 @@ body{background-color: $body-bg !important}
     border-radius: 0.25rem;
     -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    color: #fff;
+    color: #fff !important;
     background-image: linear-gradient(to right, #74D4D8 , #55B3E0);
 }
 .omise-checkout-button:hover{
-    color: #fff;
+    color: #fff !important;
     background-image: linear-gradient(to right, #6BC7CB , #48A4D0);
   }
 
@@ -134,7 +142,7 @@ body{background-color: $body-bg !important}
 }
 button:disabled,
 button[disabled]:hover{
-    color: #808588;
+    color: #808588 !important;
     background-image: linear-gradient(to right, #b9bbb6 , #b9bbb6);
 }
 
@@ -146,32 +154,32 @@ button[disabled]:hover{
 }
 
 .cancelbtn{
-  color: rgb(242, 87, 87);
+  color: rgb(242, 87, 87) !important;
   background-color: #fff;
   border: solid 1px rgba(200, 200, 200, 0.6);
 }
 
 .cancelbtn:hover{
-  color: #fff;
+  color: #fff !important;
   background-color: rgb(242, 87, 87);
   border: solid 1px rgb(242, 87, 87);
 }
 
 .cancelbtn:focus{
-  color: #fff;
+  color: #fff !important;
   background-color: rgb(242, 87, 87);
   border: solid 1px rgb(242, 87, 87);
 }
 
 .coutbtn{
-  color: #fff;
+  color: #fff !important;
   background-color: rgb(242, 87, 87);
   border: solid 1px rgb(242, 87, 87);
   border-radius: 10px;
 }
 
 .coutbtn:hover{
-  color: #fff;
+  color: #fff !important;
   background-color: rgb(218, 66, 66);
   border: solid 1px rgb(218, 66, 66);
   border-radius: 10px;
@@ -193,13 +201,13 @@ button[disabled]:hover{
   width: 100%;
   margin-top: 0.25rem;
   font-size: 80%;
-  color: #e3342f;
+  color: #e3342f !important;
 }
 
 .ownpaginator {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
-    box-shadow: 0px 0px 1px #888;
+    box-shadow: 0px 0px 1px #888 !important;
     margin-bottom: 10px;
     margin-top: -4px;
 }
@@ -210,7 +218,7 @@ button[disabled]:hover{
     text-align: center;
     font-size: 12px;
     line-height: 1.42857;
-    border: 1px solid rgba(0, 0, 0, 0.125);
+    border: 1px solid rgba(0, 0, 0, 0.125) !important;
     border-radius: 18px;
     margin-left: 10px;
 }
@@ -219,7 +227,7 @@ button[disabled]:hover{
     text-decoration: none;
 }
 .btn-circle.active{
-    color: #fff;
+    color: #fff !important;
     background-image: linear-gradient(to right, #74D4D8 , #55B3E0);
 }
 .dot-pagination{
@@ -230,8 +238,8 @@ button[disabled]:hover{
 .owntable{
     margin-bottom: 0px !important;
     border-radius: 4px;
-    background-color: white;
-    box-shadow: 0px 0px 1px #888;
+    background-color: white !important;
+    box-shadow: 0px 0px 1px #888 !important;
 }
 
 .owntable td{
@@ -252,26 +260,26 @@ button[disabled]:hover{
 }
 
 .editt-bg{
-  color: #fff;
+  color: #fff !important;
   background-image: linear-gradient(to top, #74D4D8 , #55B3E0);
 }
 
 .chatBtn{
   height: 25px;
   width: 100px;
-  background-color: white;
+  background-color: white !important;
   border-radius: 5px;
-  border: 1px solid LightGrey;
+  border: 1px solid LightGrey !important;
 }
 
 .addToCartBtn{
-  border: 1px solid LightGrey;
-  background-color: white;
+  border: 1px solid LightGrey !important;
+  background-color: white !important;
 }
 
 .actionBtn{
-  height: 30px;
-  width: 130px;
-  margin: 3px;
-  border-radius: 5px;
+  height: 30px !important;
+  width: 130px !important;
+  margin: 3px !important;
+  border-radius: 5px !important;
 }
