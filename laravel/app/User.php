@@ -83,4 +83,9 @@ class User extends Authenticatable
     public function Report(){
         return $this->hasMany(Report::class);
     }
+
+    public function classes()
+    {
+        return $this->hasManyThrough('App\CourseClass', 'App\Course');
+    }
 }

@@ -45,7 +45,7 @@ class CoursesTableSeeder extends Seeder
             'studentCount' => 3,
             'price' => 500,
             'noClasses' => '5',
-            'user_id' => 1,
+            'user_id' => 5,
             'location_id' => 1
           ]);
 
@@ -63,7 +63,7 @@ class CoursesTableSeeder extends Seeder
             'studentCount' => 1,
             'price' => 1000,
             'noClasses' => '4',
-            'user_id' => 1,
+            'user_id' => 5,
             'location_id' => 1
           ]);
 

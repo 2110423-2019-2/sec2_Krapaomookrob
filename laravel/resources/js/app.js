@@ -9,6 +9,7 @@ Vue.component('remove-button', require('./components/RemoveButton.vue').default)
 Vue.component('new_course-component', require('./components/NewCourseComponent.vue').default);
 Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('notification-bar',require('./components/NotificationBar.vue').default);
+Vue.component('my_calendar-component', require('./components/MyCalendarComponent.vue').default);
 
 import * as VueGoogleMaps from 'vue2-google-maps';
 Vue.use(VueGoogleMaps, {
@@ -36,11 +37,22 @@ Vue.component('admin_panel-component', require('./components/AdminPanelList.vue'
 Vue.component('report-list', require('./components/ReportList.vue').default);
 Vue.component('star-rating-button', require('./components/StarRatingComponent.vue').default);
 
+//according https://github.com/vuetifyjs/vuetify/issues/9999
+const ignoreWarnMessage = 'The .native modifier for v-on is only valid on components but it was used on <div>.';
+Vue.config.warnHandler = function (msg, vm, trace) {
+  // `trace` is the component hierarchy trace
+  if (msg === ignoreWarnMessage) {
+    msg = null;
+    vm = null;
+    trace = null;
+  }
+}
+
 const app = new Vue({
     el: '#app',
     vuetify: new Vuetify({
       theme: {
-        disable: true,
+        disable: false,
       }
     }),
     data: {
@@ -48,16 +60,6 @@ const app = new Vue({
         activeOwn: 'ownbtn'
       },
     methods: {
-      addCart: function(elementId){
-        // set cookie for '1' day
-        if (this.$cookie.get('cart') == null){
-          this.$cookie.set('cart',[elementId] ,1);  // TODO:insert first item
-        }else{
-          let tmp = this.$cookie.get('cart');
-          this.$cookie.delete('cart');
-          tmp.push(elementId);                      // TODO:insert new item
-          this.$cookie.set('cart',tmp,1);
-        }
-      }
+
     }
 });

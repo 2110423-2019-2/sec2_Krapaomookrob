@@ -121,11 +121,6 @@ export default {
       axios.post("/api/getPayment", {
         course_id: data.split(",").map(x => parseInt(x))
       }).then(response => window.location.href="/payment/"+response.data.payment_id+"/"+response.data.totalprice).catch(error => console.log(error))
-    },
-    addToCart: function(course_id){
-      axios.post('api/cart/add', {
-        course_id: course_id
-      }).then(response => console.log(response)).catch(error => console.log(error))
     }
   }
 };

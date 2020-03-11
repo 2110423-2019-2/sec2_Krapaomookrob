@@ -13,7 +13,7 @@ class CartController extends Controller
 {
     const MAX = 1000000;
     const MIN = 0;
-    const MINUTES =2;
+    const MINUTES =180;         // cookie lifetime(minute)
 
     public function __construct()
     {
@@ -25,6 +25,9 @@ class CartController extends Controller
         $hasCart = false;
         if(!Cookie::has('cart'.$uid)){
             $cartId = rand(self::MIN,self::MAX);
+            while(Cookie::has($cartId)){
+                $cartId = rand(self::MIN,self::MAX);
+            }
             $cookieCartId = cookie('cart'.strval($uid),$cartId, self::MINUTES);
 
         }else{
@@ -101,6 +104,14 @@ class CartController extends Controller
         $value = join(',',$items).',';
         $cookie = cookie($cartId, $value, self::MINUTES);
         return response(200)->cookie($cookie);
+    }
+
+    public function getCurrentCart(Request $request){
+        list($cartId, $res) = self::getUserCart(auth()->user()->id, $request);
+        $cart = $request->cookie($cartId);  // eg. cart = 1,2,3,
+        $cart = substr($cart,0,-1);
+        $cartArray = array_map('intval',explode(',',$cart));
+        return $cartArray;
     }
 
     /**
