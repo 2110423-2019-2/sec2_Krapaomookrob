@@ -15,7 +15,7 @@ class CalendarController extends Controller
       $result = collect();
       $classes = collect();
       if($user->isTutor()){
-        $classes = DB::select('select courses.id,classes.date,classes.time,classes.hours,users.nickname from course_classes classes
+        $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.nickname from course_classes classes
                                 inner join courses on classes.course_id = courses.id
                                 inner join course_student student on classes.id = student.course_id
                                 left join users on student.user_id = users.id
@@ -25,16 +25,17 @@ class CalendarController extends Controller
         foreach($classes as $class){
           $nTime = Carbon::parse("{$class->date} {$class->time}")->addHour($class->hours);
           $temp = collect([
-            'course_id' => $class->id,
+            'classe_id' => $class->clid,
+            'course_id' => $class->coid,
             'name' => "N'{$class->nickname}",
             'start' => "{$class->date} {$class->time}",
             'end' => $nTime->toDateTimeString(),
-            'color' => $colors[$class->id%7]
+            'color' => $colors[$class->coid%7]
           ]);
           $result->push($temp);
         }
       }else{
-        $classes = DB::select('select courses.id,classes.date,classes.time,classes.hours,users.nickname from course_classes classes
+        $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.nickname from course_classes classes
                                 inner join courses on classes.course_id = courses.id
                                 inner join course_student student on classes.id = student.course_id
                                 left join users on courses.user_id = users.id
@@ -42,11 +43,12 @@ class CalendarController extends Controller
         foreach($classes as $class){
           $nTime = Carbon::parse("{$class->date} {$class->time}")->addHour($class->hours);
           $temp = collect([
-            'course_id' => $class->id,
+            'classe_id' => $class->clid,
+            'course_id' => $class->coid,
             'name' => "P'{$class->nickname}",
             'start' => "{$class->date} {$class->time}",
             'end' => $nTime->toDateTimeString(),
-            'color' => $colors[$class->id%7]
+            'color' => $colors[$class->coid%7]
           ]);
           $result->push($temp);
         }
