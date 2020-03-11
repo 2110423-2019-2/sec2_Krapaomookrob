@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'nickname', 'phone', 'image', 'role', 'is_suspended', 'education_level'
+        'name', 'email', 'password', 'nickname', 'phone', 'image', 'role', 'is_suspended', 'education_level', 'balance'
     ];
 
     /**
@@ -80,6 +80,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Notification::class);
     }
 
+    public function requestPaymentRequests(){
+        return $this->hasMany('App\PaymentRequest', 'requested_by');
+    }
+
     public function Report(){
         return $this->hasMany(Report::class);
     }
@@ -91,5 +95,9 @@ class User extends Authenticatable
 
     public function reviews(){
         return $this->hasMany(Review::class);
+    }
+    
+    public function transactions() {
+        return $this->belongsToMany(Transaction::class);
     }
 }

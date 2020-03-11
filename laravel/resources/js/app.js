@@ -34,6 +34,8 @@ Vue.component('chat-button', require('./components/ChatButton.vue').default);
 Vue.component('regis-now-button', require('./components/RegisNowButton.vue').default);
 Vue.component('add-to-cart-button', require('./components/AddToCartButton.vue').default);
 Vue.component('admin_panel-component', require('./components/AdminPanelList.vue').default);
+Vue.component('tutor-payment-request', require('./components/TutorPaymentRequest.vue').default);
+Vue.component('admin-payment-request', require('./components/AdminPaymentRequest.vue').default);
 Vue.component('report-list', require('./components/ReportList.vue').default);
 Vue.component('star-rating-button', require('./components/StarRatingComponent.vue').default);
 Vue.component('star-rating-score', require('./components/StarRatingScoreComponent.vue').default);

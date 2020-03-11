@@ -1,6 +1,6 @@
 <template>
 <div>
-<v-btn @click="expand = !expand" class="px-0 mx-auto" :depressed="true">
+<v-btn @click="markRead()" class="px-0 mx-auto" :depressed="true">
     <v-badge v-if="numNewNoti>=1" :content="this.numNewNoti" :left="true" :inline="true" color="#59B7DF">
         🔔
     </v-badge>
@@ -13,7 +13,7 @@
         <v-list class="overflow-y-auto" style="max-height: 400px" :subheader="true">
             <v-subheader>NOTIFICATIONS</v-subheader>
             <template
-            v-if="numNewNoti > 0" 
+            v-if="numNoti > 0" 
             v-for="notification in this.notifications">
                 <v-list-item>
                     <v-list-item-content two-line>
@@ -22,7 +22,7 @@
                     </v-list-item-content>
                 </v-list-item>
             </template>
-            <template v-if="numNewNoti == 0">
+            <template v-if="numNoti == 0">
                 <v-list-item>
                     <v-list-item-content>
                         No New Notifications
@@ -41,15 +41,29 @@ export default {
         return {
             expand: false,
             notifications: [],
-            numNewNoti: 0
+            numNewNoti: 0,
+            numNoti: 0
         }
     },
     mounted: function(){
         axios.get('/api/notification').then(response => {
             this.notifications = response.data.notifications;
             this.numNewNoti = response.data.numNewNoti;
+            this.numNoti = response.data.numNoti;
         })
-    }
+    },
+    methods: {
+    markRead: function() {
+        if (this.expand == false){
+            this.expand = true
+            this.numNewNoti = 0
+            //mask as read
+            axios.get('/api/notification/markRead')
+        } else {
+            this.expand = false;
+        }
+    },
+  }
 }
 </script>
 

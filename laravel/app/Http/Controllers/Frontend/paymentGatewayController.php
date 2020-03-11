@@ -10,16 +10,22 @@ use App\course;
 use App\Cart;
 use App\User;
 use App\CourseStudent;
+use App\Http\Controllers\NotificationController;
+use App\PaymentRequest;
+
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Cookie;
+use App\BankAccount;
+use App\OmiseRecipientAccount;
+use App\Http\Controllers\NotificationController;
 
 require_once dirname(__FILE__).'/../../../../vendor/autoload.php';
 
 use OmiseCharge;
 use OmiseTransfer;
 use OmiseSource;
- 
-define('OMISE_API_VERSION' , env("API_VERSION", null));
+use OmiseRecipient;
+define('OMISE_API_VERSION' , env("OMISE_API_VERSION", null));
 define('OMISE_PUBLIC_KEY' , env("OMISE_PUBLIC_KEY", null));
 define('OMISE_SECRET_KEY', env("OMISE_SECRET_KEY", null));
 
@@ -127,11 +133,76 @@ class paymentGatewayController extends Controller{
             return redirect($charge['authorize_uri']);
 
     }
-    public function Paid(){
-        $transfer = OmiseTransfer::create(array(
-            'amount' => 100000
-        ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
+    public function createTransferOmise(Request $request){
+        $payReq = PaymentRequest::find($request->input('paymentReqID'));
+        if($payReq['omise_id']!=null){
+            return response('Request ID ' . $payReq['id'] . ' is already transfer' , 403);
+        }
+        $user = User::find($payReq['requested_by']);
+        $money = $payReq['amount'];
+        $recipient1 = OmiseRecipientAccount::where('user_id',$payReq['requested_by'])->count();
 
+        if($recipient1==0){
+            $bank = BankAccount::find($payReq['bank_account']);
+            $rec1 = OmiseRecipient::create(array('name'     => $user['name'],
+                                                  'description'   => '',
+                                                  'email'         => $user['email'],
+                                                  'type'          => 'individual',
+                                                  'bank_account'  => array( 'brand'   => $bank['bank'],
+                                                                            'number'  => $bank['account_number'],
+                                                                            'name'    => $bank['account_name'])));
+            OmiseRecipientAccount::create([
+                'user_id' => $user['id'],
+               'recipient' => $rec1['id']
+            ]);
+
+        }
+        $recipient1 = OmiseRecipientAccount::where('user_id',$payReq['requested_by'])->get();
+
+        $transfer = OmiseTransfer::create(array(
+            'amount' => $money*100,
+            'recipient' => $recipient1[0]['recipient']
+        ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
+        //update transfer
+        $payReq->omise_id = $transfer['id'];
+        $payReq->transferred_by = auth()->user()->id;
+        $payReq->save();
+
+        $http = sprintf("https://dashboard.omise.co/test/transfers/%s",$transfer['id']);
+
+        return response($http, 200);
+
+    }
+
+    public function checkTransfer(Request $request){
+
+        // qeury data
+        $arr1 =  PaymentRequest::where('status','!=', 'successful')->get();
+        foreach($arr1 as $payReq){
+            if($payReq['omise_id']==null) continue;
+
+            $result = OmiseTransfer::retrieve($payReq['omise_id']);
+
+            if($result['paid']){
+
+                $payReq->status = "successful" ;
+                $payReq->save();
+
+
+                NotificationController::createNotification($payReq['requested_by'],'Transfer money',
+                sprintf("money: %s to your account",$payReq['amount']));
+
+            }
+            else if($result['sent']){
+                $payReq->status = "pending";
+                $payReq->save();
+            }
+
+        }
+        $arr =  PaymentRequest::where('status','!=', 'successful')->get();
+        $data = response()->json($arr);
+        // dd($data);
+        return response($arr, 200);
 
     }
 
@@ -156,7 +227,19 @@ class paymentGatewayController extends Controller{
             foreach ($cart as $value) {
 
                    // 'user_id' => auth()->user()->id,
-                   auth()->user()->registeredCourses()->attach(Course::find($value));
+                auth()->user()->registeredCourses()->attach(Course::find($value));
+
+                //Notification
+                $user = auth()->user();
+                $user_id = $user->id;
+                $course = Course::find($value)->first();
+                $tutor_id = $course->user_id;
+                $user_name = $user->name;
+                $title = "Course registration";
+                $user_message = "New course has been registered successful.";
+                $tutor_message = "{$user_name} have register your course.";
+                NotificationController::createNotification($user_id, $title, $user_message);
+                NotificationController::createNotification($tutor_id, $title, $tutor_message);
 
             }
             return view('dashboard')->with('alert','Successful');
