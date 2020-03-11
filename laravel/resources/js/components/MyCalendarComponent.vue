@@ -48,9 +48,56 @@
             :event-color="getEventColor"
             :now="today"
             :type="type"
+            @click:event="showEvent"
             @click:more="viewDay"
             @click:date="viewDay"
           ></v-calendar>
+
+          <v-menu
+            v-model="selectedOpen"
+            :close-on-content-click="false"
+            :activator="selectedElement"
+            offset-x
+          >
+            <v-card
+              color="grey lighten-4"
+              min-width="350px"
+              flat
+            >
+              <v-toolbar
+                :color="selectedEvent.color"
+                dark
+              >
+                <v-btn icon>
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn icon
+                  @click="selectedOpen = false"
+                >
+                  <v-icon>mdi-minus</v-icon>
+                </v-btn>
+              </v-toolbar>
+              <v-card-text>
+                Tutor: {{selectedEvent.name}}<br>
+                Time: {{selectedEvent.time}}<br>
+                Location: {{selectedEvent.location}}
+                {{selectedEvent.class_id}}
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  text
+                  color="secondary"
+                  @click="postponeRequest(selectedEvent.class_id)"
+                  :disabled="isPostponeButtonDisabled"
+                >
+                  Postpone
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+
+          </v-menu>
         </v-sheet>
       </v-col>
     </v-row>
@@ -73,7 +120,11 @@
       },
       start: null,
       end: null,
-      events:  []
+      events:  [],
+      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
     }),
     computed: {
       title () {
@@ -131,7 +182,32 @@
       next () {
         this.$refs.calendar.next()
       },
+      showEvent ({ nativeEvent, event }) {
+        const open = () => {
+          this.selectedEvent = event
+          this.selectedElement = nativeEvent.target
+          setTimeout(() => this.selectedOpen = true, 10)
+        }
 
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          setTimeout(open, 10)
+        } else {
+          open()
+        }
+
+        nativeEvent.stopPropagation()
+      },
+      postponeRequest: function(class_id) {
+        axios.post('/api/class/postpone', {
+          classId: class_id,
+        }).then((response) => this.status = "Postponed")
+      },
+    },
+    computed: {
+      isPostponeButtonDisabled() {
+        return !(this.selectedEvent.postponable);
+      },
     },
   }
 </script>

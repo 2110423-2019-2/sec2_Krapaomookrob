@@ -25,30 +25,41 @@ class CalendarController extends Controller
         foreach($classes as $class){
           $nTime = Carbon::parse("{$class->date} {$class->time}")->addHour($class->hours);
           $temp = collect([
-            'classe_id' => $class->clid,
+            'class_id' => $class->clid,
             'course_id' => $class->coid,
             'name' => "N'{$class->nickname}",
             'start' => "{$class->date} {$class->time}",
             'end' => $nTime->toDateTimeString(),
-            'color' => $colors[$class->coid%7]
+            'color' => $colors[$class->coid%7],
+
+            // for display in calendar's card
+            'time' => date_format(date_create($class->time), 'H:i') . ' - ' . date_format(date_create($nTime), 'H:i'),
+            'location' => $class->location,
+            'postponable' => !($class->status==='Postponed' || $class->date < date("Y-m-d"))
           ]);
           $result->push($temp);
         }
       }else{
-        $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.nickname from course_classes classes
+        $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.nickname,locations.name as location,classes.status from course_classes classes
                                 inner join courses on classes.course_id = courses.id
                                 inner join course_student student on classes.id = student.course_id
+                                inner join locations on locations.id = courses.location_id
                                 left join users on courses.user_id = users.id
                                 where student.user_id = ? and student.status = ?', [$user->id, 'registered']);
         foreach($classes as $class){
           $nTime = Carbon::parse("{$class->date} {$class->time}")->addHour($class->hours);
           $temp = collect([
-            'classe_id' => $class->clid,
+            'class_id' => $class->clid,
             'course_id' => $class->coid,
             'name' => "P'{$class->nickname}",
             'start' => "{$class->date} {$class->time}",
             'end' => $nTime->toDateTimeString(),
-            'color' => $colors[$class->coid%7]
+            'color' => $colors[$class->coid%7],
+            
+            // for display in calendar's card
+            'time' => date_format(date_create($class->time), 'H:i') . ' - ' . date_format(date_create($nTime), 'H:i'),
+            'location' => $class->location,
+            'postponable' => !($class->status==='Postponed' || $class->date <= date("Y-m-d"))
           ]);
           $result->push($temp);
         }

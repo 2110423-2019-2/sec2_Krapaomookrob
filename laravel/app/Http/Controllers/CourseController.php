@@ -110,6 +110,9 @@ class CourseController extends Controller
         if ($class->status === 'Postponed'){
             return response("the class was already postponed", 401);
         }
+        if ($class->date <= date("Y-m-d")) {
+            return response("the class can not be postponed", 401);
+        }
         
         $weekMap = [
             'Sunday' => 0,
