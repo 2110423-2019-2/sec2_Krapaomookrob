@@ -10,7 +10,6 @@ use App\course;
 use App\Cart;
 use App\User;
 use App\CourseStudent;
-use App\Http\Controllers\NotificationController;
 use App\PaymentRequest;
 
 use App\Http\Controllers\CartController;
