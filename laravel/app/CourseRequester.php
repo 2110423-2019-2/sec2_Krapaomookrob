@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Payment extends Model
+class CourseRequester extends Model
 {
-    protected $guarded = [];
-    public function users()
-    {
+    protected $fillable = ['status'];
+    //
+    public function users(){
         return $this->belongsTo(User::class);
     }
 }
