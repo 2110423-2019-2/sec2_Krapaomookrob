@@ -31,49 +31,33 @@ define('OMISE_SECRET_KEY', env("OMISE_SECRET_KEY", null));
 class paymentGatewayController extends Controller{
 
     public function cartToPayment(Request $request){
-        //return 'xxx';
-        //$course1 = array(1,2,3);
-        //check course that isnt taken
-
-        foreach ($request->input('course_id') as $value)
-        //foreach ($course1 as $value)
-        {
-            if($value == null) return abort(406);
-            $courseStudent = CourseStudent::find($value);
-            if($courseStudent != null && $courseStudent->status == 'registered'){
-                 return abort(406,'Some course is taken.');
-            }
-        }
         //create payment
         $payment = Payment::create([
             'user_id' => auth()->user()->id
-            //'user_id' => 1
         ]);
-        //count price + create cart
+
         $totalprice = 0;
+        //create cart
         foreach ($request->input('course_id') as $value)
-        //foreach ($course1 as $value)
         {
+            if($value == null) continue;
+            $courseStudentCount = CourseStudent::where('course_id',$value)->count();
+            if($courseStudentCount !=0 ){
+                $courseStudent = CourseStudent::where('course_id',$value)->get();
+                if($courseStudent[0]->status == 'registered') continue;
+            }
             $totalprice = $totalprice + (Course::find($value))->price;
-            //dd($totalprice);
             Cart::create([
-                'payment_id' => $payment->id,
-                'course_id' =>  $value
+                    'payment_id' => $payment->id,
+                    'course_id' =>  $value
             ]);
         }
-/*
-        $pay = [
-            'payment_id' => $payment->id,
-            'totalprice' => $totalprice
-        ];
-        */
+
         $cookie = Cookie::forget(CartController::getUserCart(auth()->user()->id,$request)[0]);
         return response()->json([
                 'payment_id' => $payment->id,
                 'totalprice' => $totalprice
               ])->withCookie($cookie);
-     //   return view('payment')->with('payment',$pay);
-
     }
 
     public function chargeCard(Request $request){
