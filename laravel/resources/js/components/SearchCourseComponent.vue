@@ -178,7 +178,7 @@
       <template v-slot:item.action="{ item }">
         <div class='my-2'>
           <regis-now-button v-bind:courseid="item.id" v-on:click.native='registerNow(item.id)'></regis-now-button>
-          <add-to-cart-button v-bind:courseid="item.id" v-bind:clicked="currentCart.includes(item.id)"></add-to-cart-button>
+          <add-to-cart-button v-bind:courseid="item.id" v-bind:clicked="currentCart.includes(item.id)" @click.native="tempoCart.push(item.id);Object.assign(tempoCart, currentCart)"></add-to-cart-button>
         </div>
       </template>
 
@@ -222,7 +222,8 @@
         markers: [],
         areaAddress: '',
         areaLocationId: '',
-        currentCart: []
+        currentCart: [],
+        tempoCart: [],
       }
     },
     mounted() {
@@ -252,7 +253,8 @@
         // fetch current cart at the same time
         axios.get('api/cart/current')
         .then(response => {
-          this.currentCart = response.data
+          this.currentCart = response.data,
+          this.tempoCart = response.data
         })
         .catch(error => console.log(error));
       },
@@ -304,9 +306,13 @@
       },
       
       registerNow: function(course_id){
-        axios.post('api/cart/add', {
-          course_id: course_id
-        }).then(response => console.log(response)).catch(error => console.log(error)).then(window.location.href="/cart")
+        if (this.currentCart.includes(course_id)){
+          window.location.href = '/cart';
+        }else{
+          axios.post('api/cart/add', {
+            course_id: course_id
+          }).then(response => console.log(response)).catch(error => console.log(error)).then(window.location.href="/cart")
+        }
       }
     }
   }
