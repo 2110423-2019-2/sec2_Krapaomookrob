@@ -92,7 +92,6 @@ class SearchController extends Controller
         // for filtering only not registered course
         $registered_course = CourseStudent::all()->pluck('course_id'); 
         $query_2 = $query_2->whereNotIn('courses.id', $registered_course);
-
         return $query_2->get();
     }
     
