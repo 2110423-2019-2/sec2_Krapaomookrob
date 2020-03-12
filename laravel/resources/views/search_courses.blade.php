@@ -9,8 +9,6 @@
 <a class="btn ownbtn" href="new-course">New Course Request</a>
 @endsection
 
-@section('content') 
-<v-app id="app">
-  <search-course-component></search-course-component>
-</v-app>
+@section('content')
+<search-course-component></search-course-component>
 @endsection

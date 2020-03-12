@@ -1,19 +1,5 @@
 <template>
   <div>
-    <!-- test area -->
-    <!-- <remove-button
-            button-text="Test1"
-            v-bind:class="buttonType"
-            v-bind:element-id="1"
-            v-on:click.native="addToCart(1)"
-    ></remove-button>
-    <remove-button
-            button-text="Test2"
-            v-bind:class="buttonType"
-            v-bind:element-id="2"
-            v-on:click.native="addToCart(2)"
-    ></remove-button>
- -->
     <div
       class="row course-item mb-2 pb-2 border-bottom"
       v-for="entry in this.info"
