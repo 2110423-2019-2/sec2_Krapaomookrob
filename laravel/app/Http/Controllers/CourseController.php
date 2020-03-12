@@ -264,4 +264,38 @@ class CourseController extends Controller
             $count = $count - 1;
         }
     }
+
+    public function getMyCourseRequest(Request $request){
+        $userId = auth()->user()->id;
+        $courses = Course::select('id','time','hours','price','startDate','noClasses')->where('user_id',$userId)->with('subjects:name','days:name')->get();
+        $retCourses = [];
+        foreach($courses as $course){
+            if ($course != null){
+                $subject = collect();
+                $day = [];
+                foreach($course->subjects->map->only('name') as $sub){
+                    $name = $sub['name'];
+                    $subject->push($name);
+                }
+                foreach($course->days->map->only('name') as $d){
+                    array_push($day,$d['name']);
+                }
+                $arr = [
+                    'myCourseId' => $course->id,
+                    'time' => $course->time,
+                    'hours' => $course->hours,
+                    'price' => $course->price,
+                    'startDate' => $course->startDate,
+                    'noClasses' => $course->noClasses,
+                    'subjects' => $subject,
+                    'date' => $day
+                ];
+
+                array_push($retCourses, $arr);
+                
+            }
+        }
+        return $retCourses;
+
+    }
 }

@@ -6,7 +6,7 @@
 
 
 @section('content')
-    <table id=app class="table owntable">
+    <table class="table owntable">
         <thead>
             <tr class='d-flex'>
             @if(auth()->user()->isTutor())
@@ -84,4 +84,3 @@
         </tr>
     </footer>
 @endsection
-
