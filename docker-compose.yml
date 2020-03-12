@@ -7,6 +7,8 @@ services:
             - 8000:80
         volumes:
             - ./laravel:/var/www
+        depends_on:
+            - composer
         links:
             - mysql
         environment:
@@ -15,7 +17,6 @@ services:
             DB_USERNAME: dbuser
             DB_PASSWORD: p455w0rd
             DB_CONNECTION: mysql
-        # command: yarn run watch
 
     mysql:
         image: mysql
@@ -52,3 +53,13 @@ services:
             if [[ -f /app/.env ]]; then echo ".env file already exists";
             else cp /app/.env.example /app/.env && php artisan key:generate; fi'
         ]
+
+    # node:
+    #     image: hitalos/laravel
+    #     volumes:
+    #         - ./laravel:/var/www
+    #     command: [
+    #         'bash', '-c',
+    #         'if [[ -d /var/www/node_modules ]]; then echo "node_modules file already exists";
+    #         else npm install; fi && npm run watch'
+    #     ]
