@@ -60,7 +60,12 @@ class paymentGatewayController extends Controller{
               ])->withCookie($cookie);
     }
 
+
     public function chargeCard(Request $request){
+        if($this->checkBeforeCharge($request->input('paymentID'))){
+            return view('dashboard')->with('error','Some course is taken');
+
+        }
         $charge = OmiseCharge::create(array('amount'      => $request->input('p'),
                                             'currency'    => 'thb',
                                             'description' => 'Order-384',
@@ -68,36 +73,40 @@ class paymentGatewayController extends Controller{
                                             'card'        => $request->input('omiseToken')),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
 
         $payment = Payment::find($request->input('paymentID'));
-        $result = OmiseCharge::retrieve($charge['id']);
         $payment->charge_id = $charge['id'];
-        $payment->status = $result['status'];
         $payment->save();
-        if($charge['status'] == 'failed'){
-            return view('dashboard')->with('error','Fail to pay');
-         }
-        else{
-            //create taken course
-            $cart = Cart::select('course_id')
-                        ->where('payment_id',$request->input('paymentID'))->get();
-           // dd($cart);
-            foreach ($cart as $value) {
-               // dd($value);
-               auth()->user()->registeredCourses()->attach(Course::find($value->course_id));
+        return $this->returnPage($request->input('paymentID'));
 
+    }
+    public function checkBeforeCharge($paymentID){
+        $arr = Cart::where('payment_id',$paymentID)->get();
+        
+        foreach ($arr as $value)
+        {
+            if($value == null) continue;
+            $courseStudentCount = CourseStudent::where('course_id',$value['course_id'])->count();
+            if($courseStudentCount !=0 ){
+                $courseStudent = CourseStudent::where('course_id',$value['course_id'])->get();
+                if($courseStudent[0]->status == 'registered'){
+                    return true;
+                }
             }
-            return view('dashboard')->with('alert','Successful');
         }
-
+        return false;
     }
 
     public function checkout(Request $request){
+    
+        if($this->checkBeforeCharge($request->input('paymentID'))){
+            return view('dashboard')->with('error','Some course is taken');
+
+        }
         $source = OmiseSource::create(array(
             'type'     => $request->input('internet_bnk'),
             'amount'   => $request->input('p'),
             'currency' => 'thb'
         ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
-
-
+        
         $charge = OmiseCharge::create(array(
             'amount' => $request->input('p'),
             'currency' => 'thb',
@@ -108,11 +117,6 @@ class paymentGatewayController extends Controller{
           $payment->charge_id = $charge['id'];
           $payment->save();
 
-//        //pay destination
-//        redirect to
-//        dd($charge['authorize_uri']);
-//        ->
-           // dd($source['id']);
             return redirect($charge['authorize_uri']);
 
     }
@@ -190,8 +194,9 @@ class paymentGatewayController extends Controller{
     }
 
     public function returnPage($paymentID){
+        
         $payment = Payment::find($paymentID);
-
+        
 
         //chage status in payment
         $result = OmiseCharge::retrieve($payment->charge_id);
@@ -210,7 +215,7 @@ class paymentGatewayController extends Controller{
             foreach ($cart as $value) {
 
                    // 'user_id' => auth()->user()->id,
-                auth()->user()->registeredCourses()->attach(Course::find($value));
+                auth()->user()->registeredCourses()->attach(Course::find($value->course_id));
 
                 //Notification
                 $user = auth()->user();
