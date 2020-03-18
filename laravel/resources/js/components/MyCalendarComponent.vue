@@ -198,7 +198,7 @@
         axios.post('/api/class/postpone', {
           classId: class_id,
         }).then((response) => this.status = "Postponed")
-        
+        this.selectedEvent.postponable = false
         axios.get('/api/my-calendar').then(response => this.events = response.data)
         this.$refs.calendar.checkChange()
       },
