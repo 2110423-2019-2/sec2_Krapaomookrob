@@ -93,6 +93,7 @@ Route::get('/payment', function () {
 
 Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
 
+Route::get('/api/payment', 'PaymentInfoController@getInfoItem');
 // Route for payment
 //Route::post('/payment', 'Frontend\paymentGatewayController@cartToPayment');
 Route::post('/api/getPayment', 'Frontend\paymentGatewayController@cartToPayment');

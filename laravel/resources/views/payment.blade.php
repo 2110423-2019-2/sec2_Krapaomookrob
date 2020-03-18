@@ -1,14 +1,29 @@
 @extends('layouts.forPayment')
 
+@section('title', 'Courses payment')
+
+@section('topic', 'Payment')
 
 @section('content')
-
-<div class = "col-lg-3">
-    <h3 style ="text-align: center;">Payment: {{$totalprice}} </h3>
-    <h type = "hidden" name = "price" value = "{{$price = $totalprice * 100}}"> </h>
-
+<div class = "col-lg-0">
+<h4 type = "hidden" name = "price" value = "{{$price = $totalprice * 100}}"></h4>
 </div>
-<div class = "row ">
+<div class="card pb-2">
+        <div class="card-body">
+            <div class="row mt-3 mb-2 bline">
+                <div class="col-lg">Tutor</div>
+                <div class="col-lg">Available Subjects</div>
+                <div class="col-lg">Areas</div>
+                <div class="col-lg">Classes</div>
+                <div class="col-lg">Price/Start Date</div>
+                <div class="col-lg"></div>
+            </div>
+            <payment-component></payment-component>
+        </div>
+
+    </div>
+<div class="card pb-2">
+<div class = "row">
     <div class = "col-lg-1">
     </div>
     <div class = "col-lg-4">
@@ -79,4 +94,6 @@
         </div>
     </div>
 </div>
+</div>
+
 @endsection
