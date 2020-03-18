@@ -153,8 +153,9 @@ class CourseController extends Controller
         
         $title = 'Postponement';
         $message = 'The class on ' . date("j F Y", strtotime($class->date)) 
-                    . ' has been postponed by ' . auth()->user()->name
-                    . ', the extended class will be in ' . date("j F Y", strtotime($date));
+                    . ' has been postponed.'; 
+                    // 'by ' . auth()->user()->name
+                    // . ', the extended class will be in ' . date("j F Y", strtotime($date));
         NotificationController::multiNotify($course_id, $title, $message);
         return response("completed", 200);
     }
