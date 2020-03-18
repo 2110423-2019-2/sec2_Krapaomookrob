@@ -224,6 +224,7 @@
         areaLocationId: '',
         currentCart: [],
         tempoCart: [],
+        clickRegis: false
       }
     },
     mounted() {
@@ -296,7 +297,7 @@
       addToCart: function(course_id){
         axios.post('api/cart/add', {
           course_id: course_id
-        }).then(response => console.log(response)).catch(error => console.log(error))
+        }).then(response => console.log(200)).catch(error => console.log(error))
       },
 
       removeCart: function(course_id) {
@@ -306,12 +307,15 @@
       },
       
       registerNow: function(course_id){
-        if (this.currentCart.includes(course_id)){
-          window.location.href = '/cart';
-        }else{
-          axios.post('api/cart/add', {
-            course_id: course_id
-          }).then(response => console.log(response)).catch(error => console.log(error)).then(window.location.href="/cart")
+        if(!this.clickRegis){
+          if (this.currentCart.includes(course_id)){
+            window.location.href = '/cart';
+          }else{
+            this.clickRegis = true;
+            axios.post('api/cart/add', {
+              course_id: course_id
+            }).then(response => console.log(200)).catch(error => console.log(error)).then(window.location.href="/cart")
+          }
         }
       }
     }
