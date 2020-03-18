@@ -170,5 +170,33 @@ class CoursesTableSeeder extends Seeder
           $course4->days()->attach($someDays4);
           $course4->subjects()->attach($someSubjects4);
           CourseController::newClasses($course4);
+
+          $course5 = Course::create([
+            'time' => '9:00:00',
+            'hours' => '2',
+            'startDate' => '2021-03-01',
+            'studentCount' => 1,
+            'price' => 1000,
+            'noClasses' => '1',
+            'user_id' => 2,
+            'location_id' => 1
+          ]);
+
+          $course5->days()->attach($someDays4);
+          $course5->subjects()->attach($someSubjects4);
+
+          $course6 = Course::create([
+            'time' => '14:00:00',
+            'hours' => '3',
+            'startDate' => '2021-04-06',
+            'studentCount' => 4,
+            'price' => 550,
+            'noClasses' => '4',
+            'user_id' => 3,
+            'location_id' => 1
+          ]);
+
+          $course6->days()->attach($someDays4);
+          $course6->subjects()->attach($someSubjects4);
     }
 }
