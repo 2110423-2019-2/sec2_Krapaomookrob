@@ -27,7 +27,7 @@ class Course extends Model
     }
 
     public function students(){
-        return $this->belongsToMany('App\User', 'course_student');
+        return $this->belongsToMany('App\User', 'course_student')->withTimestamps();
     }
 
     public function courseClasses(){

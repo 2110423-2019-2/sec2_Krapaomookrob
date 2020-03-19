@@ -18,10 +18,13 @@ class UserController extends Controller
     }
     
     public function updateRole(Request $request){
-        $user = auth()->user();
-        $user->role = $request->role;
-        $user->save();
-        return redirect('/');
+        if(auth()->user()){
+            $user = auth()->user();
+            $user->role = $request->role;
+            $user->save();
+            return redirect('/');
+        }
+        abort(401, 'Login required');
     }
 
     public function viewProfile(User $user){
@@ -96,7 +99,10 @@ class UserController extends Controller
     }
 
     public function getRole(){
-        return  response(auth()->user()->role, 200);
+        if(auth()->user()){
+            return  response(auth()->user()->role, 200);
+        }
+        abort(401, 'Login required');
     }
 
     public function sendReport(Request $request){
@@ -110,13 +116,19 @@ class UserController extends Controller
     }
 
     public function getBankAccount(){
-        $ba = auth()->user()->BankAccount;
-        return response($ba, 200);
+        if(auth()->user()){
+            $ba = auth()->user()->BankAccount;
+            return response($ba, 200);
+        }
+        abort(401, 'Login required');
     }
     
     public function getBalance(){
-        $user = auth()->user();
-        return $user->balance;
+        if(auth()->user()){
+            $user = auth()->user();
+            return $user->balance;
+        }
+        abort(401, 'Login required');
     }
 
 
