@@ -1,5 +1,5 @@
 <template>
-    <button class="ownbtn actionBtn" @click="popUpChat()">Register Now</button>
+    <button class="ownbtn actionBtn" :disabled="this.clicked" @click="popUpChat()">Register Now</button>
 </template>
 
 <script>
@@ -8,7 +8,7 @@
   export default {
     components: {
     },
-    props: ['courseid'],
+    props: ['courseid', 'clicked'],
     data () {
       return {
         courseId: this.courseid,
