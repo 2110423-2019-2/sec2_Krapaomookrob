@@ -43,6 +43,13 @@ Route::get('/api/fetch-days','SearchController@fetchDays');
 Route::get('/api/fetch-subjects','SearchController@fetchSubjects');
 Route::get('/api/search-courses','SearchController@searchCourses');
 
+//Tutor Search and Request
+Route::get('/tutor-search', function () {
+    return view('tutor_search_course');
+});
+Route::post('/api/tutor-request','CourseController@requestCourse');
+Route::get('/api/tutor-search-courses','SearchController@tutorSearchCourses');
+
 //Login for developers
 
 Route::get('/login-dev/{id}', 'Auth\LoginController@loginDeveloper');
@@ -65,16 +72,6 @@ Route::prefix('login')->group(function () {
     Route::get('/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('login.provider.callback');
 });
 Route::post('/user-role', 'UserController@updateRole');
-
-//Tutor Search and Request
-Route::get('/tutor-search', function () {
-    $courses = [];
-    return view('tutor_search_course',compact('courses'));
-});
-Route::post('/tutor-search','CourseController@search');
-
-Route::post('/tutor-request','CourseController@requestCourse');
-
 
 Route::get('/cart', function(){
     // route to cart oage

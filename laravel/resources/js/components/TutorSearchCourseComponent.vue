@@ -2,21 +2,6 @@
   <div class="frame p-4">
     <div class="row">
       <div class="row px-3">
-        <div class="col-lg-3 py-0">
-          
-          <div class="form-group m-0">
-            <h5>Tutor</h5>
-            <v-autocomplete
-              v-model="chooseTutor"
-              :items="fetchTutors"
-              label="Not Specified"
-              dense
-              chips
-              small-chips
-              solo
-            ></v-autocomplete>
-          </div>
-        </div>
 
         <div class="col-lg-3 py-0">
           <div class="form-group">
@@ -31,7 +16,7 @@
               multiple
               solo
             ></v-autocomplete>
-          </div>     
+          </div>
         </div>
 
         <div class="col-lg-3 py-0">
@@ -48,11 +33,11 @@
               multiple
               solo
             ></v-autocomplete>
-          </div>     
+          </div>
         </div>
 
         <div class="col-lg-3 py-0">
-          <div class="form-group">
+          <div class="form-group m-0">
             <h5>Time</h5>
             <v-menu
               ref="menuTime"
@@ -86,24 +71,13 @@
                   @click:minute="$refs.menuTime.save(time)"
                 ></v-time-picker>
             </v-menu>
-          </div>     
+          </div>
         </div>
-      </div>
 
-      <div class="col-lg-9 py-0">
-        <div class="form-group">
-          <h5>Area</h5>
-          <gmap-autocomplete class="form-control" :value="areaAddress" @place_changed="setPlace"></gmap-autocomplete>
-        </div>    
-        <gmap-map :center="center" :zoom="12" style="width:100%;  height: 300px;">
-          <gmap-marker :key="index" v-for="(m, index) in markers" :position="m.position" :draggable="false" @click="center=m.position" @drag="updateCoordinates"></gmap-marker>
-        </gmap-map> 
-      </div>     
-
-      <div class="col-lg-3 py-0">
-        <div class="form-group">
-        <h5>Hours/Class</h5>
-          <v-autocomplete
+        <div class="col-lg-3 py-0">
+          <div class="form-group">
+            <h5>Hours/Class</h5>
+            <v-autocomplete
             v-model="hour"
             :items=[1,2,3,4]
             label="Not Specified"
@@ -113,7 +87,21 @@
             multiple
             solo
           ></v-autocomplete>
-        </div>     
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-9 py-0">
+        <div class="form-group">
+          <h5>Area</h5>
+          <gmap-autocomplete class="form-control" :value="areaAddress" @place_changed="setPlace"></gmap-autocomplete>
+        </div>
+        <gmap-map :center="center" :zoom="12" style="width:100%;  height: 300px;">
+          <gmap-marker :key="index" v-for="(m, index) in markers" :position="m.position" :draggable="false" @click="center=m.position" @drag="updateCoordinates"></gmap-marker>
+        </gmap-map>
+      </div>
+
+      <div class="col-lg-3 py-0">
 
         <div class="form-group">
         <h5>No. of Classes</h5>
@@ -126,8 +114,8 @@
             multiple
             solo
           ></v-text-field>
-        </div>     
-        
+        </div>
+
         <div class="form-group">
         <h5>Max Price</h5>
         <v-text-field
@@ -139,14 +127,14 @@
             multiple
             solo
           ></v-text-field>
-        </div>     
+        </div>
       </div>
 
       <div class="col-lg-12" style="text-align: center;">
         <button class="btn ownbtn px-5 py-2" @click="searchCourse">Search Courses</button>
       </div>
     </div>
-  
+
 
     <br>
     <h1>Search Result</h1>
@@ -158,8 +146,8 @@
       :cart="currentCart"
       class="elevation-1"
     >
-      <template v-slot:item.tutor="{ item }">
-        <b>{{item.tutor}}</b> <br>
+      <template v-slot:item.student="{ item }">
+        <b>{{item.student}}</b> <br>
         <chat-button v-bind:userid="item.user_id"></chat-button>
       </template>
 
@@ -177,15 +165,38 @@
 
       <template v-slot:item.action="{ item }">
         <div class='my-2'>
-          <regis-now-button v-bind:courseid="item.id" v-on:click.native='registerNow(item.id)'></regis-now-button>
-          <add-to-cart-button v-bind:courseid="item.id" v-bind:clicked="currentCart.includes(item.id)" @click.native="tempoCart.push(item.id);Object.assign(tempoCart, currentCart)"></add-to-cart-button>
+          <button type="button" class="btn ownbtn" data-toggle="modal" :data-target="'#modal'+item.id" :id="'requestbutton'+item.id">Request to be Tutor</button>
+                <div class="modal fade" :id="'modal'+item.id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Comfirm Request?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div>Name: {{item.student}}</div>
+                            <div>Subject: {{item.subjects}}</div>
+                            <div>Places: {{item.area}}</div>
+                            <div>Date/Time: {{item.days}} {{getPeriodTimeFormat(item.time, item.hours)}}</div>
+                            <div v-if="item.noClasses == 1">Class: {{item.noClasses}} Class</div>
+                            <div v-else>Class: {{item.noClasses}} Classes</div>
+                            <div>Price: {{item.price}} THB</div>
+                            <div>Starts on {{getDateFormat(item.startDate)}}</div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="btn btn-light" data-dismiss="modal">Cancel</div>
+                            <input type="hidden" name="course_id" :value="item.id">
+                            <button :id="'confirmbutton'+item.id" type="submit" class="btn ownbtn" v-on:click="requestToBeTutor(item.id)">Confirm</button>
+                        </div>
+                    </div>
+                  </div>
+                </div>
         </div>
       </template>
 
     </v-data-table>
-    
+
   </div>
-  
+
 
 </template>
 
@@ -197,9 +208,7 @@
     data () {
       return {
         fetchSubjects: [],
-        fetchTutors: [],
         fetchDays: [],
-        chooseTutor: "",
         chooseDay: [],
         chooseArea: "",
         chooseSubject: [],
@@ -209,7 +218,7 @@
         maxPrice: "",
         noClass: "",
         headers: [
-          { text: 'Tutor', value: 'tutor', sortable: false, width: "16%" },
+          { text: 'Student', value: 'student', sortable: false, width: "16%" },
           { text: 'Available Subjects', value: 'subjects', sortable: false, width: "16%" },
           { text: 'Areas', value: 'area', sortable: false, width: "16%" },
           { text: 'Classes', value: 'days', sortable: false, width: "20%" },
@@ -222,22 +231,18 @@
         markers: [],
         areaAddress: '',
         areaLocationId: '',
-        currentCart: [],
-        tempoCart: [],
-        clickRegis: false
+        currentCart: []
       }
     },
     mounted() {
       axios.get('/api/fetch-days').then(response => this.fetchDays = response.data)
       axios.get('/api/fetch-subjects').then(response => this.fetchSubjects = response.data)
-      axios.get('/api/fetch-tutors').then(response => this.fetchTutors = response.data)
       this.markers = [{position: this.center}]
     },
 
     methods: {
       searchCourse() {
-        axios.get('/api/search-courses', {params: {
-          tutor: this.chooseTutor,
+        axios.get('/api/tutor-search-courses', {params: {
           area: this.markers[0]['position'],
           subject: this.chooseSubject,
           day: this.chooseDay,
@@ -250,19 +255,11 @@
           this.search_result = response.data
         })
         .catch(error => console.log(error));
-        
-        // fetch current cart at the same time
-        axios.get('api/cart/current')
-        .then(response => {
-          this.currentCart = response.data,
-          this.tempoCart = response.data
-        })
-        .catch(error => console.log(error));
       },
 
       getPeriodTimeFormat(start, hour){
         start = '01-01-2000 ' + start
-        return moment(String(start)).format('HH:mm') + '-' + moment(String(start)).add(hour, 'hours').format('HH:mm')
+        return moment(String(start),'DD-MM-YYYY HH:mm:ss').format('HH:mm') + '-' + moment(String(start),'DD-MM-YYYY HH:mm:ss').add(hour, 'hours').format('HH:mm')
       },
 
       getDateFormat(date){
@@ -294,30 +291,22 @@
         this.areaLocationId = location.id
       },
 
-      addToCart: function(course_id){
-        axios.post('api/cart/add', {
+      requestToBeTutor: function(course_id) {
+        axios.post('api/tutor-request', {
           course_id: course_id
-        }).then(response => console.log(200)).catch(error => console.log(error))
-      },
+        }).then( (response) => {
+            console.log(200);
+            $("#modal"+course_id).trigger('click');
+            $("#requestbutton"+course_id).prop('disabled',true);
+            $("#requestbutton"+course_id).css({'pointer-events':'none'});
+            $("#requestbutton"+course_id).removeClass('ownbtn');
+            $("#requestbutton"+course_id).addClass('btn-light');
+            $("#requestbutton"+course_id).html('Request Sent !');
+        }).catch(error => console.log(error)).then(
 
-      removeCart: function(course_id) {
-        axios.post('api/cart/remove', {
-          course_id: course_id
-        }).catch(error => console.log(error))
-      },
-      
-      registerNow: function(course_id){
-        if(!this.clickRegis){
-          if (this.currentCart.includes(course_id)){
-            window.location.href = '/cart';
-          }else{
-            this.clickRegis = true;
-            axios.post('api/cart/add', {
-              course_id: course_id
-            }).then(response => console.log(200)).catch(error => console.log(error)).then(window.location.href="/cart")
-          }
-        }
+        )
       }
+
     }
   }
 </script>
