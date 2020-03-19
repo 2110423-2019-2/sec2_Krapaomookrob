@@ -18,7 +18,8 @@ class CourseRequesterController extends Controller
                 $arr = [
                     'id' => $req->id,
                     'name' => User::find($req->requester_id)->name,
-                    'courseId' => $req['course_id']
+                    'courseId' => $req['course_id'],
+                    'requesterId' => $req->requester_id
                 ];
                 array_push($retVal, $arr);
             }
@@ -43,7 +44,7 @@ class CourseRequesterController extends Controller
         $message = $name.' has declined your request.';
         $requests = CourseRequester::where('course_id','=',$request->input('courseId'))->get();
         foreach($requests as $rq){
-            if ($rq->status != 'Declined'){
+            if ($rq->status != 'Declined' && $rq->requester_id != $request->input('requesterId')){
                 $receiver_id = $rq->requester_id;
                 $rq->update(['status'=>'Declined']);
                 NotificationController::createNotification($receiver_id,$title,$message);
@@ -54,7 +55,7 @@ class CourseRequesterController extends Controller
         CourseRequester::find($reqId)->update(['status' => 'Accepted']);
         $title = "Request Accepted";
         $message = $name.' has accepted your request.';
-        $receiver_id = CourseRequester::find($reqId)->requester_id;
+        $receiver_id =  $request->input('requesterId');
         NotificationController::createNotification($receiver_id,$title,$message);
     }
     
