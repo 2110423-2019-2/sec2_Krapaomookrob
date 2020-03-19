@@ -11,6 +11,7 @@ Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('notification-bar',require('./components/NotificationBar.vue').default);
 Vue.component('my_calendar-component', require('./components/MyCalendarComponent.vue').default);
 
+
 import * as VueGoogleMaps from 'vue2-google-maps';
 Vue.use(VueGoogleMaps, {
   load: {

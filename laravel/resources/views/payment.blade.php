@@ -1,15 +1,80 @@
 @extends('layouts.forPayment')
 
+@section('title', 'Courses payment')
+
+@section('topic', 'Payment')
+
+
 
 @section('content')
+<div class = "col-lg-0">
+    <h4 type = "hidden" name = "price" value = "{{$price = $totalprice * 100}}"></h4>
+</div>
+    <div class="card pb-2">
+            <div class="card-body">
+                <div class="row course-item mb-2 pb-2 bline">
+                    <div class="col-lg">Tutor</div>
+                    <div class="col-lg">Available Subjects</div>
+                    <div class="col-lg">Area</div>
+                    <div class="col-lg">Classes</div>
+                    <div class="col-lg">Price/Start Date</div>
+                </div>
 
-<div class = "col-lg-3">
-    <h3 style ="text-align: center;">Payment: {{$totalprice}} </h3>
-    <h type = "hidden" name = "price" value = "{{$price = $totalprice * 100}}"> </h>
+@foreach ($responses as $response)
+<div class="row course-item mb-2 pb-2 border-bottom">
+                <div class="col-lg">
+                    <strong>{{$response['tutor_name']}}</strong>
+
+                  </div>
+                  <div class="col-lg" >
+                  @foreach ( $response['subjects'] as $subject)
+                <li>{{ $subject }} </li>
+            @endforeach
+                  </div>
+                  <div class="col-lg">{{$response['area']}}</div>
+                  <div class="col-lg">
+                  @foreach ( $response['days'] as $day)
+                    {{ $day }}
+            @endforeach
+                    <br />
+                    {{$response['time']}}
+                    <br />
+                    ({{$response['hour']}} hrs/class)
+                </div>
+                  <div class="col-lg">
+                    {{$response['price']}} THB
+                    <br />
+                    Starts on {{$response['startDate']}}
+                  </div>
 
 </div>
-<div class = "row ">
-    <div class = "col-lg-1">
+@endforeach
+
+
+    <div class="row justify-content-end pr-5 mt-3">
+      <div class="col-2 mr-0 pl-5" style="float: right; font-size:1.4em;">
+        <p class="text-right">
+          <strong>Summary</strong>
+        </p>
+      </div>
+
+      <div class="col-2 mr-3">
+        <p class="mt-1 mb-0 ml-2">
+                Total Price
+        </p>
+        <p
+          class="mt-0 mb-1 ml-2"
+          style="color:rgb(242, 87, 87); font-size: 1.8em"
+        >{{ $totalprice }} THB</p>
+
+        </div>
+
+    </div>
+    </div>
+</div>
+<div class="card pb-2">
+<div class = "row">
+    <div class = "col-lg-2">
     </div>
     <div class = "col-lg-4">
     <div class="card">
@@ -78,5 +143,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
