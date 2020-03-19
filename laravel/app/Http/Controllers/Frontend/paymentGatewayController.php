@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Cookie;
 use App\BankAccount;
 use App\OmiseRecipientAccount;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\CourseController;
 
 require_once dirname(__FILE__).'/../../../../vendor/autoload.php';
 
@@ -80,7 +81,7 @@ class paymentGatewayController extends Controller{
     }
     public function checkBeforeCharge($paymentID){
         $arr = Cart::where('payment_id',$paymentID)->get();
-        
+
         foreach ($arr as $value)
         {
             if($value == null) continue;
@@ -96,7 +97,7 @@ class paymentGatewayController extends Controller{
     }
 
     public function checkout(Request $request){
-    
+
         if($this->checkBeforeCharge($request->input('paymentID'))){
             return view('dashboard')->with('error','Some course is taken');
 
@@ -106,7 +107,7 @@ class paymentGatewayController extends Controller{
             'amount'   => $request->input('p'),
             'currency' => 'thb'
         ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
-        
+
         $charge = OmiseCharge::create(array(
             'amount' => $request->input('p'),
             'currency' => 'thb',
@@ -123,7 +124,13 @@ class paymentGatewayController extends Controller{
     public function createTransferOmise(Request $request){
         $payReq = PaymentRequest::find($request->input('paymentReqID'));
         if($payReq['omise_id']!=null){
+            if($payReq['status'] == 'successful'){
             return response('Request ID ' . $payReq['id'] . ' is already transfer' , 403);
+            }
+            else{
+                $http = sprintf("https://dashboard.omise.co/test/transfers/%s",$payReq['omise_id']);
+            return response($http, 200);
+            }
         }
         $user = User::find($payReq['requested_by']);
         $money = $payReq['amount'];
@@ -194,9 +201,9 @@ class paymentGatewayController extends Controller{
     }
 
     public function returnPage($paymentID){
-        
+
         $payment = Payment::find($paymentID);
-        
+
 
         //chage status in payment
         $result = OmiseCharge::retrieve($payment->charge_id);
@@ -235,7 +242,20 @@ class paymentGatewayController extends Controller{
     }
 
     public function getPaymentPage($payment_id,$totalprice){
-        return view('/payment', ['payment_id'=> $payment_id, 'totalprice' => $totalprice]);
+        $cartList =  Cart::where('payment_id',$payment_id)->get();
+
+        $courses = array();
+        $tutor = array();
+        $subject = array();
+        
+            foreach($cartList as $item){
+                    $course_id = $item['course_id'];
+                    $course = CourseController::getCourseInfo(intval($course_id));
+                    array_push($courses,$course);
+
+                }
+         
+        return view('/payment', ['responses'=> $courses,'payment_id'=> $payment_id, 'totalprice' => $totalprice]);
     }
 
 }
