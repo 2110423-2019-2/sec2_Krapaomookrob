@@ -18,6 +18,7 @@ use App\Course_day;
 use App\CourseStudent;
 use App\Notification;
 use App\CourseClass;
+use App\CourseRequester;
 
 class CourseController extends Controller
 {
@@ -81,29 +82,29 @@ class CourseController extends Controller
             'days' => $days,
             'subjects' => $subjects,
             'noClass' => $course->noClasses,
-            'studentCount' => $course->studentCount 
+            'studentCount' => $course->studentCount
         ];
-        
+
         return $returnObj;
     }
-    
+
     public function cancelCourse(Request $request){
         $user_id = $request->user_id;
         $course_id = $request->course_id;
         $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
         $registeredCourse->status = 'refunding';
         $registeredCourse->save();
-        
+
         //  create cancel notification
         $username = User::where('id','=',$registeredCourse->user_id)->first()->name;
         $title = "Request to teach";
         $message = "{$username} have cancel the course";
         $receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
         NotificationController::createNotification($receiver_id, $title, $message);
-        
+
         return response($registeredCourse, 200);
     }
-    
+
     public function postponeClass(Request $request){
         $class_id = $request->classId;
         $class = CourseClass::where('id', $class_id)->first();
@@ -113,7 +114,7 @@ class CourseController extends Controller
         if ($class->date <= date("Y-m-d")) {
             return response("the class can not be postponed", 401);
         }
-        
+
         $weekMap = [
             'Sunday' => 0,
             'Monday' => 1,
@@ -129,7 +130,7 @@ class CourseController extends Controller
         $date = new Carbon($class->date);
         $class->status = 'Postponed';
         $class->save();
-        
+
         while(True){
             $min = $date->copy()->addDays(8);
             foreach($weekDays as $weekDay){
@@ -150,9 +151,9 @@ class CourseController extends Controller
             }
             $date = $min;
         }
-        
+
         $title = 'Postponement';
-        $message = 'The class on ' . date("j F Y", strtotime($class->date)) 
+        $message = 'The class on ' . date("j F Y", strtotime($class->date))
                     . ' has been postponed by ' . auth()->user()->name
                     . ', the extended class will be in ' . date("j F Y", strtotime($date));
         NotificationController::multiNotify($course_id, $title, $message);
@@ -166,7 +167,7 @@ class CourseController extends Controller
         }
         return response($status, 200);
     }
-    
+
     public function getClassStatus($class_id){
         $class = CourseClass::where('id', $class_id)->first();
         // check whether user owns the course
@@ -207,9 +208,9 @@ class CourseController extends Controller
     }
 
     public function requestCourse(Request $request) {
-        $data = array('course_id'=>$request->course_id,"requester_id"=>auth()->user()->id);
-        DB::table("courses_requester")->insert($data);
-
+        $receiver_id = Course::all()->where('id','=',$request->course_id)->pluck('user_id');
+        $data = array('course_id'=>$request->course_id,"requester_id"=>auth()->user()->id,'receiver_id'=>$receiver_id[0],'status'=>'Init','updated_at'=>now());
+        DB::table("course_requesters")->insert($data);
         // create Notification
         $username = User::where('id','=',auth()->user()->id)->first()->name;
         $message = "{$username} have request to teach your course";
@@ -218,18 +219,6 @@ class CourseController extends Controller
         NotificationController::createNotification($receiver_id, $title, $message);
 
         return response()->json(array('msg'=> "Done"), 200);
-    }
-
-    public function search(Request $request) {
-        $student_name = $request->input("student_name");
-        $area = $request->input("area");
-        $subject = $request->input("subject");
-        $day = $request->input("day");
-        $time = $request->input("time");
-        $num_students = $request->input("num_students");
-        $max_price = $request->input("max_price");
-        $courses = DB::table('courses')->paginate(15);
-        return view("/tutor_search_course",compact('courses'));
     }
 
     public static function newClasses($course){
@@ -292,7 +281,7 @@ class CourseController extends Controller
                 ];
 
                 array_push($retCourses, $arr);
-                
+
             }
         }
         return $retCourses;
