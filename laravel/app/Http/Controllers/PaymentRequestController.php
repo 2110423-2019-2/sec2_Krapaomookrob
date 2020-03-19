@@ -20,29 +20,30 @@ class PaymentRequestController extends Controller
     }
     
     public function create(Request $request){
-        
-        $validatedData = $request->validate([
-            'amount' => 'required|integer|min:1|max:' . auth()->user()->balance,
-        ]);
-
-        if(!auth()->user()->BankAccount){
-            return response(['message' => 'You need to add bank account information.', 'errors' => ['bankAccount' => ['Bank account information is required']]] ,422);
+        if(auth()->user()){
+            $validatedData = $request->validate([
+                'amount' => 'required|integer|min:1|max:' . auth()->user()->balance,
+            ]);
+    
+            if(!auth()->user()->BankAccount){
+                return response(['message' => 'You need to add bank account information.', 'errors' => ['bankAccount' => ['Bank account information is required']]] ,422);
+            }
+    
+            PaymentRequest::create([
+                'amount' => $request->amount,
+                'requested_by' => auth()->user()->id,
+                'bank_account' => auth()->user()->BankAccount->id
+            ]);
+            
+            return response("Create payment request successfully.",200);
         }
-
-        PaymentRequest::create([
-            'amount' => $request->amount,
-            'requested_by' => auth()->user()->id,
-            'bank_account' => auth()->user()->BankAccount->id
-        ]);
-        
-        return response("Create payment request successfully.",200);
+        abort(401, "Login required");
     }
 
     public function getMyRequests(){
-        return response(auth()->user()->requestPaymentRequests()->orderBy('created_at','DESC')->get(), 200);
-    }
-
-    public function getInitRequests(){
-        return response(PaymentRequest::where('status', '=', 'init')->get(), 200);
+        if(auth()->user()){
+            return response(auth()->user()->requestPaymentRequests()->orderBy('created_at','DESC')->get(), 200);
+        }
+        abort(401, "Login required");
     }
 }
