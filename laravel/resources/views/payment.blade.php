@@ -92,7 +92,7 @@
                 data-key="pkey_test_5irvp3eqbf7ybksdjlt"
                 data-image="{{asset('img/favicon.png')}}"
                 data-frame-label="EDITT payment"
-                data-button-label="check out"
+                data-button-label="Checkout"
                 data-submit-label="Submit"
                 data-amount="{{$price}}" //money in thb that must *100 to
                 data-currency="thb"
