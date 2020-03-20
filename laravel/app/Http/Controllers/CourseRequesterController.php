@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\CourseRequester;
+use App\CourseStudent;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class CourseRequesterController extends Controller
         $courseReq = CourseRequester::select('id','course_id','requester_id','status')->where('receiver_id','=', $userId)->get();
         $retVal = [];
         foreach($courseReq as $req){
-            if ($req['status'] == 'Init'){
+            if ($req['status'] == 'Init' || $req['status'] == 'Pending'){
                 $arr = [
                     'id' => $req->id,
                     'name' => User::find($req->requester_id)->name,
@@ -38,25 +39,45 @@ class CourseRequesterController extends Controller
     }
 
     public function acceptRequest(Request $request){
-        // only one tutor can teach
+        $reqId = $request->input('id');
+        $courseId = $request->input('courseId');
+        $requesterId = $request->input('requesterId');
+
+        // only one tutor can teach, change status of all previous request to init
+        $previousRequests = CourseRequester::where('course_id','=',$courseId)
+                                           ->where('id','!=',$reqId)
+                                           ->update(['status' => 'Init']);
+        
+        // change request status
+        CourseRequester::find($reqId)->update(['status' => 'Pending']);
+    }
+
+    public static function confirmAcceptedRequest($courseId){
+        // call this function when finish payment
         $name = auth()->user()->name;
         $title = "Request Declined";
         $message = $name.' has declined your request.';
-        $requests = CourseRequester::where('course_id','=',$request->input('courseId'))->get();
+        $requests = CourseRequester::where('course_id','=',$courseId)->get();
         foreach($requests as $rq){
-            if ($rq->status != 'Declined' && $rq->requester_id != $request->input('requesterId')){
+            if ($rq->status != 'Declined' && $rq->requester_id != $courseId){
                 $receiver_id = $rq->requester_id;
                 $rq->update(['status'=>'Declined']);
                 NotificationController::createNotification($receiver_id,$title,$message);
             }
         }
-        
-        $reqId = $request->input('id');
-        CourseRequester::find($reqId)->update(['status' => 'Accepted']);
+
+        CourseRequester::where('course_id','=',$courseId)->where('status','=','Pending')->update(['status' => 'Accepted']);
         $title = "Request Accepted";
         $message = $name.' has accepted your request.';
-        $receiver_id =  $request->input('requesterId');
+        $receiver_id = CourseRequester::where('course_id','=',$courseId)->where('status','=','Accepted')->get()->first()->requester_id;
         NotificationController::createNotification($receiver_id,$title,$message);
+        return null;
+    }
+
+    public static function removeRequest($courseId){
+        CourseRequester::where('course_id','=',$courseId)
+                     ->where('status','=','Pending')
+                     ->update(['status' => 'Init']);
     }
     
 }

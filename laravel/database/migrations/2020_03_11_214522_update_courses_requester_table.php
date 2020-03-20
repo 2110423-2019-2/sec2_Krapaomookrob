@@ -23,7 +23,7 @@ class UpdateCoursesRequesterTable extends Migration
             $table->dropColumn('created_at');
             $table->unsignedBigInteger('receiver_id');
             $table->foreign('receiver_id')->references('id')->on('users');
-            $table->enum('status',['Accepted', 'Declined', 'Init'])->default('Init');
+            $table->enum('status',['Accepted', 'Declined', 'Init', 'Pending'])->default('Init');
             $table->timestamps();
         });
 

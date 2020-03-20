@@ -228,19 +228,16 @@ export default {
           .then(response => (
             this.requests.splice(index, 1)
           ));
-        // TODO: edit course tutor to requested tutor
-        
-        // ENDTODO
         axios
           .post('api/cart/add', {
               course_id: item.courseId
           })
           .then(
             response=> console.log(200)  
-          );
-          // .then(window.location.href="/cart")
-          // .catch(error => console.log(error))
-          
+          )
+          .then(
+            window.location.href='/cart'
+          );          
       }
     },
     decline: function(item) {

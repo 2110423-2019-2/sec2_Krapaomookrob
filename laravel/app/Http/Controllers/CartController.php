@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cart;
+use App\Course;
 use App\Payment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ class CartController extends Controller
     }
 
     public function addToCart(Request $request){
-        $hasCart = false;
+    $hasCart = false;
 
         list($cartId, $res) = self::getUserCart(auth()->user()->id, $request);
 
@@ -50,7 +51,12 @@ class CartController extends Controller
 
         if(Cookie::has($cartId)){
             $value = $request->cookie($cartId);
-            $value .= strval($request->input('course_id')).',';
+            $items = explode(',', substr($value,0,-1));
+            $cid = strval($request->input('course_id'));
+            $key = array_search($cid,$items);
+            if (!$key){
+                $value .= strval($request->input('course_id')).',';
+            }
         }else{
             $value = $request->input('course_id').',';
         }
@@ -99,6 +105,11 @@ class CartController extends Controller
         $key = array_search($cid,$items);
         if( ( $key !== FALSE) ){
             unset($items[$key]);
+        }
+
+        // remove accept status
+        if ( Course::find($request->input('course_id'))->isMadeByStudent() ){
+            CourseRequesterController::removeRequest($request->input('course_id'));
         }
 
         $value = join(',',$items).',';
