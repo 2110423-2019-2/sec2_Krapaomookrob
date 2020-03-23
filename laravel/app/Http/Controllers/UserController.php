@@ -52,20 +52,24 @@ class UserController extends Controller
     }
 
     public function viewTutorProfile(User $user){
-        
-        $role = ($user -> role)?($user -> role):"-";
-        $username = ($user -> name)?($user -> name):"-";
-        $phone = ($user -> phone)?($user -> phone):"-";
-        $education_level = ($user -> education_level)?($user -> education_level):"-"; 
-        $nickname = ($user -> nickname)?($user -> nickname):"-"; 
-        $email = ($user -> email)?($user -> email):"-";
-        $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
-        $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
-        $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
-        $rating = ReviewController::getRating($user -> id);
-        $reviews = ReviewController::getReviews($user -> id);
+        if($user -> isTutor()){
+            $role = ($user -> role)?($user -> role):"-";
+            $username = ($user -> name)?($user -> name):"-";
+            $phone = ($user -> phone)?($user -> phone):"-";
+            $education_level = ($user -> education_level)?($user -> education_level):"-"; 
+            $nickname = ($user -> nickname)?($user -> nickname):"-"; 
+            $email = ($user -> email)?($user -> email):"-";
+            $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
+            $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
+            $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
+            $rating = ReviewController::getRating($user -> id);
+            $reviews = ReviewController::getReviews($user -> id);
 
-        return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviews'));
+            return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviews'));
+        }
+        else if($user -> isStudent()){
+            return redirect('/');
+        }
     }
 
     public function editProfile(User $user){

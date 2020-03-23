@@ -71,6 +71,7 @@
         </div>
         
       </div>
+      {{-- Reviews Part --}}
       <div class="container d-flex">
         <div class="card-body col-12 mx-3 mb-5 dash">
             <h4 class="card-title">Reviews</h4>
