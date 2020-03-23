@@ -39,9 +39,16 @@ class UserController extends Controller
         $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
         $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
         $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
-
-        return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password',
+        if($user -> isTutor()){
+            $rating = ReviewController::getRating($user -> id);
+            $reviews = ReviewController::getReviews($user -> id);
+            return view('profile.tutor_view',compact('user','phone','education_level','nickname','username','role','email','password',
+            'account_number', 'account_name', 'bank', 'rating', 'reviews'));
+        }
+        else if($user -> isStudent()){
+            return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password',
                                             'account_number', 'account_name', 'bank'));
+        }
     }
 
     public function viewTutorProfile(User $user){
