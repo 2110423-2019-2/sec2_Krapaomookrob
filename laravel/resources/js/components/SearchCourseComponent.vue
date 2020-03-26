@@ -265,7 +265,7 @@
 
       getPeriodTimeFormat(start, hour){
         start = '01-01-2000 ' + start
-        return moment(String(start)).format('HH:mm') + '-' + moment(String(start)).add(hour, 'hours').format('HH:mm')
+        return moment(String(start),'DD-MM-YYYY HH:mm:ss').format('HH:mm') + '-' + moment(String(start),'DD-MM-YYYY HH:mm:ss').add(hour, 'hours').format('HH:mm')
       },
 
       getDateFormat(date){

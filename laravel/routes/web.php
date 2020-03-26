@@ -34,9 +34,7 @@ Route::get('/new-course', function () {
 });
 
 // Search Courses
-Route::get('/search-courses', function() {
-    return view('search_courses');
-});
+Route::get('/search-courses', 'SearchController@redirectSearchCourses');
 Route::get('/api/fetch-tutors','SearchController@fetchTutors');
 Route::get('/api/fetch-areas','SearchController@fetchAreas');
 Route::get('/api/fetch-days','SearchController@fetchDays');
@@ -44,9 +42,7 @@ Route::get('/api/fetch-subjects','SearchController@fetchSubjects');
 Route::get('/api/search-courses','SearchController@searchCourses');
 
 //Tutor Search and Request
-Route::get('/tutor-search', function () {
-    return view('tutor_search_course');
-});
+Route::get('/tutor-search', 'SearchController@redirectTutorSearchCourses');
 Route::post('/api/tutor-request','CourseController@requestCourse');
 Route::get('/api/tutor-search-courses','SearchController@tutorSearchCourses');
 
