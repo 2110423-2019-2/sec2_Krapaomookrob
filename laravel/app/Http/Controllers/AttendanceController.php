@@ -66,4 +66,47 @@ class AttendanceController extends Controller
       return $attendance;
     }
 
+    public function getHistoryAttendances(){
+      $user = Auth::user();
+      $result = collect();
+      $classes = collect();
+      if($user->isTutor()){
+        $classes = DB::select('select course_classes.date, course_classes.time, course_classes.hours, users.nickname from attendances
+                                inner join course_classes on course_classes.id = attendances.course_classes_id
+                                inner join courses on course_classes.course_id = courses.id
+                                inner join course_student student on courses.id = student.course_id
+                                left join users on student.user_id = users.id
+                                where attendances.user_id = ?
+                                order by course_classes.date desc, course_classes.time desc', [$user->id]);
+        foreach($classes as $class){
+          $nTime = Carbon::parse("{$class->date} {$class->time}")->addHour($class->hours);
+          $temp = collect([
+            'name' => "N'{$class->nickname}",
+            'date' => Carbon::parse($class->date)->isoFormat('dddd, D MMM YYYY'),
+            'time' => date_format(date_create($class->time),'H:i').'-'.date_format(date_create($nTime),'H:i').'('.$class->hours.'hrs)',
+          ]);
+          $result->push($temp);
+        }
+      }else{
+        $classes = DB::select('select course_classes.date, course_classes.time, course_classes.hours, users.nickname from attendances
+                                inner join course_classes on course_classes.id = attendances.course_classes_id
+                                inner join courses on course_classes.course_id = courses.id
+                                inner join course_student student on courses.id = student.course_id
+                                left join users on courses.user_id = users.id
+                                where attendances.user_id = ?
+                                order by course_classes.date desc, course_classes.time desc', [$user->id]);
+        foreach($classes as $class){
+          $nTime = Carbon::parse("{$class->date} {$class->time}")->addHour($class->hours);
+          $temp = collect([
+            'name' => "P'{$class->nickname}",
+            'date' => Carbon::parse($class->date)->isoFormat('dddd, D MMM YYYY'),
+            'time' => date_format(date_create($class->time),'H:i').'-'.date_format(date_create($nTime),'H:i').'('.$class->hours.'hrs)',
+          ]);
+          $result->push($temp);
+        }
+      }
+
+      return response()->json($result->toArray());
+    }
+
 }

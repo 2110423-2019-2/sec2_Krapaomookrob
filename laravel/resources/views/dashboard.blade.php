@@ -31,6 +31,7 @@
 <div class="row">
   <div class="col-lg-9">
     <attendance-today-component></attendance-today-component>
+    <attendance-history-component></attendance-history-component>
   </div>
   <div class="col-lg-3">
     <div class="card">

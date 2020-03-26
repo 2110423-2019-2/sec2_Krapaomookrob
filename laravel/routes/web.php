@@ -174,3 +174,4 @@ Route::post('api/accept-request', 'CourseRequesterController@acceptRequest');
 //attendance
 Route::get('/api/classes-today', 'AttendanceController@getClassesToday');
 Route::post('/api/check-class', 'AttendanceController@checkClass');
+Route::get('/api/history-attendances', 'AttendanceController@getHistoryAttendances');
