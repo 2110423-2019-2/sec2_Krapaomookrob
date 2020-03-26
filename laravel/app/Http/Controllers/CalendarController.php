@@ -18,6 +18,7 @@ class CalendarController extends Controller
         $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.nickname,locations.name as location,classes.status from course_classes classes
                                 inner join courses on classes.course_id = courses.id
                                 inner join course_student student on courses.id = student.course_id
+                                inner join locations on locations.id = courses.location_id
                                 left join users on student.user_id = users.id
                                 where courses.user_id = ? and student.status = ?', [$user->id, 'registered']);
         //{"date":"2021-02-18","time":"13:00:00","hours":1,"nickname":"Somsak"}
@@ -55,7 +56,7 @@ class CalendarController extends Controller
             'start' => "{$class->date} {$class->time}",
             'end' => $nTime->toDateTimeString(),
             'color' => $colors[$class->coid%7],
-            
+
             // for display in calendar's card
             'time' => date_format(date_create($class->time), 'H:i') . ' - ' . date_format(date_create($nTime), 'H:i'),
             'location' => $class->location,

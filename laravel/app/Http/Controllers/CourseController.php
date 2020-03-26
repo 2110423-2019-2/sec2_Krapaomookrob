@@ -69,7 +69,16 @@ class CourseController extends Controller
         $subjects = $course->subjects->pluck('name');
 
         // find tutor's name
-        $tutorName = $course->user->name;
+        if ($course->isMadeByStudent()){
+            // find tutor name from course request
+            $requesterId= CourseRequester::where('course_id','=',$courseId)
+                                        ->where('status','=','Pending')
+                                        ->get()->first();
+            $requesterId = $requesterId->requester_id;
+            $tutorName = User::find($requesterId)->name;
+        }else{
+            $tutorName = $course->user->name;
+        }
 
         $returnObj = [
             'tutor_name' => $tutorName,
