@@ -160,6 +160,9 @@
     >
       <template v-slot:item.tutor="{ item }">
         <b>{{item.tutor}}</b> <br>
+        <a :href="'/tutor/profile/'+item.user_id" class="btn profileBtn" style='margin-top: 3px;margin-bottom:5px;'>
+            <div style='position:relative;top:-5px;'>Profile</div>
+        </a>
         <chat-button v-bind:userid="item.user_id"></chat-button>
       </template>
 
