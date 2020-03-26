@@ -11,7 +11,7 @@
       <div class="card-header editt-bg m-0 p-0">
         <div class="container justify-content-center py-4">
           <div class="row justify-content-center">
-            <img src={{ $user -> getImage()}} class ="bg-white rounded-circle mb-3" style = "width: 15%">
+            <img src={{ $user -> getImage()}} class ="bg-white rounded-circle mb-3" style = "width: 15%;height:15%;">
           </div>
           <div class="row justify-content-center">
             <div class="h4">T. {{ $user -> name }}</div>
