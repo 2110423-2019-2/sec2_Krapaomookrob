@@ -16,6 +16,18 @@
 @endsection
 
 @section('content')
+@if($user->isStudent())
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Manage Requests</h4>
+          <course-request></course-request>
+      </div>
+    </div>
+  </div>
+</div>
+@endif
 <div class="row">
   <div class="col-lg-9">
     <div class="card">

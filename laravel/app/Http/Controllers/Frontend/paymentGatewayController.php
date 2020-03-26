@@ -15,6 +15,7 @@ use App\PaymentRequest;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Cookie;
 use App\BankAccount;
+use App\CourseRequester;
 use App\OmiseRecipientAccount;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CourseController;
@@ -235,7 +236,9 @@ class paymentGatewayController extends Controller{
                 $tutor_message = "{$user_name} have register your course.";
                 NotificationController::createNotification($user_id, $title, $user_message);
                 NotificationController::createNotification($tutor_id, $title, $tutor_message);
-
+                if ($course->isMadeByStudent()){
+                    CourseRequester::confirmAcceptedRequest($course->id);
+                }
             }
             return view('dashboard')->with('alert','Successful');
         }
