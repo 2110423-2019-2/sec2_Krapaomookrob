@@ -56,6 +56,8 @@ Vue.config.warnHandler = function (msg, vm, trace) {
   }
 }
 
+Vue.prototype.$eventHub = new Vue();
+
 const app = new Vue({
     el: '#app',
     vuetify: new Vuetify({

@@ -28,8 +28,19 @@
       ],
       attendances: [],
     }),
+    created() {
+        this.$eventHub.$on('checked', this.reload);
+    },
+    beforeDestroy() {
+        this.$eventHub.$off('checked');
+    },
+    methods: {
+      reload(){
+        axios.get('/api/history-attendances').then(response => this.attendances = response.data)
+      }
+    },
     mounted () {
-      axios.get('/api/history-attendances').then(response => this.attendances = response.data)
+      this.reload()
     }
   }
 </script>

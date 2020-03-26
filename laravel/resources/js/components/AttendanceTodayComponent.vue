@@ -31,6 +31,7 @@
         .then(response => {
           this.classes.map((x) => {(x.class_id === class_id) ? this.checkTrue(x) : x})
         })
+        this.$eventHub.$emit('checked');
       },
       checkTrue(x){
         x.checked = 1
