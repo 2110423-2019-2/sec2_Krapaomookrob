@@ -11,7 +11,16 @@
 @section('content')
     <div class="card pb-2">
         <div class="card-body">
-            <h4 class="card-title">Create Advertisement</h4>
+            <h3 class="card-title">Let's us help promoting your courses</h3>
+            <p>
+                Start now by choosing your course that you want to promote.   
+            </p>
+            <p>
+                The promoted course will be list first on the search result page when student are looking for some course to register.
+            </p>
+
+            <courses-card></courses-card>
+
         </div>
     </div>
 @endsection
