@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\BankAccount;
+use App\Course;
 use App\Transaction;
 use App\Report;
 use App\Http\Controllers\ReviewController;
@@ -42,8 +43,14 @@ class UserController extends Controller
         if($user -> isTutor()){
             $rating = ReviewController::getRating($user -> id);
             $reviews = ReviewController::getReviews($user -> id);
+            $reviewsWithSubjects = [];
+            foreach ($reviews as $review){
+                $course = Course::find($review->course_id);
+                $subjects = $course->subjects->pluck('name');
+                array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
+            }
             return view('profile.tutor_view',compact('user','phone','education_level','nickname','username','role','email','password',
-            'account_number', 'account_name', 'bank', 'rating', 'reviews'));
+            'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects'));
         }
         else if($user -> isStudent()){
             return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password',
@@ -56,16 +63,21 @@ class UserController extends Controller
             $role = ($user -> role)?($user -> role):"-";
             $username = ($user -> name)?($user -> name):"-";
             $phone = ($user -> phone)?($user -> phone):"-";
-            $education_level = ($user -> education_level)?($user -> education_level):"-"; 
-            $nickname = ($user -> nickname)?($user -> nickname):"-"; 
+            $education_level = ($user -> education_level)?($user -> education_level):"-";
+            $nickname = ($user -> nickname)?($user -> nickname):"-";
             $email = ($user -> email)?($user -> email):"-";
             $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
             $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
             $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
             $rating = ReviewController::getRating($user -> id);
             $reviews = ReviewController::getReviews($user -> id);
-
-            return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviews'));
+            $reviewsWithSubjects = [];
+            foreach ($reviews as $review){
+                $course = Course::find($review->course_id);
+                $subjects = $course->subjects->pluck('name');
+                array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
+            }
+            return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviewsWithSubjects'));
         }
         else if($user -> isStudent()){
             return redirect('/');

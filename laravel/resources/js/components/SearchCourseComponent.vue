@@ -160,6 +160,9 @@
     >
       <template v-slot:item.tutor="{ item }">
         <b>{{item.tutor}}</b> <br>
+        <a :href="'/tutor/profile/'+item.user_id" class="btn profileBtn" style='margin-top: 3px;margin-bottom:5px;'>
+            <div style='position:relative;top:-5px;'>Profile</div>
+        </a>
         <chat-button v-bind:userid="item.user_id"></chat-button>
       </template>
 
@@ -262,7 +265,7 @@
 
       getPeriodTimeFormat(start, hour){
         start = '01-01-2000 ' + start
-        return moment(String(start)).format('HH:mm') + '-' + moment(String(start)).add(hour, 'hours').format('HH:mm')
+        return moment(String(start),'DD-MM-YYYY HH:mm:ss').format('HH:mm') + '-' + moment(String(start),'DD-MM-YYYY HH:mm:ss').add(hour, 'hours').format('HH:mm')
       },
 
       getDateFormat(date){

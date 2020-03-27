@@ -171,4 +171,18 @@ class SearchController extends Controller
         $query_2 = $query_2->whereNotIn('courses.id', $requested_course);
         return $query_2->get();
     }
+
+    public function redirectSearchCourses() {
+        if (auth() -> user() -> isTutor()) {
+            return redirect('/tutor-search');
+        }
+        return view('search_courses');
+    }
+
+    public function redirectTutorSearchCourses() {
+        if (auth() -> user() -> isStudent()) {
+            return redirect('/search-courses');
+        }
+        return view('tutor_search_course');
+    }
 }

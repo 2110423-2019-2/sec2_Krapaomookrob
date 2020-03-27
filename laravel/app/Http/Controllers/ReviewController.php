@@ -57,7 +57,7 @@ class ReviewController extends Controller
     public static function getReviews($tutorId){
         $reviews = DB::Table('reviews')
                         ->join('users','reviews.student_id','=','users.id')
-                        ->select('message','rating','student_id','name')
+                        ->select('message','rating','student_id','name','course_id')
                         ->where('tutor_id',$tutorId)
                         ->get();
         return $reviews;
