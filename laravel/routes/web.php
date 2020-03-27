@@ -170,3 +170,9 @@ Route::get('/api/course-requests', 'CourseRequesterController@getRequestFromTuto
 Route::get('/api/get-my-course-request','CourseController@getMyCourseRequest');
 Route::post('api/decline-request', 'CourseRequesterController@declineRequest');
 Route::post('api/accept-request', 'CourseRequesterController@acceptRequest');
+Route::post('/api/delete-request', 'CourseRequesterController@deleteRequest');
+
+// Advertisement 
+Route::get('/create-advertisement', function() {
+    return view('advertisement');
+});

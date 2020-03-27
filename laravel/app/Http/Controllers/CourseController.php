@@ -272,6 +272,7 @@ class CourseController extends Controller
             if ($course != null){
                 $subject = collect();
                 $day = [];
+                $status = CourseRequester::where('course_id','=',$course->id)->where('status','=','Accepted')->get()->isEmpty() ? 'Open':'Closed';
                 foreach($course->subjects->map->only('name') as $sub){
                     $name = $sub['name'];
                     $subject->push($name);
@@ -287,7 +288,8 @@ class CourseController extends Controller
                     'startDate' => $course->startDate,
                     'noClasses' => $course->noClasses,
                     'subjects' => $subject,
-                    'date' => $day
+                    'date' => $day,
+                    'status' => $status
                 ];
 
                 array_push($retCourses, $arr);
