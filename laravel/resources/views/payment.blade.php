@@ -12,6 +12,7 @@
 </div>
     <div class="card pb-2">
             <div class="card-body">
+@if(!$isAdvertisement)
                 <div class="row course-item mb-2 pb-2 bline">
                     <div class="col-lg">Tutor</div>
                     <div class="col-lg">Available Subjects</div>
@@ -19,6 +20,7 @@
                     <div class="col-lg">Classes</div>
                     <div class="col-lg">Price/Start Date</div>
                 </div>
+
 
 @foreach ($responses as $response)
 <div class="row course-item mb-2 pb-2 border-bottom">
@@ -49,6 +51,19 @@
 
 </div>
 @endforeach
+@endif
+
+@if($isAdvertisement)
+
+                <div class="row course-item mb-2 pb-2 bline">
+                  <div class="col-lg">Entries</div>
+                  <div class="col-lg"></div>
+                  <div class="col-lg"></div>
+                  <div class="col-lg"></div>
+                  <div class="col-lg"></div>
+                </div>
+              <div>Ads for course {{$course_id}}</div>
+@endif
 
 
     <div class="row justify-content-end pr-5 mt-3">

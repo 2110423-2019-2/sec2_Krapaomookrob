@@ -258,7 +258,18 @@ class paymentGatewayController extends Controller{
 
                 }
          
-        return view('/payment', ['responses'=> $courses,'payment_id'=> $payment_id, 'totalprice' => $totalprice]);
+        return view('/payment', ['responses'=> $courses,'payment_id'=> $payment_id, 'totalprice' => $totalprice, 'isAdvertisement' => false]);
+    }
+
+    public function getAdsPaymentPage(Request $request) {
+        $latestEntry = Payment::latest('created_at')->first();
+        $courseId = $request->input('courseId');
+        return view('/payment', [
+            'isAdvertisement' => true,
+            'totalprice' => 500,
+            'payment_id' => $latestEntry==null ? 1:$latestEntry->id,
+            'course_id' => $courseId
+        ]);
     }
 
 }

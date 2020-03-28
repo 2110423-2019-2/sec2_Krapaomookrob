@@ -47,7 +47,7 @@
 export default {
     data: () => {
         return {
-            courses: [ // test 
+            courses: [ // mock data 
                 { id: 11, title:"Test Course 11", subjects:"A, B, C", days: "Sun, Mon", time: "12:00", area: "Earth", promoted: true},
                 { id: 3, title:"Test Course 3", subjects:"A, B, C", days: "Sun, Mon", time: "12:00", area: "Earth", promoted: false},
                 { id: 13, title:"Test Course 11", subjects:"A, B, C", days: "Sun, Mon", time: "12:00", area: "Earth", promoted: false},
@@ -75,16 +75,8 @@ export default {
 
         },
         promote: function(course){
-            axios
-                .post('/api/create-advertisement', {
-                    courseId: course.id
-                })
-                .then(
-                    response => console.log(response)
-                )
-                .catch(
-                    error => console.log(error)
-                )
+            // need revisit for a better security
+            window.location.href = "/payment/create-advertisement?courseId="+course.id;
         }
     }
 }
