@@ -50,4 +50,8 @@ class Course extends Model
         }
         return User::find($this->user_id)->name;
     }
+
+    public function advertisements() {
+        return $this->belongsTo(Advertisement::class);
+    }
 }

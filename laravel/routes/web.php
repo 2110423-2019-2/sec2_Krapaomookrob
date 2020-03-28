@@ -176,3 +176,4 @@ Route::post('/api/delete-request', 'CourseRequesterController@deleteRequest');
 Route::get('/create-advertisement', function() {
     return view('advertisement');
 });
+Route::post('/api/create-advertisement', 'AdvertisementController@createAdvertisement');
