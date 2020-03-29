@@ -319,6 +319,7 @@ class CourseController extends Controller
 
         $remainClasses = $course->courseClasses->sortBy('date')->where('date', '>=', $now)->count();
         $refundAmount = (int) ($remainClasses * $course->price / $course->noClasses);
+        if(!$isFullRefund) $refundAmount = (int) ($refundAmount * 0.7);
         return ['refundAmount' => $refundAmount, 'isFullRefund' => $isFullRefund];
     }
 }
