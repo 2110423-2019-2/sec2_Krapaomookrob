@@ -27,7 +27,7 @@ class Course extends Model
     }
 
     public function students(){
-        return $this->belongsToMany('App\User', 'course_student');
+        return $this->belongsToMany('App\User', 'course_student')->withTimestamps();
     }
 
     public function courseClasses(){
@@ -36,5 +36,18 @@ class Course extends Model
 
     public function reviews(){
         return $this->hasMany(Review::class);
+    }
+
+    public function isMadeByStudent(){
+        $userRole = User::find($this->user_id)->role;
+        return $userRole == 'student'; 
+    }
+
+    public function getTutorName(){
+        if ($this->isMadeByStudent()){
+            $realUserId = CourseRequester::where('course_id','=',$this->id)->where('status','=','Accepted')->get()->first()->requester_id;
+            return User::find($realUserId)->name;
+        }
+        return User::find($this->user_id)->name;
     }
 }

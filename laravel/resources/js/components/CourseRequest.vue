@@ -222,13 +222,22 @@ export default {
         axios
           .post('/api/accept-request', {
             id: item.id,
-            courseId: item.courseId
+            courseId: item.courseId,
+            requesterId: item.requesterId
           })
           .then(response => (
-            this.requests.splice(index, 1),
-            // initialize()
-            window.location.href = "/my-course-requests"
-          ))
+            this.requests.splice(index, 1)
+          ));
+        axios
+          .post('api/cart/add', {
+              course_id: item.courseId
+          })
+          .then(
+            response=> console.log(200)  
+          )
+          .then(
+            window.location.href='/cart'
+          );          
       }
     },
     decline: function(item) {

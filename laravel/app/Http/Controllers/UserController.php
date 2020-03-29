@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\BankAccount;
+use App\Course;
 use App\Transaction;
 use App\Report;
 use App\Http\Controllers\ReviewController;
@@ -18,10 +19,13 @@ class UserController extends Controller
     }
     
     public function updateRole(Request $request){
-        $user = auth()->user();
-        $user->role = $request->role;
-        $user->save();
-        return redirect('/');
+        if(auth()->user()){
+            $user = auth()->user();
+            $user->role = $request->role;
+            $user->save();
+            return redirect('/');
+        }
+        abort(401, 'Login required');
     }
 
     public function viewProfile(User $user){
@@ -36,26 +40,48 @@ class UserController extends Controller
         $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
         $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
         $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
-
-        return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password',
+        if($user -> isTutor()){
+            $rating = ReviewController::getRating($user -> id);
+            $reviews = ReviewController::getReviews($user -> id);
+            $reviewsWithSubjects = [];
+            foreach ($reviews as $review){
+                $course = Course::find($review->course_id);
+                $subjects = $course->subjects->pluck('name');
+                array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
+            }
+            return view('profile.tutor_view',compact('user','phone','education_level','nickname','username','role','email','password',
+            'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects'));
+        }
+        else if($user -> isStudent()){
+            return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password',
                                             'account_number', 'account_name', 'bank'));
+        }
     }
 
     public function viewTutorProfile(User $user){
-        
-        $role = ($user -> role)?($user -> role):"-";
-        $username = ($user -> name)?($user -> name):"-";
-        $phone = ($user -> phone)?($user -> phone):"-";
-        $education_level = ($user -> education_level)?($user -> education_level):"-"; 
-        $nickname = ($user -> nickname)?($user -> nickname):"-"; 
-        $email = ($user -> email)?($user -> email):"-";
-        $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
-        $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
-        $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
-        $rating = ReviewController::getRating($user -> id);
-        $reviews = ReviewController::getReviews($user -> id);
-
-        return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviews'));
+        if($user -> isTutor()){
+            $role = ($user -> role)?($user -> role):"-";
+            $username = ($user -> name)?($user -> name):"-";
+            $phone = ($user -> phone)?($user -> phone):"-";
+            $education_level = ($user -> education_level)?($user -> education_level):"-";
+            $nickname = ($user -> nickname)?($user -> nickname):"-";
+            $email = ($user -> email)?($user -> email):"-";
+            $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
+            $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
+            $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
+            $rating = ReviewController::getRating($user -> id);
+            $reviews = ReviewController::getReviews($user -> id);
+            $reviewsWithSubjects = [];
+            foreach ($reviews as $review){
+                $course = Course::find($review->course_id);
+                $subjects = $course->subjects->pluck('name');
+                array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
+            }
+            return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviewsWithSubjects'));
+        }
+        else if($user -> isStudent()){
+            return redirect('/');
+        }
     }
 
     public function editProfile(User $user){
@@ -96,7 +122,10 @@ class UserController extends Controller
     }
 
     public function getRole(){
-        return  response(auth()->user()->role, 200);
+        if(auth()->user()){
+            return  response(auth()->user()->role, 200);
+        }
+        abort(401, 'Login required');
     }
 
     public function sendReport(Request $request){
@@ -110,13 +139,19 @@ class UserController extends Controller
     }
 
     public function getBankAccount(){
-        $ba = auth()->user()->BankAccount;
-        return response($ba, 200);
+        if(auth()->user()){
+            $ba = auth()->user()->BankAccount;
+            return response($ba, 200);
+        }
+        abort(401, 'Login required');
     }
     
     public function getBalance(){
-        $user = auth()->user();
-        return $user->balance;
+        if(auth()->user()){
+            $user = auth()->user();
+            return $user->balance;
+        }
+        abort(401, 'Login required');
     }
 
 

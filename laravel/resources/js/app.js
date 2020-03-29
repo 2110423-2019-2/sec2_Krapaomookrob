@@ -13,6 +13,8 @@ Vue.component('my_calendar-component', require('./components/MyCalendarComponent
 Vue.component('payment-log-component', require('./components/paymentLog.vue').default);
 Vue.component('verified-report-log-component', require('./components/VerifiedReportLog.vue').default);
 
+Vue.component('attendance-today-component', require('./components/AttendanceTodayComponent.vue').default);
+Vue.component('attendance-history-component', require('./components/AttendanceHistoryComponent.vue').default);
 
 import * as VueGoogleMaps from 'vue2-google-maps';
 Vue.use(VueGoogleMaps, {
@@ -44,7 +46,7 @@ Vue.component('report-list', require('./components/ReportList.vue').default);
 Vue.component('star-rating-button', require('./components/StarRatingComponent.vue').default);
 Vue.component('star-rating-score', require('./components/StarRatingScoreComponent.vue').default);
 Vue.component('star-display', require('./components/StarRatingDisplayComponent.vue').default);
-
+Vue.component('tutor-search-course-component', require('./components/TutorSearchCourseComponent.vue').default);
 
 //according https://github.com/vuetifyjs/vuetify/issues/9999
 const ignoreWarnMessage = 'The .native modifier for v-on is only valid on components but it was used on <div>.';
@@ -56,6 +58,8 @@ Vue.config.warnHandler = function (msg, vm, trace) {
     trace = null;
   }
 }
+
+Vue.prototype.$eventHub = new Vue();
 
 const app = new Vue({
     el: '#app',
