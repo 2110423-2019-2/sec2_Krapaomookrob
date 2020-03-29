@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Advertisement;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -298,5 +299,23 @@ class CourseController extends Controller
         }
         return $retCourses;
 
+    }
+
+    public function getAdsCourses (Request $request) {
+        $userId = auth()->user()->id;
+        $myCourses = Course::select('id')->where('user_id','=',$userId)->get();
+        $courses = [];
+        foreach($myCourses as $courseId){
+            $course = $this::getCourseInfo($courseId->id);
+            // dd($course);
+            if ($course != null){
+                $course['isPromoted'] = Advertisement::where('course_id','=',$course['course_id'])->get()->isEmpty() ? true:false;
+                $course['title'] = 'Course '.$courseId->id;
+                $course['subjects'] = $course['subjects']->implode(',');
+                $course['days'] = $course['days']->implode(',');
+                array_push($courses,$course);
+            }
+        }
+        return $courses;
     }
 }

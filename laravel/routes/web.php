@@ -178,3 +178,4 @@ Route::get('/create-advertisement', function() {
 });
 Route::post('/api/create-advertisement', 'AdvertisementController@createAdvertisement');
 Route::get('/payment/create-advertisement', 'Frontend\paymentGatewayController@getAdsPaymentPage');
+Route::get('/api/getAdsCourses','CourseController@getAdsCourses');
