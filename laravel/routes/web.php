@@ -173,3 +173,11 @@ Route::get('/api/course-requests', 'CourseRequesterController@getRequestFromTuto
 Route::get('/api/get-my-course-request','CourseController@getMyCourseRequest');
 Route::post('api/decline-request', 'CourseRequesterController@declineRequest');
 Route::post('api/accept-request', 'CourseRequesterController@acceptRequest');
+
+//logging
+
+Route::get('/getAllVeritiedReport','Frontend\loggingController@getAllVeritiedReport');
+Route::get('/getAllPaymentLog','Frontend\loggingController@getAllPaymentLog');
+Route::get('/admin/log/{no}',function($no){
+    return view('admin_log')->with('l',$no);
+});

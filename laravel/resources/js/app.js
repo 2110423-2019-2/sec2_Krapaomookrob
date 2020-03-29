@@ -10,6 +10,8 @@ Vue.component('new_course-component', require('./components/NewCourseComponent.v
 Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('notification-bar',require('./components/NotificationBar.vue').default);
 Vue.component('my_calendar-component', require('./components/MyCalendarComponent.vue').default);
+Vue.component('payment-log-component', require('./components/paymentLog.vue').default);
+Vue.component('verified-report-log-component', require('./components/VerifiedReportLog.vue').default);
 
 
 import * as VueGoogleMaps from 'vue2-google-maps';
