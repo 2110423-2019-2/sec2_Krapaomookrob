@@ -5,8 +5,10 @@
 @section('topic', 'Admin logging')
 
 @section('menu')
-<a class="btn ownbtn" href="/admin/log/1">Payment Logging</a>
-<a class="btn ownbtn" href="/admin/log/2">Report Logging</a>
+<a class="btn ownbtn" href="/admin/log/1">Payment</a>
+<a class="btn ownbtn" href="/admin/log/2">Report</a>
+<a class="btn ownbtn" href="/admin/log/3">Course Cancellation</a>
+<a class="btn ownbtn" href="/admin/log/4">Postponement</a>
 @endsection
 
 @section('content')
@@ -16,6 +18,10 @@
     <payment-log-component></payment-log-component>
     @elseif($l==2)
     <verified-report-log-component></verified-report-log-component>
+    @elseif($l==3)
+    <course-cancel-log-component></course-cancel-log-component>
+    @elseif($l==4)
+    <postponement-log-component></postponement-log-component>
     @endif
     </div>
   </div>

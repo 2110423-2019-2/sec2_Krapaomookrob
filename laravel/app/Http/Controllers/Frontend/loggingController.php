@@ -17,4 +17,26 @@ class loggingController extends Controller{
         $report = DB::table('payments')->orderBy('id','DESC')->get();
         return response($report,200);
     }
+
+    public function getAllCourseCancellation(Request $request){
+        $user = auth()->user();
+        if($user->isAdmin() || $user->isSuperuser()){
+            $report = DB::table('course_student')->where('status', 'refunding')->orWhere('status', 'cancelled')->orderBy('id','DESC')->get();
+            return response($report,200);
+        }
+        else{
+            return response('Access denied', 401);
+        }
+    }
+
+    public function getAllPostponement(Request $request){
+        $user = auth()->user();
+        if($user->isAdmin() || $user->isSuperuser()){
+            $report = DB::table('course_classes')->where('status', 'Postponed')->orderBy('id','DESC')->get();
+            return response($report,200);
+        }
+        else{
+            return response('Access denied', 401);
+        }
+    }
 }

@@ -171,6 +171,8 @@ Route::post('api/accept-request', 'CourseRequesterController@acceptRequest');
 
 Route::get('/getAllVeritiedReport','Frontend\loggingController@getAllVeritiedReport');
 Route::get('/getAllPaymentLog','Frontend\loggingController@getAllPaymentLog');
+Route::get('/getAllCourseCancellation','Frontend\loggingController@getAllCourseCancellation');
+Route::get('/getAllPostponement','Frontend\loggingController@getAllPostponement');
 Route::get('/admin/log/{no}',function($no){
     return view('admin_log')->with('l',$no);
 });
