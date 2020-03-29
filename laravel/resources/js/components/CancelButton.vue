@@ -16,8 +16,11 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <p>You will receive 70% refund from the remaining classs. If you confirm you will not be able to undo.</p>
+          <div class="modal-body" v-if="!isFullRefund">
+            <p>You will receive 70% refund ({{refundAmount}} Baht) from the remaining classs. If you confirm you will not be able to undo.</p>
+          </div>
+          <div class="modal-body" v-if="isFullRefund">
+            <p>You will receive full refund ({{refundAmount}} Baht). If you confirm you will not be able to undo.</p>
           </div>
           <div class="modal-footer">
               <div class="row w-100 justify-content-end">
@@ -47,14 +50,20 @@
         userId: this.userid,
         courseId: this.courseid,
         status: '',
-        role: ''
+        role: '',
+        isFullRefund: '',
+        refundAmount: ''
       }
     },
     mounted() {
       axios.get('/api/user/role')
         .then(response => this.role = response.data)  
       axios.get('/api/course/status/'+this.courseId)
-        .then(response => this.status = response.data)
+        .then(response => {
+          this.status = response.data.status;
+          this.isFullRefund = response.data.isFullRefund;
+          this.refundAmount = response.data.refundAmount;
+        });
 
     },
 
@@ -62,7 +71,7 @@
         sendRequest: function(event) {
           axios.post('api/course/cancel', {
             user_id: this.userId,
-            course_id: this.courseId
+            course_id: this.courseId,
           }).then((response) => this.status = "refunding")
         }
         
