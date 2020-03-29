@@ -99,19 +99,28 @@ class CourseController extends Controller
 
     public function cancelCourse(Request $request){
         $user_id = $request->user_id;
-        $course_id = $request->course_id;
-        $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
-        $registeredCourse->status = 'refunding';
-        $registeredCourse->save();
+        if(auth()->user()->id == $user_id){
+            $course_id = $request->course_id;
+            $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
+            $registeredCourse->status = 'refunding';
+            $registeredCourse->save();
 
-        //  create cancel notification
-        $username = User::where('id','=',$registeredCourse->user_id)->first()->name;
-        $title = "Request to teach";
-        $message = "{$username} have cancel the course";
-        $receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
-        NotificationController::createNotification($receiver_id, $title, $message);
+            $refundInfo = $this->getRefundInfo($course_id); 
+            $isFullRefund = $refundInfo['isFullRefund'];
+            $refundAmount = $refundInfo['refundAmount'];
+    
+            //  create cancel notification
+            $username = User::where('id','=',$registeredCourse->user_id)->first()->name;
+            $title = "Request to teach";
+            $message = "{$username} have cancel the course";
+            $receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
+            NotificationController::createNotification($receiver_id, $title, $message);
 
-        return response($registeredCourse, 200);
+            return response('OK', 200);
+        }
+        else {
+            return response('Access denied', 401);
+        }
     }
 
     public function postponeClass(Request $request){
@@ -171,11 +180,14 @@ class CourseController extends Controller
     }
 
     public function getCourseStatus($course_id){
-        $registeredCourse = '';
         if(auth()->user()->role == 'student'){
             $status = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first()->status;
+            $refundInfo = $this->getRefundInfo($course_id); 
+            return response(['status' => $status, 'isFullRefund' => $refundInfo['isFullRefund'], 'refundAmount' => $refundInfo['refundAmount']], 200);
         }
-        return response($status, 200);
+        else{
+            return response("access denied", 401);
+        }
     }
 
     public function getClassStatus($class_id){
@@ -296,5 +308,18 @@ class CourseController extends Controller
         }
         return $retCourses;
 
+    }
+
+    private function getRefundInfo($course_id){
+        $course = Course::where('id', '=', $course_id)->first();
+        $startDate = new Carbon($course->startDate);
+        $now = Carbon::now()->addHours(7);
+        $diff = $now->diffInDays($startDate, false);
+        $isFullRefund = $diff > 3;
+
+        $remainClasses = $course->courseClasses->sortBy('date')->where('date', '>=', $now)->count();
+        $refundAmount = (int) ($remainClasses * $course->price / $course->noClasses);
+        if(!$isFullRefund) $refundAmount = (int) ($refundAmount * 0.7);
+        return ['refundAmount' => $refundAmount, 'isFullRefund' => $isFullRefund];
     }
 }
