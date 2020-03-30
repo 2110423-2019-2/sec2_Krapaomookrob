@@ -5,6 +5,9 @@
 @section('topic', 'Admin Payment Requests')
 
 @section('menu')
+<a class="btn ownbtn" href="#">Manage Admin</a>
+<a class="btn ownbtn" href="/admin/payment-request">Payment Requests</a>
+<a class="btn ownbtn" href="/admin-panel/attendance-logs">Attendance Logs</a>
 @endsection
 
 @section('content')

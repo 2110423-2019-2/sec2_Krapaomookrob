@@ -2,7 +2,7 @@
 
 @section('title', 'Admin Panel - Even Die I am The Tutor')
 
-@section('topic', 'Admin Panel')
+@section('topic', 'Attendance Logs')
 
 @section('menu')
 <a class="btn ownbtn" href="#">Manage Admin</a>
@@ -11,15 +11,9 @@
 @endsection
 
 @section('content')
-<div class="row">
-  <div class="col-lg-9">
-    <div class="card">
-      <div class="card-body pr-0">
-        <h4 class="card-title">Hello, Tee</h4>
-        <admin_panel-component></admin_panel-component>
-
-      </div>
+  <div class='row'>
+    <div class='col-lg-9'>
+      <admin-attendance-logs></admin-attendance-logs>
     </div>
   </div>
-</div>
 @endsection
