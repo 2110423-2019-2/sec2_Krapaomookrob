@@ -10,6 +10,8 @@
 <a class="btn ownbtn" href="/admin/log/3">Course Cancellation</a>
 <a class="btn ownbtn" href="/admin/log/4">Postponement</a>
 <a class="btn ownbtn" href="/admin/log/5">User</a>
+<a class="btn ownbtn" href="/admin/log/6">Attendance</a>
+<a class="btn ownbtn" href="/admin/log/7">Course</a>
 @endsection
 
 @section('content')
@@ -25,6 +27,10 @@
     <postponement-log-component></postponement-log-component>
     @elseif($l==5)
     <user-log-component></user-log-component>
+    @elseif($l==6)
+    <admin-attendance-logs></admin-attendance-logs>
+    @elseif($l==7)
+    <admin-course-logs></admin-course-logs>
     @endif
     </div>
   </div>
