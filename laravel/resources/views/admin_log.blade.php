@@ -5,13 +5,12 @@
 @section('topic', 'Admin logging')
 
 @section('menu')
-<a class="btn ownbtn" href="/admin/log/1">Payment</a>
-<a class="btn ownbtn" href="/admin/log/2">Report</a>
-<a class="btn ownbtn" href="/admin/log/3">Course Cancellation</a>
-<a class="btn ownbtn" href="/admin/log/4">Postponement</a>
-<a class="btn ownbtn" href="/admin/log/5">User</a>
-<a class="btn ownbtn" href="/admin/log/6">Attendance</a>
-<a class="btn ownbtn" href="/admin/log/7">Course</a>
+<a class="btn ownbtn" href="/admin/log/1">Payment logs</a>
+<a class="btn ownbtn" href="/admin/log/2">Report logs</a>
+<a class="btn ownbtn" href="/admin/log/3">Course logs</a>
+<a class="btn ownbtn" href="/admin/log/4">Postponement logs</a>
+<a class="btn ownbtn" href="/admin/log/5">User logs</a>
+<a class="btn ownbtn" href="/admin/log/6">Attendance logs</a>
 @endsection
 
 @section('content')
@@ -22,15 +21,13 @@
     @elseif($l==2)
     <verified-report-log-component></verified-report-log-component>
     @elseif($l==3)
-    <course-cancel-log-component></course-cancel-log-component>
+    <admin-course-logs></admin-course-logs>
     @elseif($l==4)
     <postponement-log-component></postponement-log-component>
     @elseif($l==5)
     <user-log-component></user-log-component>
     @elseif($l==6)
     <admin-attendance-logs></admin-attendance-logs>
-    @elseif($l==7)
-    <admin-course-logs></admin-course-logs>
     @endif
     </div>
   </div>
