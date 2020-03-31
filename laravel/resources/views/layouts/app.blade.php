@@ -63,9 +63,6 @@
                     <li class="nav-item">
                       <a class="btn btn-light btn-nav" href="/admin-panel">Admin Panel</a>
                     </li>
-                    <li class="nav-item">
-                      <a class="btn btn-light btn-nav" href="/admin/log/1">Logging</a>
-                    </li>
                     @endif
                     <li class="nav-item">
                       <a class="btn btn-light btn-nav" href="/logout">Logout</a>
