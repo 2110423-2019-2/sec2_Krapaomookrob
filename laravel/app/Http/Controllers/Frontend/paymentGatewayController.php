@@ -33,6 +33,11 @@ define('OMISE_SECRET_KEY', env("OMISE_SECRET_KEY", null));
 
 class paymentGatewayController extends Controller{
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function cartToPayment(Request $request){
         //create payment
         $payment = Payment::create([
