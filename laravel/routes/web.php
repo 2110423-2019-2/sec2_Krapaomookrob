@@ -94,7 +94,7 @@ Route::get('/payment/{payment_id}/{totalprice}','Frontend\paymentGatewayControll
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
-Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
+Route::get('/result/{paymentID}/{isAdvertisement}/{courseId}', 'Frontend\paymentGatewayController@returnPage');
 
 //My Courses
 Route::get('/my-courses', 'CourseController@myCoursesIndex');
@@ -127,6 +127,8 @@ Route::get('/admin-panel', function(){
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
+Route::get('/admin-panel/fetchAttendanceLogs', 'AdminController@fetchAttendanceLogs');
+Route::get('/admin-panel/fetchCourseLogs', 'AdminController@fetchCourseLogs');
 Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
 Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
 
@@ -171,6 +173,23 @@ Route::get('/api/course-requests', 'CourseRequesterController@getRequestFromTuto
 Route::get('/api/get-my-course-request','CourseController@getMyCourseRequest');
 Route::post('api/decline-request', 'CourseRequesterController@declineRequest');
 Route::post('api/accept-request', 'CourseRequesterController@acceptRequest');
+Route::post('/api/delete-request', 'CourseRequesterController@deleteRequest');
+
+// Advertisement 
+Route::get('/create-advertisement', function() {
+    return view('advertisement');
+});
+Route::get('/payment/create-advertisement','Frontend\paymentGatewayController@getAdsPaymentPage');
+Route::get('/api/getAdsCourses','CourseController@getAdsCourses');
+
+//logging
+
+Route::get('/getAllVeritiedReport','Frontend\loggingController@getAllVeritiedReport');
+Route::get('/getAllPaymentLog','Frontend\loggingController@getAllPaymentLog');
+Route::get('/getAllCourseCancellation','Frontend\loggingController@getAllCourseCancellation');
+Route::get('/getAllPostponement','Frontend\loggingController@getAllPostponement');
+Route::get('/getAllUserInfo','Frontend\loggingController@getAllUserInfo');
+Route::get('/admin/log/{no}', 'Frontend\loggingController@index');
 
 //attendance
 Route::get('/api/classes-today', 'AttendanceController@getClassesToday');
