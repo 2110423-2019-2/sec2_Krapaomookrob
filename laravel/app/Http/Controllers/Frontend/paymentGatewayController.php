@@ -222,6 +222,7 @@ class paymentGatewayController extends Controller{
         // Note: courseId is for ads
 
         $payment = Payment::find($paymentID);
+        $user = auth()->user();
 
 
         //chage status in payment
@@ -260,7 +261,7 @@ class paymentGatewayController extends Controller{
                     }
                 }
             }else{
-                $status = AdvertisementController::createAdvertisement($courseId,auth()->user()->id);
+                $status = AdvertisementController::createAdvertisement($courseId,$user->id);
                 if (!$status){
                     abort(500,'something went wrong');
                 }

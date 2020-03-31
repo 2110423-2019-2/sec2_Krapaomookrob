@@ -325,7 +325,12 @@ class CourseController extends Controller
                 $course['title'] = 'Course '.$courseId->id;
                 $course['subjects'] = $course['subjects']->implode(',');
                 $course['days'] = $course['days']->implode(',');
-                array_push($courses,$course);
+                $startDate = new Carbon($course['startDate']);
+                $nowTime = Carbon::now();
+                if ($startDate > $nowTime){
+                    // choose only courses that are not start yet
+                    array_push($courses,$course);
+                }
             }
         }
         return $courses;
