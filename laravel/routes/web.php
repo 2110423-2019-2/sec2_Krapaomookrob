@@ -127,11 +127,15 @@ Route::get('/admin-panel', function(){
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
-Route::get('/admin-panel/fetchAttendances', 'AdminController@fetchAttendances');
+Route::get('/admin-panel/fetchAttendanceLogs', 'AdminController@fetchAttendanceLogs');
+Route::get('/admin-panel/fetchCourseLogs', 'AdminController@fetchCourseLogs');
 Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
 Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
 Route::get('/admin-panel/attendance-logs', function(){
     return view('admin_attendance_logs');
+});
+Route::get('/admin-panel/course-logs', function(){
+    return view('admin_course_logs');
 });
 
 //Payment Request

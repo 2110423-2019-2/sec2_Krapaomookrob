@@ -8,7 +8,7 @@
     </button>
   </div>
     <v-card-title>
-      Attendance Checking Logs
+      Course Logs
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -28,8 +28,8 @@
           <td>{{row.item.timestamp}}</td>
           <td>{{row.item.subject}}</td>
           <td>{{row.item.location}}</td>
-          <td>{{row.item.tutor}}</td>
-          <td>{{row.item.student}}</td>
+          <td>{{row.item.user}}</td>
+          <td>{{row.item.action}}</td>
         </tr>
       </template>
     </v-data-table>
@@ -52,8 +52,8 @@ export default {
           },
           { text: 'Subject', value: 'subject' },
           { text: 'Location', value: 'location' },
-          { text: 'Tutor', value: 'tutor' },
-          { text: 'Student', value: 'student' },
+          { text: 'User', value: 'user' },
+          { text: 'Action', value: 'action' },
         ],
         requests: [
         ],
@@ -63,7 +63,7 @@ export default {
     },
 
   mounted: function() {
-    axios.get('/admin-panel/fetchAttendanceLogs').then( (response) => {
+    axios.get('/admin-panel/fetchCourseLogs').then( (response) => {
       this.requests = response.data;
     });
   },

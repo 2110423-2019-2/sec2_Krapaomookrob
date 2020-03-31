@@ -39,6 +39,7 @@ Vue.component('admin_panel-component', require('./components/AdminPanelList.vue'
 Vue.component('tutor-payment-request', require('./components/TutorPaymentRequest.vue').default);
 Vue.component('admin-payment-request', require('./components/AdminPaymentRequest.vue').default);
 Vue.component('admin-attendance-logs', require('./components/AdminAttendanceLogs.vue').default);
+Vue.component('admin-course-logs', require('./components/AdminCourseLogs.vue').default);
 Vue.component('course-request', require('./components/CourseRequest.vue').default);
 Vue.component('report-list', require('./components/ReportList.vue').default);
 Vue.component('star-rating-button', require('./components/StarRatingComponent.vue').default);
