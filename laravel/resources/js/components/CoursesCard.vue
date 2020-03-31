@@ -3,15 +3,17 @@
     <v-data-iterator :items="courses" :items-per-page.sync="itemsPerPage">
       <template v-slot:default="props">
         <v-row>
-          <v-col v-for="course in props.items" cols="6" :key="course.id">
+          <v-col v-for="course in props.items" cols="6" :key="course.course_id">
 
-            <v-card max-height="300" overflow-y>
+            <v-card>
               <v-card-title v-text="course.title"></v-card-title>
               <v-divider></v-divider>
               <v-card-text>
-                <div>{{course.subjects}}</div>
-                <div>{{course.days}}</div>
-                <div>{{course.time}}</div>
+                <div>Subjects: {{course.subjects}}</div>
+                <div>Days: {{course.days}}</div>
+                <div>Time: {{course.time}}</div>
+                <div>Hours: {{course.hour}}</div>
+                <div>Area: {{course.area}}</div>
               </v-card-text>
               <v-card-actions>
                 <v-btn
@@ -36,13 +38,21 @@
                     <span>{{selectedCourse.days}}</span>
                   </div>
                   <div>
+                    Time:
+                    <span>{{selectedCourse.time}}</span>
+                  </div>
+                  <div>
+                    Hours:
+                    <span>{{selectedCourse.hour}}</span>
+                  </div>
+                  <div>
                     Area:
                     <span>{{selectedCourse.area}}</span>
                   </div>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn @click.stop="promote(selectedCourse)" text>Confirm</v-btn>
+                  <v-btn @click.stop="promote(selectedCourse.course_id)" text>Confirm</v-btn>
                   <v-btn @click.stop="dialog = false" text>Cancel</v-btn>
                 </v-card-actions>
               </v-card>
@@ -66,10 +76,12 @@ export default {
       page: 1,
       courses: [],
       selectedCourse: {
-        id: -1,
+        course_id: -1,
         title: "",
         subjects: "",
         days: "",
+        time: "",
+        hour: "",
         area: ""
       },
       dialog: false
@@ -86,10 +98,10 @@ export default {
       this.selectedCourse = Object.assign({}, course);
       this.dialog = true;
     },
-    promote: function(course) {
+    promote: function(courseId) {
       // need revisit for a better security
-      window.location.href =
-        "/payment/create-advertisement?courseId=" + course.id;
+      window.location.href = 
+        "/payment/create-advertisement?courseId=" + courseId;
     },
   },
   

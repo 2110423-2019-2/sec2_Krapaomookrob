@@ -16,6 +16,7 @@ use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Cookie;
 use App\BankAccount;
 use App\CourseRequester;
+use App\Http\Controllers\AdvertisementController;
 use App\OmiseRecipientAccount;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CourseController;
@@ -64,7 +65,7 @@ class paymentGatewayController extends Controller{
 
 
     public function chargeCard(Request $request){
-        if($this->checkBeforeCharge($request->input('paymentID'))){
+        if(!$request->input('isAdvertisement') && $this->checkBeforeCharge($request->input('paymentID'))){
             return view('dashboard')->with('error','Some course is taken');
 
         }
@@ -73,6 +74,15 @@ class paymentGatewayController extends Controller{
                                             'description' => 'Order-384',
                                             'ip'          => '127.0.0.1',
                                             'card'        => $request->input('omiseToken')),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
+
+        if($request->input('isAdvertisement')){
+            $userId = auth()->user()->id;
+            Payment::create(['user_id' => $userId]);
+            $status = AdvertisementController::createAdvertisement($request->input('courseId'),$userId);
+            if (!$status){
+                abort(500,'something went wrong');
+            }
+        }
 
         $payment = Payment::find($request->input('paymentID'));
         $payment->charge_id = $charge['id'];
@@ -99,7 +109,7 @@ class paymentGatewayController extends Controller{
 
     public function checkout(Request $request){
 
-        if($this->checkBeforeCharge($request->input('paymentID'))){
+        if(!$request->input('isAdvertisement') && $this->checkBeforeCharge($request->input('paymentID'))){
             return view('dashboard')->with('error','Some course is taken');
 
         }
@@ -115,6 +125,14 @@ class paymentGatewayController extends Controller{
             'return_uri' => url(sprintf("http://localhost:8000/result/%s",$request->input('paymentID'))),
             'source' => $source['id']
           ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
+          if($request->input('isAdvertisement')){
+            $userId = auth()->user()->id;
+            Payment::create(['user_id' => $userId]);
+            $status = AdvertisementController::createAdvertisement($request->input('courseId'),$userId);
+            if (!$status){
+                abort(500,'something went wrong');
+            }
+          }
           $payment = Payment::find($request->input('paymentID'));
           $payment->charge_id = $charge['id'];
           $payment->save();
@@ -258,7 +276,7 @@ class paymentGatewayController extends Controller{
 
                 }
          
-        return view('/payment', ['responses'=> $courses,'payment_id'=> $payment_id, 'totalprice' => $totalprice, 'isAdvertisement' => false]);
+        return view('/payment', ['responses'=> $courses,'payment_id'=> $payment_id, 'totalprice' => $totalprice, 'isAdvertisement' => false, 'course_id' => null]);
     }
 
     public function getAdsPaymentPage(Request $request) {

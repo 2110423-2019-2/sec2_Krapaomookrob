@@ -103,6 +103,8 @@
                 <input name="p" type ="hidden" value = "{{$price}}">
                 <input name="class" type ="hidden" value = "">
                 <input name="paymentID" type ="hidden" value = "{{$payment_id}}">
+                <input name="isAdvertisement" type ="hidden" value = "{{$isAdvertisement}}">
+                <input name="courseId" type ="hidden" value = "{{$course_id}}">
             <script type="text/javascript"   src="https://cdn.omise.co/omise.js"
                 data-key="pkey_test_5irvp3eqbf7ybksdjlt"
                 data-image="{{asset('img/favicon.png')}}"
@@ -134,6 +136,8 @@
                 <input type="radio" id ="bay" name ="internet_bnk" onclick="Button1()" value="internet_banking_bay"> Krungsri Online<br>
                 <input name="p" type ="hidden" value = "{{$price}}">
                 <input name="paymentID" type ="hidden" value = "{{$payment_id}}">
+                <input name="isAdvertisement" type ="hidden" value = "{{$isAdvertisement}}">
+                <input name="courseId" type ="hidden" value = "{{$course_id}}">
                 <br>
         <button class ="omise-checkout-button" type="submit" id="checkoutButton"  name="form2" disabled >Pay with internet banking</button>
             <script>

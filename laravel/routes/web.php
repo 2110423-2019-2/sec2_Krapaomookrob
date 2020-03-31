@@ -176,6 +176,5 @@ Route::post('/api/delete-request', 'CourseRequesterController@deleteRequest');
 Route::get('/create-advertisement', function() {
     return view('advertisement');
 });
-Route::post('/api/create-advertisement', 'AdvertisementController@createAdvertisement');
-Route::get('/payment/create-advertisement', 'Frontend\paymentGatewayController@getAdsPaymentPage');
+Route::get('/payment/create-advertisement','Frontend\paymentGatewayController@getAdsPaymentPage');
 Route::get('/api/getAdsCourses','CourseController@getAdsCourses');

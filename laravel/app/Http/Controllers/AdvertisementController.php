@@ -3,23 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Advertisement;
+use App\User;
 use Illuminate\Http\Request;
 
 class AdvertisementController extends Controller
 {
     //
-    public function createAdvertisement(Request $request) {
+     public static function createAdvertisement($courseId,$userId) {
         // dd($request);
-        $user = auth()->user();
+        $user = User::find($userId);
         if (!$user->isTutor()){
-            return response('Access denied: this feature is only for tutors', 401);
+            return false;
         }
         $userId = $user->id;
-        $courseId = $request->input('courseId');
+        $courseId = $courseId;
         $status = Advertisement::create([
             'course_id' => $courseId,
             'user_id' => $userId
         ]);
-        return response($status,200);
+        return true;    // success
     }
 }
