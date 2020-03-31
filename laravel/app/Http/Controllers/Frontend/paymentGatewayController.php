@@ -275,14 +275,13 @@ class paymentGatewayController extends Controller{
         $courses = array();
         $tutor = array();
         $subject = array();
-        
-            foreach($cartList as $item){
+      foreach($cartList as $item){
                     $course_id = $item['course_id'];
                     $course = CourseController::getCourseInfo(intval($course_id));
                     array_push($courses,$course);
 
                 }
-         
+
         return view('/payment', ['responses'=> $courses,'payment_id'=> $payment_id, 'totalprice' => $totalprice, 'isAdvertisement' => false, 'course_id' => null]);
     }
 
@@ -295,6 +294,7 @@ class paymentGatewayController extends Controller{
             'payment_id' => $latestEntry==null ? 1:$latestEntry->id,
             'course_id' => $courseId
         ]);
+
     }
 
 }

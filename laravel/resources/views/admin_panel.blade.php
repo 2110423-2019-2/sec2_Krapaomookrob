@@ -7,8 +7,7 @@
 @section('menu')
 <a class="btn ownbtn" href="#">Manage Admin</a>
 <a class="btn ownbtn" href="/admin/payment-request">Payment Requests</a>
-<a class="btn ownbtn" href="/admin-panel/attendance-logs">Attendance Logs</a>
-<a class="btn ownbtn" href="/admin-panel/course-logs">Course Logs</a>
+<a class="btn ownbtn" href="/admin/log/1">Logging System</a>
 @endsection
 
 @section('content')
