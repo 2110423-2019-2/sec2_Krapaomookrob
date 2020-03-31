@@ -127,6 +127,8 @@ Route::get('/admin-panel', function(){
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
+Route::get('/admin-panel/fetchAttendanceLogs', 'AdminController@fetchAttendanceLogs');
+Route::get('/admin-panel/fetchCourseLogs', 'AdminController@fetchCourseLogs');
 Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
 Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
 
@@ -174,6 +176,15 @@ Route::get('/create-advertisement', function() {
 });
 Route::get('/payment/create-advertisement','Frontend\paymentGatewayController@getAdsPaymentPage');
 Route::get('/api/getAdsCourses','CourseController@getAdsCourses');
+
+//logging
+
+Route::get('/getAllVeritiedReport','Frontend\loggingController@getAllVeritiedReport');
+Route::get('/getAllPaymentLog','Frontend\loggingController@getAllPaymentLog');
+Route::get('/getAllCourseCancellation','Frontend\loggingController@getAllCourseCancellation');
+Route::get('/getAllPostponement','Frontend\loggingController@getAllPostponement');
+Route::get('/getAllUserInfo','Frontend\loggingController@getAllUserInfo');
+Route::get('/admin/log/{no}', 'Frontend\loggingController@index');
 
 //attendance
 Route::get('/api/classes-today', 'AttendanceController@getClassesToday');

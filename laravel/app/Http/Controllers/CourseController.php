@@ -20,6 +20,7 @@ use App\CourseStudent;
 use App\Notification;
 use App\CourseClass;
 use App\CourseRequester;
+use App\Logging;
 
 class CourseController extends Controller
 {
@@ -56,6 +57,14 @@ class CourseController extends Controller
         $course->days()->sync($days);
         $course->save();
         $this->newClasses($course);
+
+        $course_log = new Logging;
+        $course_log->level = 'info';
+        $course_log->user_id = $course->user_id;
+        $course_log->course_id = $course->id;
+        $course_log->action = 'created a course';
+        $course_log->save();
+
         return response('OK', 200);
     }
 
@@ -117,6 +126,14 @@ class CourseController extends Controller
             $receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
             NotificationController::createNotification($receiver_id, $title, $message);
 
+
+            $course_log = new Logging;
+            $course_log->level = 'info';
+            $course_log->user_id = $user_id;
+            $course_log->course_id = $course_id;
+            $course_log->action = 'canceled a course';
+            $course_log->save();
+
             return response('OK', 200);
         }
         else {
@@ -177,6 +194,14 @@ class CourseController extends Controller
                     // 'by ' . auth()->user()->name
                     // . ', the extended class will be in ' . date("j F Y", strtotime($date));
         NotificationController::multiNotify($course_id, $title, $message);
+
+        $course_log = new Logging;
+        $course_log->level = 'info';
+        $course_log->user_id = $course->user_id;
+        $course_log->course_id = $course->id;
+        $course_log->action = 'postponed a class';
+        $course_log->save();
+
         return response("completed", 200);
     }
 
@@ -240,6 +265,13 @@ class CourseController extends Controller
         $title = "Request to teach";
         $receiver_id = Course::where('id','=',$request->course_id)->first()->user_id;
         NotificationController::createNotification($receiver_id, $title, $message);
+
+        $course_log = new Logging;
+        $course_log->level = 'info';
+        $course_log->user_id = auth()->user()->id;
+        $course_log->course_id = $request->course_id;
+        $course_log->action = 'requested a course';
+        $course_log->save();
 
         return response()->json(array('msg'=> "Done"), 200);
     }
