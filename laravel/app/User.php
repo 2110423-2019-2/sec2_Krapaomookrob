@@ -102,7 +102,11 @@ class User extends Authenticatable
     }
 
     public function courseRequests(){
-        return $this->belongsToMany(CourseRequest::class);
+        return $this->belongsToMany(CourseRequester::class);
+    }
+
+    public function advertisements() {
+        return $this->belongsToMany(Advertisement::class);
     }
 
     public function refundRequests() {

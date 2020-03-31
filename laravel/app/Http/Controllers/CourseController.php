@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Advertisement;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,7 @@ use App\CourseStudent;
 use App\Notification;
 use App\CourseClass;
 use App\CourseRequester;
+use App\Logging;
 use App\RefundRequest;
 
 class CourseController extends Controller
@@ -56,6 +58,14 @@ class CourseController extends Controller
         $course->days()->sync($days);
         $course->save();
         $this->newClasses($course);
+
+        $course_log = new Logging;
+        $course_log->level = 'info';
+        $course_log->user_id = $course->user_id;
+        $course_log->course_id = $course->id;
+        $course_log->action = 'created a course';
+        $course_log->save();
+
         return response('OK', 200);
     }
 
@@ -134,6 +144,14 @@ class CourseController extends Controller
             $receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
             NotificationController::createNotification($receiver_id, $title, $message);
 
+
+            $course_log = new Logging;
+            $course_log->level = 'info';
+            $course_log->user_id = $user_id;
+            $course_log->course_id = $course_id;
+            $course_log->action = 'canceled a course';
+            $course_log->save();
+
             return response('OK', 200);
         }
         else {
@@ -194,6 +212,14 @@ class CourseController extends Controller
                     // 'by ' . auth()->user()->name
                     // . ', the extended class will be in ' . date("j F Y", strtotime($date));
         NotificationController::multiNotify($course_id, $title, $message);
+
+        $course_log = new Logging;
+        $course_log->level = 'info';
+        $course_log->user_id = $course->user_id;
+        $course_log->course_id = $course->id;
+        $course_log->action = 'postponed a class';
+        $course_log->save();
+
         return response("completed", 200);
     }
 
@@ -258,6 +284,13 @@ class CourseController extends Controller
         $receiver_id = Course::where('id','=',$request->course_id)->first()->user_id;
         NotificationController::createNotification($receiver_id, $title, $message);
 
+        $course_log = new Logging;
+        $course_log->level = 'info';
+        $course_log->user_id = auth()->user()->id;
+        $course_log->course_id = $request->course_id;
+        $course_log->action = 'requested a course';
+        $course_log->save();
+
         return response()->json(array('msg'=> "Done"), 200);
     }
 
@@ -302,6 +335,7 @@ class CourseController extends Controller
             if ($course != null){
                 $subject = collect();
                 $day = [];
+                $status = CourseRequester::where('course_id','=',$course->id)->where('status','=','Accepted')->get()->isEmpty() ? 'Open':'Closed';
                 foreach($course->subjects->map->only('name') as $sub){
                     $name = $sub['name'];
                     $subject->push($name);
@@ -317,7 +351,8 @@ class CourseController extends Controller
                     'startDate' => $course->startDate,
                     'noClasses' => $course->noClasses,
                     'subjects' => $subject,
-                    'date' => $day
+                    'date' => $day,
+                    'status' => $status
                 ];
 
                 array_push($retCourses, $arr);
@@ -326,6 +361,24 @@ class CourseController extends Controller
         }
         return $retCourses;
 
+    }
+
+    public function getAdsCourses (Request $request) {
+        $userId = auth()->user()->id;
+        $myCourses = Course::select('id')->where('user_id','=',$userId)->get();
+        $courses = [];
+        foreach($myCourses as $courseId){
+            $course = $this::getCourseInfo($courseId->id);
+            // dd($course);
+            if ($course != null){
+                $course['isPromoted'] = Advertisement::where('course_id','=',$course['course_id'])->get()->isEmpty() ? false:true;
+                $course['title'] = 'Course '.$courseId->id;
+                $course['subjects'] = $course['subjects']->implode(',');
+                $course['days'] = $course['days']->implode(',');
+                array_push($courses,$course);
+            }
+        }
+        return $courses;
     }
 
     private function getRefundInfo($course_id){

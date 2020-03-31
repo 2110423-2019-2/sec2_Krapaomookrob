@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\CourseRequester;
 use App\CourseStudent;
+use App\Course;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -52,6 +53,19 @@ class CourseRequesterController extends Controller
         CourseRequester::find($reqId)->update(['status' => 'Pending']);
     }
 
+    public function deleteRequest(Request $request){
+        $userId = auth()->user()->id;
+        $course = Course::find($request->input('id'));
+        
+        // if user's id not match
+        if ($course->user_id != $userId ){
+            return response('Access denied', 401);
+        }
+        $res = Course::destroy($request->input('id'));
+        return $res ? response("delete completed",200) : response("database entry not found",404);
+    }
+
+    // Static Methods 
     public static function confirmAcceptedRequest($courseId){
         // call this function when finish payment
         $name = auth()->user()->name;

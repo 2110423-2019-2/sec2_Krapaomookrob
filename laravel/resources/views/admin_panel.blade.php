@@ -7,6 +7,7 @@
 @section('menu')
 <a class="btn ownbtn" href="#">Manage Admin</a>
 <a class="btn ownbtn" href="/admin/payment-request">Payment Requests</a>
+<a class="btn ownbtn" href="/admin/log/1">Logging System</a>
 <a class="btn ownbtn" href="/admin/refund-request">Refund Requests</a>
 @endsection
 
@@ -17,7 +18,6 @@
       <div class="card-body pr-0">
         <h4 class="card-title">Hello, Tee</h4>
         <admin_panel-component></admin_panel-component>
-
       </div>
     </div>
   </div>
