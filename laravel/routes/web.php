@@ -173,6 +173,7 @@ Route::get('/getAllVeritiedReport','Frontend\loggingController@getAllVeritiedRep
 Route::get('/getAllPaymentLog','Frontend\loggingController@getAllPaymentLog');
 Route::get('/getAllCourseCancellation','Frontend\loggingController@getAllCourseCancellation');
 Route::get('/getAllPostponement','Frontend\loggingController@getAllPostponement');
+Route::get('/getAllUserInfo','Frontend\loggingController@getAllUserInfo');
 Route::get('/admin/log/{no}',function($no){
     return view('admin_log')->with('l',$no);
 });

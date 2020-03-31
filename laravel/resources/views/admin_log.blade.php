@@ -9,6 +9,7 @@
 <a class="btn ownbtn" href="/admin/log/2">Report</a>
 <a class="btn ownbtn" href="/admin/log/3">Course Cancellation</a>
 <a class="btn ownbtn" href="/admin/log/4">Postponement</a>
+<a class="btn ownbtn" href="/admin/log/5">User</a>
 @endsection
 
 @section('content')
@@ -22,6 +23,8 @@
     <course-cancel-log-component></course-cancel-log-component>
     @elseif($l==4)
     <postponement-log-component></postponement-log-component>
+    @elseif($l==5)
+    <user-log-component></user-log-component>
     @endif
     </div>
   </div>

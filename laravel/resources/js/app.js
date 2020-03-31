@@ -14,6 +14,7 @@ Vue.component('payment-log-component', require('./components/paymentLog.vue').de
 Vue.component('verified-report-log-component', require('./components/VerifiedReportLog.vue').default);
 Vue.component('course-cancel-log-component', require('./components/CourseCancelLog.vue').default);
 Vue.component('postponement-log-component', require('./components/PostponementLog.vue').default);
+Vue.component('user-log-component', require('./components/UserLog.vue').default);
 Vue.component('attendance-today-component', require('./components/AttendanceTodayComponent.vue').default);
 Vue.component('attendance-history-component', require('./components/AttendanceHistoryComponent.vue').default);
 
