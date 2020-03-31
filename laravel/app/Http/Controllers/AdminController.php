@@ -34,7 +34,8 @@ class AdminController extends Controller
                                         LEFT JOIN users u2 ON u2.id = attendances.user_id
                                         LEFT JOIN course_subject on course_subject.course_id = courses.id
                                         LEFT JOIN subjects on subjects.id = course_subject.subject_id
-                                        GROUP BY timestamp, locations.name, student, tutor");
+                                        GROUP BY timestamp, locations.name, student, tutor
+                                        ORDER BY timestamp DESC");
             return $attendances;
         // }
     }
