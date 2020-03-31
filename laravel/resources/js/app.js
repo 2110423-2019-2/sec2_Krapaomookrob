@@ -10,7 +10,8 @@ Vue.component('new_course-component', require('./components/NewCourseComponent.v
 Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('notification-bar',require('./components/NotificationBar.vue').default);
 Vue.component('my_calendar-component', require('./components/MyCalendarComponent.vue').default);
-
+Vue.component('attendance-today-component', require('./components/AttendanceTodayComponent.vue').default);
+Vue.component('attendance-history-component', require('./components/AttendanceHistoryComponent.vue').default);
 
 import * as VueGoogleMaps from 'vue2-google-maps';
 Vue.use(VueGoogleMaps, {
@@ -55,6 +56,8 @@ Vue.config.warnHandler = function (msg, vm, trace) {
     trace = null;
   }
 }
+
+Vue.prototype.$eventHub = new Vue();
 
 const app = new Vue({
     el: '#app',
