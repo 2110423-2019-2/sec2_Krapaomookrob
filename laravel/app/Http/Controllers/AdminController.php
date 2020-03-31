@@ -21,6 +21,41 @@ class AdminController extends Controller
             return $admins;
         // }
     }
+    
+    public function fetchAttendanceLogs(){
+        // if (auth()->user()->can('???????????')){
+            $attendances = DB::select("SELECT attendances.updated_at AS timestamp, GROUP_CONCAT(DISTINCT subjects.name SEPARATOR ', ') AS subject,
+                                            locations.name AS location, u1.name AS tutor, u2.name AS student 
+                                        FROM attendances
+                                        LEFT JOIN course_classes ON attendances.course_classes_id = course_classes.id
+                                        LEFT JOIN courses ON courses.id = course_classes.course_id
+                                        LEFT JOIN locations ON locations.id = courses.location_id
+                                        LEFT JOIN users u1 ON u1.id = courses.user_id
+                                        LEFT JOIN users u2 ON u2.id = attendances.user_id
+                                        LEFT JOIN course_subject on course_subject.course_id = courses.id
+                                        LEFT JOIN subjects on subjects.id = course_subject.subject_id
+                                        GROUP BY timestamp, locations.name, student, tutor
+                                        ORDER BY timestamp DESC");
+            return $attendances;
+        // }
+    }
+
+    public function fetchCourseLogs(){
+        // if (auth()->user()->can('???????????')){
+            $course_logs = DB::select("SELECT loggings.created_at AS timestamp, loggings.level,
+                                        GROUP_CONCAT(DISTINCT subjects.name SEPARATOR ', ') AS subject,
+                                        locations.name as location, users.name as user, loggings.action as action
+                                        FROM loggings
+                                        LEFT JOIN courses ON courses.id = loggings.course_id
+                                        LEFT JOIN locations ON locations.id = courses.location_id
+                                        LEFT JOIN users ON users.id = courses.user_id
+                                        LEFT JOIN course_subject on course_subject.course_id = courses.id
+                                        LEFT JOIN subjects on subjects.id = course_subject.subject_id
+                                        GROUP BY timestamp, locations.name, users.name, loggings.action
+                                        ORDER BY timestamp DESC");
+            return $course_logs;
+        // }
+    }
 
     public function promoteAdmin($email){
         // if (auth()->user()->can('assignAdmin')){
