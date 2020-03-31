@@ -7,7 +7,7 @@
     </button>
   </div>
     <v-card-title>
-      Manage Admin
+      Manage Suspended User
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -27,19 +27,20 @@
           <td>{{row.item.id}}</td>
           <td>{{row.item.name}}</td>
           <td>{{row.item.email}}</td>
-          <td>{{row.item.role}}</td>
-          <td v-if="row.item.role == 'student' || row.item.role == 'tutor'">
-              <button class='btn btn-primary' @click="promoteAdmin(row.item.email)">
-                  Promote
-              </button>
-          </td>
-          <td v-else-if="row.item.role == 'admin'">
-              <button class='btn btn-danger' @click="demoteAdmin(row.item.row)">
-                  Demote
-              </button>
+          <td v-if="row.item.is_suspended == 1">
+            Suspended
           </td>
           <td v-else>
             -
+          </td>
+          <!-- <td>{{row.item.is_suspended}}</td> -->
+          <td>
+              <button v-if="row.item.is_suspended == 1" class='btn btn-primary' @click="toggleSuspend(row.item.id)">
+                  Unsuspend
+              </button>
+              <button v-else class='btn btn-danger' @click="toggleSuspend(row.item.id)">
+                  Suspend
+              </button>
           </td>
         </tr>
       </template>
@@ -64,7 +65,7 @@ export default {
           },
           { text: 'Username', value: 'name' },
           { text: 'Email', value: 'email' },
-          { text: 'Role', value: 'role' },
+          { text: 'Is suspended', value: 'is_suspended' },
           { text: 'Action' },
         ],
         requests: [
@@ -81,24 +82,15 @@ export default {
     });
   },
   methods: {
-    promoteAdmin: function(email) {
-        axios.get('/admin-panel/promoteAdmin/'+ String(email)).then(response => {
-          this.status = "Admin is promoted"
-        })
-        axios.get("/admin-panel/fetchUsers").then(response => {
+    toggleSuspend: function(id) {
+        axios.get('/admin-panel/suspend/'+ String(id)).then(response => {
+          this.status = "User is suspended"
+          axios.get("/admin-panel/fetchUsers").then(response => {
             this.requests = response.data;
             this.status = "fetch users sucess"
-        });
+          });
+        })
     },
-    demoteAdmin: function(email) {
-        axios.get('/admin-panel/demoteAdmin/'+ String(email)).then(response => {
-          this.status = "Admin is promoted"
-        })
-        axios.get("/admin-panel/fetchUsers").then(response => {
-            this.requests = response.data;
-            this.status = "fetch users sucess"
-        });
-    }
   }
 };
 </script>

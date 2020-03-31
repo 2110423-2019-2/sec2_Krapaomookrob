@@ -36,6 +36,28 @@ class AdminController extends Controller
         // }
     }
 
+    public function suspend($id){ 
+        $user = DB::table('users')->where('id','=',$id)->first();
+        $is_suspended = $user->is_suspended;
+        if ($is_suspended == 0){
+            $this->suspendUser($id);
+            return 1;
+        } else {
+            $this->unsuspendUser($id);
+            return 0;
+        }
+    }
+
+    public function suspendUser($id){ 
+        $user = DB::table('users')->where('id','=',$id)->update(['is_suspended' => '1']);
+        return $user;
+    }
+
+    public function unsuspendUser($id){ 
+        $user = DB::table('users')->where('id','=',$id)->update(['is_suspended' => '0']);
+        return $user;
+    }
+
     public function getReports(){
         //$reports = DB::table('reports')->join('users','reports.sender_id','=','users.id')->get();
         $reports = DB::table('users')->join('reports','reports.sender_id','=','users.id')->get();

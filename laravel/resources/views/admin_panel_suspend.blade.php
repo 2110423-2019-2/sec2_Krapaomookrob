@@ -2,7 +2,7 @@
 
 @section('title', 'Admin Panel - Even Die I am The Tutor')
 
-@section('topic', 'Admin Panel')
+@section('topic', 'Suspend User Panel')
 
 @section('menu')
 <a class="btn ownbtn" href="/admin-panel/">Manage Admin</a>
@@ -14,7 +14,7 @@
 <div class="row">
   <div class="col-lg-9">
     <div class="card">
-      <admin_panel-component></admin_panel-component>
+      <suspended-user-component></suspended-user-component>
     </div>
   </div>
 </div>

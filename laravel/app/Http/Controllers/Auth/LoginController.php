@@ -55,8 +55,10 @@ class LoginController extends Controller
     public function loginDeveloper($id){
         auth()->logout();
         $user = User::findOrFail($id);
-        auth()->login($user);
-        return redirect('/');
+        if ($user->is_suspended!=1){
+            auth()->login($user);
+            return redirect('/');
+        }
     }
 
 
@@ -72,9 +74,11 @@ class LoginController extends Controller
     {
         $providerUser = Socialite::driver($provider)->user();
         $user = $this->createOrGetUser($provider, $providerUser);
-        auth()->login($user);
-        if($user->role == NULL) return redirect()->to('/user-role');
-        else return redirect()->to('/');
+        if ($user->is_suspended!=1){
+            auth()->login($user);
+            if($user->role == NULL) return redirect()->to('/user-role');
+            else return redirect()->to('/');
+        }
     }
 
     public function createOrGetUser($provider, $providerUser)
