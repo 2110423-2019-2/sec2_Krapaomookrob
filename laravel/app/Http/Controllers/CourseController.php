@@ -19,6 +19,7 @@ use App\CourseStudent;
 use App\Notification;
 use App\CourseClass;
 use App\CourseRequester;
+use App\Logging;
 
 class CourseController extends Controller
 {
@@ -55,6 +56,14 @@ class CourseController extends Controller
         $course->days()->sync($days);
         $course->save();
         $this->newClasses($course);
+
+        $course_log = new Logging;
+        $course_log->level = 'info';
+        $course_log->user_id = $course->user_id;
+        $course_log->course_id = $course->id;
+        $course_log->action = 'created a course';
+        $course_log->save();
+
         return response('OK', 200);
     }
 
@@ -99,19 +108,36 @@ class CourseController extends Controller
 
     public function cancelCourse(Request $request){
         $user_id = $request->user_id;
-        $course_id = $request->course_id;
-        $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
-        $registeredCourse->status = 'refunding';
-        $registeredCourse->save();
+        if(auth()->user()->id == $user_id){
+            $course_id = $request->course_id;
+            $registeredCourse = CourseStudent::where('user_id', $user_id)->where('course_id', '=', $course_id)->first();
+            $registeredCourse->status = 'refunding';
+            $registeredCourse->save();
 
-        //  create cancel notification
-        $username = User::where('id','=',$registeredCourse->user_id)->first()->name;
-        $title = "Request to teach";
-        $message = "{$username} have cancel the course";
-        $receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
-        NotificationController::createNotification($receiver_id, $title, $message);
+            $refundInfo = $this->getRefundInfo($course_id); 
+            $isFullRefund = $refundInfo['isFullRefund'];
+            $refundAmount = $refundInfo['refundAmount'];
+    
+            //  create cancel notification
+            $username = User::where('id','=',$registeredCourse->user_id)->first()->name;
+            $title = "Request to teach";
+            $message = "{$username} have cancel the course";
+            $receiver_id = Course::where('id','=',$registeredCourse->course_id)->first()->user_id;
+            NotificationController::createNotification($receiver_id, $title, $message);
 
-        return response($registeredCourse, 200);
+
+            $course_log = new Logging;
+            $course_log->level = 'info';
+            $course_log->user_id = $user_id;
+            $course_log->course_id = $course_id;
+            $course_log->action = 'canceled a course';
+            $course_log->save();
+
+            return response('OK', 200);
+        }
+        else {
+            return response('Access denied', 401);
+        }
     }
 
     public function postponeClass(Request $request){
@@ -167,15 +193,26 @@ class CourseController extends Controller
                     // 'by ' . auth()->user()->name
                     // . ', the extended class will be in ' . date("j F Y", strtotime($date));
         NotificationController::multiNotify($course_id, $title, $message);
+
+        $course_log = new Logging;
+        $course_log->level = 'info';
+        $course_log->user_id = $course->user_id;
+        $course_log->course_id = $course->id;
+        $course_log->action = 'canceled a course';
+        $course_log->save();
+
         return response("completed", 200);
     }
 
     public function getCourseStatus($course_id){
-        $registeredCourse = '';
         if(auth()->user()->role == 'student'){
             $status = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first()->status;
+            $refundInfo = $this->getRefundInfo($course_id); 
+            return response(['status' => $status, 'isFullRefund' => $refundInfo['isFullRefund'], 'refundAmount' => $refundInfo['refundAmount']], 200);
         }
-        return response($status, 200);
+        else{
+            return response("access denied", 401);
+        }
     }
 
     public function getClassStatus($class_id){
@@ -227,6 +264,13 @@ class CourseController extends Controller
         $title = "Request to teach";
         $receiver_id = Course::where('id','=',$request->course_id)->first()->user_id;
         NotificationController::createNotification($receiver_id, $title, $message);
+
+        $course_log = new Logging;
+        $course_log->level = 'info';
+        $course_log->user_id = auth()->user()->id;
+        $course_log->course_id = $request->course_id;
+        $course_log->action = 'requested a course';
+        $course_log->save();
 
         return response()->json(array('msg'=> "Done"), 200);
     }
@@ -296,5 +340,18 @@ class CourseController extends Controller
         }
         return $retCourses;
 
+    }
+
+    private function getRefundInfo($course_id){
+        $course = Course::where('id', '=', $course_id)->first();
+        $startDate = new Carbon($course->startDate);
+        $now = Carbon::now()->addHours(7);
+        $diff = $now->diffInDays($startDate, false);
+        $isFullRefund = $diff > 3;
+
+        $remainClasses = $course->courseClasses->sortBy('date')->where('date', '>=', $now)->count();
+        $refundAmount = (int) ($remainClasses * $course->price / $course->noClasses);
+        if(!$isFullRefund) $refundAmount = (int) ($refundAmount * 0.7);
+        return ['refundAmount' => $refundAmount, 'isFullRefund' => $isFullRefund];
     }
 }
