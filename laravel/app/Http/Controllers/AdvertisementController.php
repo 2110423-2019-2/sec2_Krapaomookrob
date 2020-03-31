@@ -12,6 +12,10 @@ class AdvertisementController extends Controller
      public static function createAdvertisement($courseId,$userId) {
         // dd($request);
         $user = User::find($userId);
+        if (!Advertisement::where('course_id','=',$courseId)->get()->isEmpty()){
+            // already ad
+            return true;
+        }
         if (!$user->isTutor()){
             return false;
         }

@@ -17,11 +17,11 @@
               </v-card-text>
               <v-card-actions>
                 <v-btn
-                  :disabled="course.promoted"
+                  :disabled="course.isPromoted"
                   @click.stop="popUp(course)"
                   color="#55B3E0"
                   text
-                >{{course.promoted ? "Promoted":"Promote"}}</v-btn>
+                >{{course.isPromoted ? "Promoted":"Promote"}}</v-btn>
               </v-card-actions>
             </v-card>
             <v-dialog v-model="dialog" max-width="500">

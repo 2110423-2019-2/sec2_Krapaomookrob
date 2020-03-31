@@ -94,7 +94,7 @@ Route::get('/payment/{payment_id}/{totalprice}','Frontend\paymentGatewayControll
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
-Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
+Route::get('/result/{paymentID}/{isAdvertisement}/{courseId}', 'Frontend\paymentGatewayController@returnPage');
 
 //My Courses
 Route::get('/my-courses', 'CourseController@myCoursesIndex');

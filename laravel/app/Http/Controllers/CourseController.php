@@ -321,7 +321,7 @@ class CourseController extends Controller
             $course = $this::getCourseInfo($courseId->id);
             // dd($course);
             if ($course != null){
-                $course['isPromoted'] = Advertisement::where('course_id','=',$course['course_id'])->get()->isEmpty() ? true:false;
+                $course['isPromoted'] = Advertisement::where('course_id','=',$course['course_id'])->get()->isEmpty() ? false:true;
                 $course['title'] = 'Course '.$courseId->id;
                 $course['subjects'] = $course['subjects']->implode(',');
                 $course['days'] = $course['days']->implode(',');
