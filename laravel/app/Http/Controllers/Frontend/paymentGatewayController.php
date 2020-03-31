@@ -359,7 +359,7 @@ class paymentGatewayController extends Controller{
 
     }
 
-    public function checkRefund() {
+    public static function checkRefund() {
         // query data
         $arr1 =  RefundRequest::where('status','!=', 'successful')->get();
         foreach($arr1 as $refundReq){

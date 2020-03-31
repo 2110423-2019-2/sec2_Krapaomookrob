@@ -20,6 +20,7 @@ use App\CourseStudent;
 use App\Notification;
 use App\CourseClass;
 use App\CourseRequester;
+use App\Http\Controllers\Frontend\paymentGatewayController;
 use App\Logging;
 use App\RefundRequest;
 
@@ -247,6 +248,7 @@ class CourseController extends Controller
     }
 
     public function myCoursesIndex(){
+        paymentGatewayController::checkRefund();
         $user = auth()->user();
         $courses;
         $students = [];
