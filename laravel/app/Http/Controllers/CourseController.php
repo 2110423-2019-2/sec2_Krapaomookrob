@@ -198,7 +198,7 @@ class CourseController extends Controller
         $course_log->level = 'info';
         $course_log->user_id = $course->user_id;
         $course_log->course_id = $course->id;
-        $course_log->action = 'canceled a course';
+        $course_log->action = 'postponed a class';
         $course_log->save();
 
         return response("completed", 200);
