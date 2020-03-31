@@ -96,12 +96,16 @@ class User extends Authenticatable
     public function reviews(){
         return $this->hasMany(Review::class);
     }
-    
+
     public function transactions() {
         return $this->belongsToMany(Transaction::class);
     }
 
     public function courseRequests(){
         return $this->belongsToMany(CourseRequest::class);
+    }
+
+    public function refundRequests() {
+        return $this->hasMany(RefundRequest::class);
     }
 }

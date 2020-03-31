@@ -44,6 +44,7 @@ Vue.component('star-rating-button', require('./components/StarRatingComponent.vu
 Vue.component('star-rating-score', require('./components/StarRatingScoreComponent.vue').default);
 Vue.component('star-display', require('./components/StarRatingDisplayComponent.vue').default);
 Vue.component('tutor-search-course-component', require('./components/TutorSearchCourseComponent.vue').default);
+Vue.component('admin-refund-request', require('./components/AdminRefundRequest.vue').default);
 
 //according https://github.com/vuetifyjs/vuetify/issues/9999
 const ignoreWarnMessage = 'The .native modifier for v-on is only valid on components but it was used on <div>.';

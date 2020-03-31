@@ -47,4 +47,9 @@ class AdminController extends Controller
         $report = DB::table('reports')->where('id','=',$id)->update(['status' => 'read']);
         return $report;
     }
+
+    public function getRefundRequestPage() {
+        if (auth()->user()->isAdmin() | auth()->user()->isSuperuser()) return view('admin_refund_request');
+        abort(401, "User can't perform this actions");
+    }
 }

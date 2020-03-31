@@ -19,6 +19,7 @@ use App\CourseStudent;
 use App\Notification;
 use App\CourseClass;
 use App\CourseRequester;
+use App\RefundRequest;
 
 class CourseController extends Controller
 {
@@ -105,10 +106,27 @@ class CourseController extends Controller
             $registeredCourse->status = 'refunding';
             $registeredCourse->save();
 
-            $refundInfo = $this->getRefundInfo($course_id); 
+            $refundInfo = $this->getRefundInfo($course_id);
             $isFullRefund = $refundInfo['isFullRefund'];
             $refundAmount = $refundInfo['refundAmount'];
-    
+
+            $refund = DB::table('payments')
+                    ->where('user_id',$user_id)
+                    ->where('status','successful')
+                    ->join('carts','payments.id', '=', 'carts.payment_id')
+                    ->select('payments.id','payments.pay_by_card','carts.course_id')
+                    ->where('carts.course_id',$course_id)
+                    ->first();
+
+            RefundRequest::create([
+                'user_id' => $user_id,
+                'course_id' => $course_id,
+                'payment_id' => $refund->id,
+                'amount' => $refundAmount,
+                'is_transferred' => !($refund->pay_by_card),
+                'is_full_refund' => $isFullRefund
+            ]);
+
             //  create cancel notification
             $username = User::where('id','=',$registeredCourse->user_id)->first()->name;
             $title = "Request to teach";
