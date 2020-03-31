@@ -94,7 +94,7 @@ Route::get('/payment/{payment_id}/{totalprice}','Frontend\paymentGatewayControll
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
-Route::get('/result/{paymentID}', 'Frontend\paymentGatewayController@returnPage');
+Route::get('/result/{paymentID}/{isAdvertisement}/{courseId}', 'Frontend\paymentGatewayController@returnPage');
 
 //My Courses
 Route::get('/my-courses', 'CourseController@myCoursesIndex');
@@ -174,6 +174,14 @@ Route::get('/api/course-requests', 'CourseRequesterController@getRequestFromTuto
 Route::get('/api/get-my-course-request','CourseController@getMyCourseRequest');
 Route::post('api/decline-request', 'CourseRequesterController@declineRequest');
 Route::post('api/accept-request', 'CourseRequesterController@acceptRequest');
+Route::post('/api/delete-request', 'CourseRequesterController@deleteRequest');
+
+// Advertisement 
+Route::get('/create-advertisement', function() {
+    return view('advertisement');
+});
+Route::get('/payment/create-advertisement','Frontend\paymentGatewayController@getAdsPaymentPage');
+Route::get('/api/getAdsCourses','CourseController@getAdsCourses');
 
 //attendance
 Route::get('/api/classes-today', 'AttendanceController@getClassesToday');

@@ -12,6 +12,7 @@
 </div>
     <div class="card pb-2">
             <div class="card-body">
+@if(!$isAdvertisement)
                 <div class="row course-item mb-2 pb-2 bline">
                     <div class="col-lg">Tutor</div>
                     <div class="col-lg">Available Subjects</div>
@@ -19,6 +20,7 @@
                     <div class="col-lg">Classes</div>
                     <div class="col-lg">Price/Start Date</div>
                 </div>
+
 
 @foreach ($responses as $response)
 <div class="row course-item mb-2 pb-2 border-bottom">
@@ -49,6 +51,19 @@
 
 </div>
 @endforeach
+@endif
+
+@if($isAdvertisement)
+
+                <div class="row course-item mb-2 pb-2 bline">
+                  <div class="col-lg">Entries</div>
+                  <div class="col-lg"></div>
+                  <div class="col-lg"></div>
+                  <div class="col-lg"></div>
+                  <div class="col-lg"></div>
+                </div>
+              <div>Ads for course {{$course_id}}</div>
+@endif
 
 
     <div class="row justify-content-end pr-5 mt-3">
@@ -88,6 +103,8 @@
                 <input name="p" type ="hidden" value = "{{$price}}">
                 <input name="class" type ="hidden" value = "">
                 <input name="paymentID" type ="hidden" value = "{{$payment_id}}">
+                <input name="isAdvertisement" type ="hidden" value = "{{$isAdvertisement}}">
+                <input name="courseId" type ="hidden" value = "{{$course_id}}">
             <script type="text/javascript"   src="https://cdn.omise.co/omise.js"
                 data-key="pkey_test_5irvp3eqbf7ybksdjlt"
                 data-image="{{asset('img/favicon.png')}}"
@@ -119,6 +136,8 @@
                 <input type="radio" id ="bay" name ="internet_bnk" onclick="Button1()" value="internet_banking_bay"> Krungsri Online<br>
                 <input name="p" type ="hidden" value = "{{$price}}">
                 <input name="paymentID" type ="hidden" value = "{{$payment_id}}">
+                <input name="isAdvertisement" type ="hidden" value = "{{$isAdvertisement}}">
+                <input name="courseId" type ="hidden" value = "{{$course_id}}">
                 <br>
         <button class ="omise-checkout-button" type="submit" id="checkoutButton"  name="form2" disabled >Pay with internet banking</button>
             <script>

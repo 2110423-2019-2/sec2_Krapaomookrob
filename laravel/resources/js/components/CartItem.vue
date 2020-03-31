@@ -56,7 +56,7 @@
           class="mt-0 mb-1 ml-2"
           style="color:rgb(242, 87, 87); font-size: 1.8em"
         >{{this.totalPrice}} THB</p>
-        <a href="">
+        <a href="#">
           <!-- TODO: send to payment page -->
           <!-- <button class="btn-lg coutbtn px-5" onclick="testo">Checkout</button> -->
           <remove-button
