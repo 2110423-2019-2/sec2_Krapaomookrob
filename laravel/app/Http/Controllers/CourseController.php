@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Advertisement;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -198,7 +199,7 @@ class CourseController extends Controller
         $course_log->level = 'info';
         $course_log->user_id = $course->user_id;
         $course_log->course_id = $course->id;
-        $course_log->action = 'canceled a course';
+        $course_log->action = 'postponed a class';
         $course_log->save();
 
         return response("completed", 200);
@@ -316,6 +317,7 @@ class CourseController extends Controller
             if ($course != null){
                 $subject = collect();
                 $day = [];
+                $status = CourseRequester::where('course_id','=',$course->id)->where('status','=','Accepted')->get()->isEmpty() ? 'Open':'Closed';
                 foreach($course->subjects->map->only('name') as $sub){
                     $name = $sub['name'];
                     $subject->push($name);
@@ -331,7 +333,8 @@ class CourseController extends Controller
                     'startDate' => $course->startDate,
                     'noClasses' => $course->noClasses,
                     'subjects' => $subject,
-                    'date' => $day
+                    'date' => $day,
+                    'status' => $status
                 ];
 
                 array_push($retCourses, $arr);
@@ -340,6 +343,24 @@ class CourseController extends Controller
         }
         return $retCourses;
 
+    }
+
+    public function getAdsCourses (Request $request) {
+        $userId = auth()->user()->id;
+        $myCourses = Course::select('id')->where('user_id','=',$userId)->get();
+        $courses = [];
+        foreach($myCourses as $courseId){
+            $course = $this::getCourseInfo($courseId->id);
+            // dd($course);
+            if ($course != null){
+                $course['isPromoted'] = Advertisement::where('course_id','=',$course['course_id'])->get()->isEmpty() ? false:true;
+                $course['title'] = 'Course '.$courseId->id;
+                $course['subjects'] = $course['subjects']->implode(',');
+                $course['days'] = $course['days']->implode(',');
+                array_push($courses,$course);
+            }
+        }
+        return $courses;
     }
 
     private function getRefundInfo($course_id){

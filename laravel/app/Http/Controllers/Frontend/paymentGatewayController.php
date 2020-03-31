@@ -16,6 +16,7 @@ use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Cookie;
 use App\BankAccount;
 use App\CourseRequester;
+use App\Http\Controllers\AdvertisementController;
 use App\OmiseRecipientAccount;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CourseController;
@@ -64,20 +65,27 @@ class paymentGatewayController extends Controller{
 
 
     public function chargeCard(Request $request){
-        if($this->checkBeforeCharge($request->input('paymentID'))){
+        if(!$request->input('isAdvertisement') && $this->checkBeforeCharge($request->input('paymentID'))){
             return view('dashboard')->with('error','Some course is taken');
 
         }
+        $paymentId = $request->input('paymentID');
         $charge = OmiseCharge::create(array('amount'      => $request->input('p'),
                                             'currency'    => 'thb',
                                             'description' => 'Order-384',
                                             'ip'          => '127.0.0.1',
                                             'card'        => $request->input('omiseToken')),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
 
-        $payment = Payment::find($request->input('paymentID'));
+        if($request->input('isAdvertisement')){
+            $userId = auth()->user()->id;
+            $payment = Payment::create(['user_id' => $userId]);
+            $paymentId  = $payment->id;
+        }
+
+        $payment = Payment::find($paymentId);
         $payment->charge_id = $charge['id'];
         $payment->save();
-        return $this->returnPage($request->input('paymentID'));
+        return $this->returnPage($paymentId,$request->input('isAdvertisement'),$request->input('courseId'));
 
     }
     public function checkBeforeCharge($paymentID){
@@ -99,23 +107,32 @@ class paymentGatewayController extends Controller{
 
     public function checkout(Request $request){
 
-        if($this->checkBeforeCharge($request->input('paymentID'))){
+        if(!$request->input('isAdvertisement') && $this->checkBeforeCharge($request->input('paymentID'))){
             return view('dashboard')->with('error','Some course is taken');
 
         }
+        $paymentId = $request->input('paymentID');
         $source = OmiseSource::create(array(
             'type'     => $request->input('internet_bnk'),
             'amount'   => $request->input('p'),
             'currency' => 'thb'
         ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
 
+        // for advertisement
+        if($request->input('isAdvertisement')){
+            $userId = auth()->user()->id;
+            $payment = Payment::create(['user_id' => $userId]);
+            $paymentId = $payment->id;
+          }
+
         $charge = OmiseCharge::create(array(
             'amount' => $request->input('p'),
             'currency' => 'thb',
-            'return_uri' => url(sprintf("http://localhost:8000/result/%s",$request->input('paymentID'))),
+            'return_uri' => url(sprintf("http://localhost:8000/result/%s/%s/%s",$paymentId,$request->input('isAdvertisement')==null ? 0:1,$request->input('courseId')==null ? 0:$request->input('courseId'))),
             'source' => $source['id']
           ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
-          $payment = Payment::find($request->input('paymentID'));
+          
+          $payment = Payment::find($paymentId);
           $payment->charge_id = $charge['id'];
           $payment->save();
 
@@ -201,7 +218,8 @@ class paymentGatewayController extends Controller{
 
     }
 
-    public function returnPage($paymentID){
+    public function returnPage($paymentID, $isAdvertisement,$courseId){ 
+        // Note: courseId is for ads
 
         $payment = Payment::find($paymentID);
 
@@ -216,28 +234,35 @@ class paymentGatewayController extends Controller{
         else{
             //create taken course
            // $cart = Cart::select('payment_id',$paymentID);
-            $cart = Cart::select('course_id')
-                        ->where('payment_id',$paymentID)->get();
+            if (!$isAdvertisement){
+                $cart = Cart::select('course_id')
+                            ->where('payment_id',$paymentID)->get();
 
 
-            foreach ($cart as $value) {
+                foreach ($cart as $value) {
 
-                   // 'user_id' => auth()->user()->id,
-                auth()->user()->registeredCourses()->attach(Course::find($value->course_id));
+                    // 'user_id' => auth()->user()->id,
+                    auth()->user()->registeredCourses()->attach(Course::find($value->course_id));
 
-                //Notification
-                $user = auth()->user();
-                $user_id = $user->id;
-                $course = Course::find($value)->first();
-                $tutor_id = $course->user_id;
-                $user_name = $user->name;
-                $title = "Course registration";
-                $user_message = "New course has been registered successful.";
-                $tutor_message = "{$user_name} have register your course.";
-                NotificationController::createNotification($user_id, $title, $user_message);
-                NotificationController::createNotification($tutor_id, $title, $tutor_message);
-                if ($course->isMadeByStudent()){
-                    CourseRequester::confirmAcceptedRequest($course->id);
+                    //Notification
+                    $user = auth()->user();
+                    $user_id = $user->id;
+                    $course = Course::find($value)->first();
+                    $tutor_id = $course->user_id;
+                    $user_name = $user->name;
+                    $title = "Course registration";
+                    $user_message = "New course has been registered successful.";
+                    $tutor_message = "{$user_name} have register your course.";
+                    NotificationController::createNotification($user_id, $title, $user_message);
+                    NotificationController::createNotification($tutor_id, $title, $tutor_message);
+                    if ($course->isMadeByStudent()){
+                        CourseRequester::confirmAcceptedRequest($course->id);
+                    }
+                }
+            }else{
+                $status = AdvertisementController::createAdvertisement($courseId,auth()->user()->id);
+                if (!$status){
+                    abort(500,'something went wrong');
                 }
             }
             return view('dashboard')->with('alert','Successful');
@@ -256,7 +281,20 @@ class paymentGatewayController extends Controller{
                     array_push($courses,$course);
 
                 }
-        return view('/payment', ['responses'=> $courses,'payment_id'=> $payment_id, 'totalprice' => $totalprice]);
+
+        return view('/payment', ['responses'=> $courses,'payment_id'=> $payment_id, 'totalprice' => $totalprice, 'isAdvertisement' => false, 'course_id' => null]);
+    }
+
+    public function getAdsPaymentPage(Request $request) {
+        $latestEntry = Payment::latest('created_at')->first();
+        $courseId = $request->input('courseId');
+        return view('/payment', [
+            'isAdvertisement' => true,
+            'totalprice' => 500,
+            'payment_id' => $latestEntry==null ? 1:$latestEntry->id,
+            'course_id' => $courseId
+        ]);
+
     }
 
 }

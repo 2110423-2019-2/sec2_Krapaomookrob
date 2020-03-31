@@ -1,3 +1,4 @@
+@php($user = auth() -> user())
 <footer id = "footer" style = "background-color: black;color: white">
   <div class="container d-flex">
     <div class="row">
@@ -8,6 +9,11 @@
         {{-- <a href="#" class="font-weight-light">Contact Admin</a> --}}
         <button type="submit"  class="font-weight-light" data-toggle="modal"  data-backdrop="static" data-keyboard="false" data-target="#myModalContactAdmin">Contact Admin</button>
       </div>
+      @if($user != null && $user->isTutor())
+      <div class="col-2">
+        <a href="/create-advertisement" class="font-weight-light" style="color:#fff;">Create Advertisement</a>
+      </div>
+      @endif
     </div>
   </div>
   <div class="modal fade" id="myModalContactAdmin" tabindex="-1" role="dialog" aria-hidden="true">
