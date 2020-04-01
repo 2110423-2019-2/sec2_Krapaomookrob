@@ -104,4 +104,8 @@ class User extends Authenticatable
     public function courseRequests(){
         return $this->belongsToMany(CourseRequest::class);
     }
+
+    public function advertisement(){
+        return $this->hasOne(Advertisement::class);
+    }
 }

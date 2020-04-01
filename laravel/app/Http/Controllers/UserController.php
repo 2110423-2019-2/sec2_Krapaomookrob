@@ -96,10 +96,10 @@ class UserController extends Controller
 
     public function updateProfile(User $user){
         $user=  auth() -> user();
-        $data = request()->validate([
+        $data = request()->validate([ //need to workout the validation
             'role' => '',
             'name' => '',
-            'phone' => 'size:10',
+            'phone' => '',
             'education_level' => '',
             'nickname' => '',
             'email' => '',
@@ -107,7 +107,6 @@ class UserController extends Controller
             'account_number' => '',
             'account_name' => '',
             'bank' => '',
-            //'account_number', 'account_name', 'bank', 'user_id'
         ]);
         $user -> update($data);
         $bank = BankAccount::updateOrCreate(
