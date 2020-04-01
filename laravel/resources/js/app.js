@@ -10,6 +10,10 @@ Vue.component('new_course-component', require('./components/NewCourseComponent.v
 Vue.component('cart-item', require('./components/CartItem.vue').default);
 Vue.component('notification-bar',require('./components/NotificationBar.vue').default);
 Vue.component('my_calendar-component', require('./components/MyCalendarComponent.vue').default);
+Vue.component('payment-log-component', require('./components/paymentLog.vue').default);
+Vue.component('verified-report-log-component', require('./components/VerifiedReportLog.vue').default);
+Vue.component('postponement-log-component', require('./components/PostponementLog.vue').default);
+Vue.component('user-log-component', require('./components/UserLog.vue').default);
 Vue.component('attendance-today-component', require('./components/AttendanceTodayComponent.vue').default);
 Vue.component('attendance-history-component', require('./components/AttendanceHistoryComponent.vue').default);
 
@@ -38,12 +42,15 @@ Vue.component('add-to-cart-button', require('./components/AddToCartButton.vue').
 Vue.component('admin_panel-component', require('./components/AdminPanelList.vue').default);
 Vue.component('tutor-payment-request', require('./components/TutorPaymentRequest.vue').default);
 Vue.component('admin-payment-request', require('./components/AdminPaymentRequest.vue').default);
+Vue.component('admin-attendance-logs', require('./components/AdminAttendanceLogs.vue').default);
+Vue.component('admin-course-logs', require('./components/AdminCourseLogs.vue').default);
 Vue.component('course-request', require('./components/CourseRequest.vue').default);
 Vue.component('report-list', require('./components/ReportList.vue').default);
 Vue.component('star-rating-button', require('./components/StarRatingComponent.vue').default);
 Vue.component('star-rating-score', require('./components/StarRatingScoreComponent.vue').default);
 Vue.component('star-display', require('./components/StarRatingDisplayComponent.vue').default);
 Vue.component('tutor-search-course-component', require('./components/TutorSearchCourseComponent.vue').default);
+Vue.component('courses-card', require('./components/CoursesCard.vue').default);
 
 //according https://github.com/vuetifyjs/vuetify/issues/9999
 const ignoreWarnMessage = 'The .native modifier for v-on is only valid on components but it was used on <div>.';
