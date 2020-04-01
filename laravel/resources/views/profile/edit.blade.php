@@ -122,8 +122,8 @@
                 <h6 class = "my-0" style = "color: lightgrey;">EMAIL</h6>
                 <span class = "mb-3" style = "color: grey;">{{ $user -> email }}</span>
   
-                <h6 class = "my-0" style = "color: lightgrey;">PASSWORD</h6>
-                <span class = "mb-3" style = "color: grey;">{{ $user -> getSecret() }}</span>
+                {{-- <h6 class = "my-0" style = "color: lightgrey;">PASSWORD</h6>
+                <span class = "mb-3" style = "color: grey;">{{ $user -> getSecret() }}</span> --}}
             </div>
           </div>
           <div class="card-body col-4 mx-3 mb-5 mt-5 dash">
@@ -180,7 +180,18 @@
             </div>
           </div>
         </div>
+        
         <div class="container">
+
+          {{-- image uploader --}}
+          <div class="row">
+            <label for = "image" class="col-2 offset-1 col-form-lable">Post Ads</label>
+              <input type = "file" class="offset-1 form-control-file" id="image" name ="image">
+              @error('image')
+                      <strong>{{ $errors -> first('image') }}</strong>
+              @enderror
+          </div>
+
           <div class="row">
             <button class="btn ownbtn mb-3 col-2 offset-9">Save Profile</button>
           </div>

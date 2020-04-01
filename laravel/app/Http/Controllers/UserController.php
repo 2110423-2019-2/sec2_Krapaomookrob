@@ -49,8 +49,9 @@ class UserController extends Controller
                 $subjects = $course->subjects->pluck('name');
                 array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
             }
+            $hasAds = false;
             return view('profile.tutor_view',compact('user','phone','education_level','nickname','username','role','email','password',
-            'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects'));
+            'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects','hasAds'));
         }
         else if($user -> isStudent()){
             return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password',

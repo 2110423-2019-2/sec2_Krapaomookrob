@@ -52,8 +52,8 @@
               <h6 class = "my-0" style = "color: lightgrey;">EMAIL</h6>
               <span class = "mb-3" style = "color: grey;">{{ $email }}</span>
 
-              <h6 class = "my-0" style = "color: lightgrey;">PASSWORD</h6>
-              <span class = "mb-3" style = "color: grey;">{{ $password }}</span>
+              {{-- <h6 class = "my-0" style = "color: lightgrey;">PASSWORD</h6>
+              <span class = "mb-3" style = "color: grey;">{{ $password }}</span> --}}
           </div>
         </div>
         <div class="card-body col-4 mx-3 mb-5 mt-5 dash">
