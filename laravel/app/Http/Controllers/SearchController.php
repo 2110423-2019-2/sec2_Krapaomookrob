@@ -87,7 +87,7 @@ class SearchController extends Controller
             DB::raw("GROUP_CONCAT(DISTINCT days.name SEPARATOR ', ') as days"),
             'locations.name as area',
             'users.name as tutor',
-            'users.education_level',
+            'users.education_level'
             )->groupBy('courses.id');
 
         // for filtering only not registered course
@@ -163,7 +163,7 @@ class SearchController extends Controller
             DB::raw("GROUP_CONCAT(DISTINCT days.name SEPARATOR ', ') as days"),
             'locations.name as area',
             'users.name as student',
-            'users.education_level',
+            'users.education_level'
             )->groupBy('courses.id');
 
         // for filtering only not requested course
