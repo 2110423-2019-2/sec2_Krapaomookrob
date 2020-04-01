@@ -15,7 +15,7 @@
         <div class="card-header editt-bg m-0 p-0">
           <div class="container justify-content-center py-4">
             <div class="row justify-content-center">
-              <img src={{ $user -> getImage()}} class ="input-file bg-white rounded-circle mb-3" style = "width: 15%;height:15%;">
+              <img src={{ $user -> getImage()}} class ="input-file bg-white rounded-circle mb-3" style = "width: 150px;height:150px;">
             </div>
             <div class="row justify-content-center">
               <div class="h4">{{ $user -> name }}</div>
@@ -189,7 +189,7 @@
         
               <input type = "file" class="offset-1 form-control-file" id="AdsImage" name ="AdsImage">
               @error('AdsImage')
-                      <strong>{{ $errors -> first('image') }}</strong>
+                      <strong>{{ $errors -> first('AdsImage') }}</strong>
               @enderror
           </div>
 
