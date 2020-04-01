@@ -105,7 +105,7 @@ class User extends Authenticatable
         return $this->belongsToMany(CourseRequest::class);
     }
 
-    public function advertisement(){
-        return $this->hasOne(Advertisement::class);
+    public function banner(){
+        return $this->hasOne(Banner::class);
     }
 }

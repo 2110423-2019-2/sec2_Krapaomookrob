@@ -10,6 +10,7 @@ use App\BankAccount;
 use App\Course;
 use App\Transaction;
 use App\Report;
+use App\Banner;
 use App\Http\Controllers\ReviewController;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\DB;
@@ -45,15 +46,15 @@ class UserController extends Controller
         $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
 
         //  Advertisement Banner
-        if($user -> advertisement)
+        if($user -> banner)
         {
-            $advertisement = $user -> advertisement -> adsImage;
-            $advertisement = '/storage/'.$advertisement;
+            $banner = $user -> banner -> adsImage;
+            $banner = '/storage/'.$banner;
             $hasAds = true;
         }
         else
         {
-            $advertisement = "";
+            $banner = "";
             $hasAds = false;
         }
 
@@ -67,7 +68,7 @@ class UserController extends Controller
                 array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
             }
             return view('profile.tutor_view',compact('user','phone','education_level','nickname','username','role','email','password',
-            'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects','hasAds','advertisement'));
+            'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects','hasAds','banner'));
         }
         else if($user -> isStudent()){
             return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password',
@@ -90,15 +91,15 @@ class UserController extends Controller
             $reviews = ReviewController::getReviews($user -> id);
             $reviewsWithSubjects = [];
             //  Advertisement Banner
-            if($user -> advertisement)
+            if($user -> banner)
             {
-                $advertisement = $user -> advertisement -> adsImage;
-                $advertisement = '/storage/'.$advertisement;
+                $banner = $user -> banner -> adsImage;
+                $banner = '/storage/'.$banner;
                 $hasAds = true;
             }
             else
             {
-                $advertisement = "";
+                $banner = "";
                 $hasAds = false;
             }
 
@@ -108,7 +109,7 @@ class UserController extends Controller
                 $subjects = $course->subjects->pluck('name');
                 array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
             }
-            return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviewsWithSubjects','advertisement','hasAds'));
+            return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviewsWithSubjects','banner','hasAds'));
         }
         //  Not allow to look at student profile
         else if($user -> isStudent()){
@@ -151,29 +152,12 @@ class UserController extends Controller
             'bank' => $data['bank'],
             ]);
 
-            // Schema::create('bank_accounts', function (Blueprint $table) {
-            //     $table->bigIncrements('id');
-            //     $table->string('account_number');
-            //     $table->string('account_name');
-            //     $table->string('bank');
-            //     $table->unsignedBigInteger('user_id');
-            //     $table->timestamps();
-            //     $table->foreign('user_id')->references('id')->on('users');
-            // });
-
-        // Schema::create('advertisements', function (Blueprint $table) {
-        //     $table->bigIncrements('id');
-        //     $table->timestamps();
-        //     $table->foreign('tutor_id')->references('id')->on('users');
-        //     $table->string('image');
-        // });
-
         if(request('AdsImage') && $user -> isTutor())
         {
             $imagePath = request('AdsImage') -> store('profile', 'public');
             $image = Image::make(public_path("storage/{$imagePath}")) -> fit(1000,300);
             $image -> save();
-            Advertisement::updateOrCreate(
+            Banner::updateOrCreate(
                 [
                     'user_id' => $user -> id
                 ],

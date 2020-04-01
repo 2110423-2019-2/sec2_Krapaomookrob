@@ -4,9 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Advertisement extends Model
+class Banner extends Model
 {
-    //
     protected $guarded = [];
 
     public function User(){
