@@ -34,7 +34,7 @@
               </button>
           </td>
           <td v-else-if="row.item.role == 'admin'">
-              <button class='btn btn-danger' @click="demoteAdmin(row.item.row)">
+              <button class='btn btn-danger' @click="demoteAdmin(row.item.email)">
                   Demote
               </button>
           </td>
@@ -84,20 +84,20 @@ export default {
     promoteAdmin: function(email) {
         axios.get('/admin-panel/promoteAdmin/'+ String(email)).then(response => {
           this.status = "Admin is promoted"
-        })
-        axios.get("/admin-panel/fetchUsers").then(response => {
+          axios.get("/admin-panel/fetchUsers").then(response => {
             this.requests = response.data;
             this.status = "fetch users sucess"
-        });
+          });
+        })
     },
     demoteAdmin: function(email) {
         axios.get('/admin-panel/demoteAdmin/'+ String(email)).then(response => {
           this.status = "Admin is promoted"
-        })
-        axios.get("/admin-panel/fetchUsers").then(response => {
+          axios.get("/admin-panel/fetchUsers").then(response => {
             this.requests = response.data;
             this.status = "fetch users sucess"
-        });
+          });
+        })
     }
   }
 };
