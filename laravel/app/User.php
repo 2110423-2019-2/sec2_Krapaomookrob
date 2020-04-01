@@ -55,6 +55,10 @@ class User extends Authenticatable
         return $this->role == 'superuser';
     }
 
+    public function isSuspened(){
+        return $this->is_suspened == 1;
+    }
+
     public function courses()
     {
         return $this->belongsToMany(Course::class);
