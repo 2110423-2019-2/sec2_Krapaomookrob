@@ -11,6 +11,7 @@ use App\Course;
 use App\Transaction;
 use App\Report;
 use App\Http\Controllers\ReviewController;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -109,6 +110,7 @@ class UserController extends Controller
             'account_name' => '',
             'bank' => '',
         ]);
+        // dd($data);
         $user -> update($data);
         $bank = BankAccount::updateOrCreate(
             [
@@ -137,8 +139,11 @@ class UserController extends Controller
         //     $table->string('image');
         // });
 
-        if($user -> isTutor())
+        if(request('image') && $user -> isTutor())
         {
+            $imagePath = request('image') -> store('profile', 'public');
+            $image = Image::make(public_path("storage/{$imagePath}")) -> fit(1200,1200);
+            $image -> save();
             $advertisement = Advertisement::updateOrCreate(
                 [
                     'tutor_id' => $user->id
@@ -147,6 +152,7 @@ class UserController extends Controller
                     'image' => $data['image']
                 ]
             );
+            
         }
         return redirect("/profile");
     }
