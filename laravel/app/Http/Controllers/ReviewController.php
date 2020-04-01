@@ -34,8 +34,6 @@ class ReviewController extends Controller
             $course = Course::find($courseId);
             $tutor = User::find($course -> user_id);
             $student = auth() -> user();
-            //$coursestudent = CourseStudent::find('course_id',$courseId);
-            //$registeredCourse = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first();
             return view('review.course',compact('course', 'tutor', 'student'));
         }
         else{
