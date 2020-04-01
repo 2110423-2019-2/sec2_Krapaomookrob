@@ -59,6 +59,9 @@ class LoginController extends Controller
             auth()->login($user);
             return redirect('/');
         }
+        else{
+            abort(403, 'You are suspended');
+        }
     }
 
 
@@ -78,6 +81,9 @@ class LoginController extends Controller
             auth()->login($user);
             if($user->role == NULL) return redirect()->to('/user-role');
             else return redirect()->to('/');
+        }
+        else{
+            abort(403, 'You are suspended');
         }
     }
 
