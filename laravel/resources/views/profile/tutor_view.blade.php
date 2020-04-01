@@ -4,14 +4,22 @@
 
 @section('topic', 'My Account')
 
+
 @section('content')
+
+@if( $hasAds )
+<div class="container bg-white" style = "height:15vw; width: 50vw; background-image: url('{{ $banner }}');background-size: cover;"></div>
+@endif
+
 <div class="container">
   <div class="row justify-content-center">
+
     <div class="card col-12 p-0">
+
       <div class="card-header editt-bg m-0 p-0">
         <div class="container justify-content-center py-4">
           <div class="row justify-content-center">
-            <img src={{ $user -> getImage()}} class ="bg-white rounded-circle mb-3" style = "width: 15%;height:15%;">
+            <img src={{ $user -> getImage() }} class ="bg-white rounded-circle mb-3" style = "width: 150px;height:150px;">
           </div>
           <div class="row justify-content-center">
             <div class="h4">T. {{ $user -> name }}</div>
@@ -26,6 +34,7 @@
           </div>
         </div>
       </div>
+
       <div class="container d-flex">
         <div class="card-body col-4 mx-3 mb-5 mt-5 dash">
           <h4 class="card-title">Personal Info</h4>
@@ -52,8 +61,8 @@
               <h6 class = "my-0" style = "color: lightgrey;">EMAIL</h6>
               <span class = "mb-3" style = "color: grey;">{{ $email }}</span>
 
-              <h6 class = "my-0" style = "color: lightgrey;">PASSWORD</h6>
-              <span class = "mb-3" style = "color: grey;">{{ $password }}</span>
+              {{-- <h6 class = "my-0" style = "color: lightgrey;">PASSWORD</h6>
+              <span class = "mb-3" style = "color: grey;">{{ $password }}</span> --}}
           </div>
         </div>
         <div class="card-body col-4 mx-3 mb-5 mt-5 dash">

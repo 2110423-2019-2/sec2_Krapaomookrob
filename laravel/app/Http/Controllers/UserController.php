@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Advertisement;
 use Illuminate\Http\Request;
 
 use App\User;
@@ -9,7 +10,10 @@ use App\BankAccount;
 use App\Course;
 use App\Transaction;
 use App\Report;
+use App\Banner;
 use App\Http\Controllers\ReviewController;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -40,6 +44,20 @@ class UserController extends Controller
         $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
         $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
         $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
+
+        //  Advertisement Banner
+        if($user -> banner)
+        {
+            $banner = $user -> banner -> adsImage;
+            $banner = '/storage/'.$banner;
+            $hasAds = true;
+        }
+        else
+        {
+            $banner = "";
+            $hasAds = false;
+        }
+
         if($user -> isTutor()){
             $rating = ReviewController::getRating($user -> id);
             $reviews = ReviewController::getReviews($user -> id);
@@ -50,7 +68,7 @@ class UserController extends Controller
                 array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
             }
             return view('profile.tutor_view',compact('user','phone','education_level','nickname','username','role','email','password',
-            'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects'));
+            'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects','hasAds','banner'));
         }
         else if($user -> isStudent()){
             return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password',
@@ -72,13 +90,28 @@ class UserController extends Controller
             $rating = ReviewController::getRating($user -> id);
             $reviews = ReviewController::getReviews($user -> id);
             $reviewsWithSubjects = [];
+            //  Advertisement Banner
+            if($user -> banner)
+            {
+                $banner = $user -> banner -> adsImage;
+                $banner = '/storage/'.$banner;
+                $hasAds = true;
+            }
+            else
+            {
+                $banner = "";
+                $hasAds = false;
+            }
+
+            //  Reviews 
             foreach ($reviews as $review){
                 $course = Course::find($review->course_id);
                 $subjects = $course->subjects->pluck('name');
                 array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
             }
-            return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviewsWithSubjects'));
+            return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviewsWithSubjects','banner','hasAds'));
         }
+        //  Not allow to look at student profile
         else if($user -> isStudent()){
             return redirect('/');
         }
@@ -95,19 +128,19 @@ class UserController extends Controller
 
     public function updateProfile(User $user){
         $user=  auth() -> user();
-        $data = request()->validate([
+        $data = request()->validate([ //need to workout the validation
             'role' => '',
             'name' => '',
-            'phone' => 'size:10',
+            'phone' => '',
             'education_level' => '',
             'nickname' => '',
             'email' => '',
-            'image' => '',
+            'AdsImage' => '',
             'account_number' => '',
             'account_name' => '',
             'bank' => '',
-            //'account_number', 'account_name', 'bank', 'user_id'
         ]);
+        // dd($data);
         $user -> update($data);
         $bank = BankAccount::updateOrCreate(
             [
@@ -118,6 +151,23 @@ class UserController extends Controller
             'account_name' => $data['account_name'],
             'bank' => $data['bank'],
             ]);
+
+        if(request('AdsImage') && $user -> isTutor())
+        {
+            $imagePath = request('AdsImage') -> store('profile', 'public');
+            $image = Image::make(public_path("storage/{$imagePath}")) -> fit(1000,300);
+            $image -> save();
+            Banner::updateOrCreate(
+                [
+                    'user_id' => $user -> id
+                ],
+                [
+                    'adsImage' => $imagePath
+                ]
+            );
+            return redirect("/profile");
+            
+        }
         return redirect("/profile");
     }
 

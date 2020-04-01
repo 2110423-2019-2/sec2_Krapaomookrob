@@ -15,7 +15,7 @@
         <div class="card-header editt-bg m-0 p-0">
           <div class="container justify-content-center py-4">
             <div class="row justify-content-center">
-              <img src={{ $user -> getImage()}} class ="input-file bg-white rounded-circle mb-3" style = "width: 15%;height:15%;">
+              <img src={{ $user -> getImage()}} class ="input-file bg-white rounded-circle mb-3" style = "width: 150px;height:150px;">
             </div>
             <div class="row justify-content-center">
               <div class="h4">{{ $user -> name }}</div>
@@ -122,8 +122,8 @@
                 <h6 class = "my-0" style = "color: lightgrey;">EMAIL</h6>
                 <span class = "mb-3" style = "color: grey;">{{ $user -> email }}</span>
   
-                <h6 class = "my-0" style = "color: lightgrey;">PASSWORD</h6>
-                <span class = "mb-3" style = "color: grey;">{{ $user -> getSecret() }}</span>
+                {{-- <h6 class = "my-0" style = "color: lightgrey;">PASSWORD</h6>
+                <span class = "mb-3" style = "color: grey;">{{ $user -> getSecret() }}</span> --}}
             </div>
           </div>
           <div class="card-body col-4 mx-3 mb-5 mt-5 dash">
@@ -180,7 +180,19 @@
             </div>
           </div>
         </div>
+        
         <div class="container">
+
+          {{-- image uploader --}}
+          <div class="row">
+            <label for = "AdsImage" class="p-0 col-6 offset-1 col-form-lable" style = "color: #55B3E0;">Post Ads Banner (1000x300 px)</label>
+        
+              <input type = "file" class="offset-1 form-control-file" id="AdsImage" name ="AdsImage">
+              @error('AdsImage')
+                      <strong>{{ $errors -> first('AdsImage') }}</strong>
+              @enderror
+          </div>
+
           <div class="row">
             <button class="btn ownbtn mb-3 col-2 offset-9">Save Profile</button>
           </div>

@@ -113,6 +113,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Advertisement::class);
     }
 
+    public function banner(){
+        return $this->hasOne(Banner::class);
+    }
+
     public function refundRequests() {
         return $this->hasMany(RefundRequest::class);
     }
