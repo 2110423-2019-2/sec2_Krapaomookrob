@@ -20,6 +20,7 @@ use App\Http\Controllers\AdvertisementController;
 use App\OmiseRecipientAccount;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CourseController;
+use App\RefundRequest;
 
 require_once dirname(__FILE__).'/../../../../vendor/autoload.php';
 
@@ -89,6 +90,7 @@ class paymentGatewayController extends Controller{
 
         $payment = Payment::find($paymentId);
         $payment->charge_id = $charge['id'];
+        $payment->pay_by_card = true;
         $payment->save();
         return $this->returnPage($paymentId,$request->input('isAdvertisement'),$request->input('courseId'));
 
@@ -139,6 +141,7 @@ class paymentGatewayController extends Controller{
           
           $payment = Payment::find($paymentId);
           $payment->charge_id = $charge['id'];
+          $payment->pay_by_card = false;
           $payment->save();
 
             return redirect($charge['authorize_uri']);
@@ -303,4 +306,115 @@ class paymentGatewayController extends Controller{
 
     }
 
+    public function refundPayment(Request $request) {
+        $refundReq = RefundRequest::find($request->input('refundReq_id'));
+        $charge_id = Payment::find($refundReq->payment_id)->charge_id;
+        $charge = OmiseCharge::retrieve($charge_id);
+        if($charge['refundable']) {
+            $refund = $charge->refunds()->create(array('amount' => $refundReq->amount));
+            $refundReq['omise_id'] = $refund['id'];
+            $refundReq->save();
+            return response(200);
+        }
+        return $this->createTransferOmiseRefund($refundReq);
+
+    }
+    public function createTransferOmiseRefund($refundReq){
+        if($refundReq['omise_id']!=null){
+            if($refundReq['status'] == 'successful'){
+            return response('Request ID ' . $refundReq['id'] . ' is already transfer' , 403);
+            }
+            else{
+                $http = sprintf("https://dashboard.omise.co/test/transfers/%s",$refundReq['omise_id']);
+            return response(array('is_transferred'=>true,'data'=>$http), 200);
+            }
+        }
+        $user = User::find($refundReq->user_id);
+        $money = $refundReq->amount;
+        $recipient1 = OmiseRecipientAccount::where('user_id',$refundReq->user_id)->count();
+
+        if($recipient1==0){
+            $bank = BankAccount::where('user_id',$refundReq->user_id)->first();
+            $rec1 = OmiseRecipient::create(array('name'     => $user['name'],
+                                                  'description'   => '',
+                                                  'email'         => $user['email'],
+                                                  'type'          => 'individual',
+                                                  'bank_account'  => array( 'brand'   => $bank['bank'],
+                                                                            'number'  => $bank['account_number'],
+                                                                            'name'    => $bank['account_name'])));
+            OmiseRecipientAccount::create([
+                'user_id' => $user['id'],
+               'recipient' => $rec1['id']
+            ]);
+
+        }
+
+        $recipient1 = OmiseRecipientAccount::where('user_id',$refundReq->user_id)->get();
+
+        $transfer = OmiseTransfer::create(array(
+            'amount' => $money*100,
+            'recipient' => $recipient1[0]['recipient']
+        ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
+        //update transfer
+        $refundReq->omise_id = $transfer['id'];
+        $refundReq->is_transferred = true;
+        $refundReq->save();
+
+        $http = sprintf("https://dashboard.omise.co/test/transfers/%s",$transfer['id']);
+        return response(array('is_transferred'=>true,'data'=>$http), 200);
+
+    }
+
+    public static function checkRefund() {
+        // query data
+        $arr1 =  RefundRequest::where('status','!=', 'successful')->get();
+        foreach($arr1 as $refundReq){
+            if($refundReq['omise_id']==null) continue;
+
+            if($refundReq['is_transferred']) {
+                $result = OmiseTransfer::retrieve($refundReq['omise_id']);
+
+                if($result['paid']){
+
+                    $refundReq->status = "successful" ;
+                    $refundReq->save();
+
+                    $courseStudent = CourseStudent::where('user_id',$refundReq->user_id)
+                                                  ->where('course_id',$refundReq->course_id)->first();
+                    $courseStudent->status = 'cancelled';
+                    $courseStudent->save();
+
+
+
+                    NotificationController::createNotification($refundReq['user_id'],'Refund',
+                    sprintf("Refund: %s Baht by Transfer",$refundReq['amount']));
+
+                }
+                else if($result['sent']){
+                    $refundReq->status = "pending";
+                    $refundReq->save();
+                }
+            }
+
+            else {
+                $charge_id = Payment::find($refundReq->payment_id)->charge_id;
+                $charge = OmiseCharge::retrieve($charge_id);
+                $result = $charge->refunds()->retrieve($refundReq['omise_id']);
+                if($result['object']=='refund') {
+                    $refundReq->status = "successful" ;
+                    $refundReq->save();
+
+                    $courseStudent = CourseStudent::where('user_id',$refundReq->user_id)
+                                                  ->where('course_id',$refundReq->course_id)->first();
+                    $courseStudent->status = 'cancelled';
+                    $courseStudent->save();
+
+                    NotificationController::createNotification($refundReq['user_id'],'Refund',
+                    sprintf("Refund: %s Baht by Card",$refundReq['amount']));
+                }
+            }
+        }
+        $arr = RefundRequest::get();
+        return response($arr, 200);
+    }
 }

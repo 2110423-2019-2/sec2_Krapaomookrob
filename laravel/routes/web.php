@@ -101,6 +101,9 @@ Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
 
+Route::post('/checkrefund','Frontend\paymentGatewayController@checkRefund');
+Route::post('/api/refundPayment','Frontend\paymentGatewayController@refundPayment');
+Route::get('/admin/refund-request', 'AdminController@getRefundRequestPage');
 //My Courses
 Route::get('/my-courses', 'CourseController@myCoursesIndex');
 Route::post('/api/course/cancel','CourseController@cancelCourse');

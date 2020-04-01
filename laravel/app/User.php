@@ -96,7 +96,7 @@ class User extends Authenticatable
     public function reviews(){
         return $this->hasMany(Review::class);
     }
-    
+
     public function transactions() {
         return $this->belongsToMany(Transaction::class);
     }
@@ -107,5 +107,9 @@ class User extends Authenticatable
 
     public function advertisements() {
         return $this->belongsToMany(Advertisement::class);
+    }
+
+    public function refundRequests() {
+        return $this->hasMany(RefundRequest::class);
     }
 }

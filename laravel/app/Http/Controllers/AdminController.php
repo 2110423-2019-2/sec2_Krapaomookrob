@@ -84,4 +84,8 @@ class AdminController extends Controller
         return $report;
     }
 
+    public function getRefundRequestPage() {
+        if (auth()->user()->isAdmin() | auth()->user()->isSuperuser()) return view('admin_refund_request');
+        abort(401, "User can't perform this actions");
+    }
 }
