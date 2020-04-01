@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Advertisement;
 use Illuminate\Http\Request;
 
 use App\User;
@@ -118,6 +119,35 @@ class UserController extends Controller
             'account_name' => $data['account_name'],
             'bank' => $data['bank'],
             ]);
+
+            // Schema::create('bank_accounts', function (Blueprint $table) {
+            //     $table->bigIncrements('id');
+            //     $table->string('account_number');
+            //     $table->string('account_name');
+            //     $table->string('bank');
+            //     $table->unsignedBigInteger('user_id');
+            //     $table->timestamps();
+            //     $table->foreign('user_id')->references('id')->on('users');
+            // });
+
+        // Schema::create('advertisements', function (Blueprint $table) {
+        //     $table->bigIncrements('id');
+        //     $table->timestamps();
+        //     $table->foreign('tutor_id')->references('id')->on('users');
+        //     $table->string('image');
+        // });
+
+        if($user -> isTutor())
+        {
+            $advertisement = Advertisement::updateOrCreate(
+                [
+                    'tutor_id' => $user->id
+                ],
+                [
+                    'image' => $data['image']
+                ]
+            );
+        }
         return redirect("/profile");
     }
 
