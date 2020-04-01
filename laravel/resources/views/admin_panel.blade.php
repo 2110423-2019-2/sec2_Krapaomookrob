@@ -14,7 +14,7 @@
 @section('content')
 <div class="row">
   <div class="col-lg-9">
-    <div class="card"
+    <div class="card">
       <admin_panel-component></admin_panel-component>
     </div>
   </div>
