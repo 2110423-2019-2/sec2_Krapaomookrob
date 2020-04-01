@@ -16,8 +16,9 @@ class CreateAdvertisementsTable extends Migration
         Schema::create('advertisements', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->foreign('tutor_id')->references('id')->on('users');
-            $table->string('image');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('adsImage');
         });
     }
 

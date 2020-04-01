@@ -185,9 +185,10 @@
 
           {{-- image uploader --}}
           <div class="row">
-            <label for = "image" class="col-2 offset-1 col-form-lable">Post Ads</label>
-              <input type = "file" class="offset-1 form-control-file" id="image" name ="image">
-              @error('image')
+            <label for = "AdsImage" class="p-0 col-6 offset-1 col-form-lable" style = "color: #55B3E0;">Post Ads Banner (1000x300 px)</label>
+        
+              <input type = "file" class="offset-1 form-control-file" id="AdsImage" name ="AdsImage">
+              @error('AdsImage')
                       <strong>{{ $errors -> first('image') }}</strong>
               @enderror
           </div>

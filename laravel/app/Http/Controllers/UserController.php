@@ -12,6 +12,7 @@ use App\Transaction;
 use App\Report;
 use App\Http\Controllers\ReviewController;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -42,6 +43,20 @@ class UserController extends Controller
         $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
         $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"-";
         $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"-";
+
+        //  Advertisement Banner
+        if($user -> advertisement)
+        {
+            $advertisement = $user -> advertisement -> adsImage;
+            $advertisement = '/storage/'.$advertisement;
+            $hasAds = true;
+        }
+        else
+        {
+            $advertisement = "";
+            $hasAds = false;
+        }
+
         if($user -> isTutor()){
             $rating = ReviewController::getRating($user -> id);
             $reviews = ReviewController::getReviews($user -> id);
@@ -51,9 +66,8 @@ class UserController extends Controller
                 $subjects = $course->subjects->pluck('name');
                 array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
             }
-            $hasAds = false;
             return view('profile.tutor_view',compact('user','phone','education_level','nickname','username','role','email','password',
-            'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects','hasAds'));
+            'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects','hasAds','advertisement'));
         }
         else if($user -> isStudent()){
             return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password',
@@ -75,13 +89,28 @@ class UserController extends Controller
             $rating = ReviewController::getRating($user -> id);
             $reviews = ReviewController::getReviews($user -> id);
             $reviewsWithSubjects = [];
+            //  Advertisement Banner
+            if($user -> advertisement)
+            {
+                $advertisement = $user -> advertisement -> adsImage;
+                $advertisement = '/storage/'.$advertisement;
+                $hasAds = true;
+            }
+            else
+            {
+                $advertisement = "";
+                $hasAds = false;
+            }
+
+            //  Reviews 
             foreach ($reviews as $review){
                 $course = Course::find($review->course_id);
                 $subjects = $course->subjects->pluck('name');
                 array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
             }
-            return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviewsWithSubjects'));
+            return view('profile.tutor',compact('user','phone','education_level','nickname','username','role','email','account_number', 'account_name', 'bank','rating','reviewsWithSubjects','advertisement','hasAds'));
         }
+        //  Not allow to look at student profile
         else if($user -> isStudent()){
             return redirect('/');
         }
@@ -105,7 +134,7 @@ class UserController extends Controller
             'education_level' => '',
             'nickname' => '',
             'email' => '',
-            'image' => '',
+            'AdsImage' => '',
             'account_number' => '',
             'account_name' => '',
             'bank' => '',
@@ -139,19 +168,20 @@ class UserController extends Controller
         //     $table->string('image');
         // });
 
-        if(request('image') && $user -> isTutor())
+        if(request('AdsImage') && $user -> isTutor())
         {
-            $imagePath = request('image') -> store('profile', 'public');
-            $image = Image::make(public_path("storage/{$imagePath}")) -> fit(1200,1200);
+            $imagePath = request('AdsImage') -> store('profile', 'public');
+            $image = Image::make(public_path("storage/{$imagePath}")) -> fit(1000,300);
             $image -> save();
-            $advertisement = Advertisement::updateOrCreate(
+            Advertisement::updateOrCreate(
                 [
-                    'tutor_id' => $user->id
+                    'user_id' => $user -> id
                 ],
                 [
-                    'image' => $data['image']
+                    'adsImage' => $imagePath
                 ]
             );
+            return redirect("/profile");
             
         }
         return redirect("/profile");

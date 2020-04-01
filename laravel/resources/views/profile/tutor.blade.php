@@ -6,6 +6,9 @@
 @section('topic', 'Tutor Profile')
 
 @section('content')
+@if( $hasAds )
+<div class="container bg-white" style = "height:15vw; width: 50vw; background-image: url('{{ $advertisement }}');background-size: cover;"></div>
+@endif
 
 <div class="container">
   <div class="row justify-content-center">
