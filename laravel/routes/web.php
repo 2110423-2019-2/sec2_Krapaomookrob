@@ -140,6 +140,11 @@ Route::get('/admin-panel/fetchCourseLogs', 'AdminController@fetchCourseLogs');
 Route::get('/admin-panel/promoteAdmin/{email}', 'AdminController@promoteAdmin');
 Route::get('/admin-panel/demoteAdmin/{email}', 'AdminController@demoteAdmin');
 
+Route::get('/admin-panel/suspend', function(){
+    return view('admin_panel_suspend');
+});
+Route::get('/admin-panel/suspend/{id}', 'AdminController@suspend');
+
 //Payment Request
 Route::get('/api/user/bank-account', 'UserController@getBankAccount');
 Route::get('/api/user/balance', 'UserController@getBalance');
