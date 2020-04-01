@@ -29,7 +29,7 @@
         Starts on {{entry.startDate}}
       </div>
       <div class="col-lg">
-        <a href="/cart">
+        <a href="#">
           <remove-button
             button-text="Remove"
             v-bind:class="buttonType"
@@ -100,7 +100,8 @@ export default {
       // no null delete cased
       axios.post('api/cart/remove', {
         course_id: course_id
-      }).catch(error => console.log(error))
+      }).then(response => window.location.href="/cart")
+        .catch(error => console.log(error))
     },
     checkOut: function(){
       var data = this.cart;

@@ -317,7 +317,7 @@
             this.clickRegis = true;
             axios.post('api/cart/add', {
               course_id: course_id
-            }).then(response => console.log(200)).catch(error => console.log(error)).then(window.location.href="/cart")
+            }).then(response => window.location.href="/cart").catch(error => console.log(error))
           }
         }
       }

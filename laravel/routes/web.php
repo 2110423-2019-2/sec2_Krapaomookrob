@@ -26,6 +26,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/admin/payment-request', 'PaymentRequestController@adminIndex');
 });
 
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+
+    Route::get('/result/{paymentID}/{isAdvertisement}/{courseId}', 'Frontend\paymentGatewayController@returnPage');
+});
+
 Route::get('/api/course/subjects','CourseController@fetchSubjects');
 Route::get('/api/course/days','CourseController@fetchDays');
 Route::post('/api/course/new','CourseController@newCourse');
@@ -94,8 +100,10 @@ Route::get('/payment/{payment_id}/{totalprice}','Frontend\paymentGatewayControll
 Route::post('/card', 'Frontend\paymentGatewayController@chargeCard');
 Route::post('/internet', 'Frontend\paymentGatewayController@checkout');
 //want to sourceID to result by using controller
-Route::get('/result/{paymentID}/{isAdvertisement}/{courseId}', 'Frontend\paymentGatewayController@returnPage');
 
+Route::post('/checkrefund','Frontend\paymentGatewayController@checkRefund');
+Route::post('/api/refundPayment','Frontend\paymentGatewayController@refundPayment');
+Route::get('/admin/refund-request', 'AdminController@getRefundRequestPage');
 //My Courses
 Route::get('/my-courses', 'CourseController@myCoursesIndex');
 Route::post('/api/course/cancel','CourseController@cancelCourse');
