@@ -69,6 +69,7 @@
                         @if($isFinished[$index])
                             <div class="row justify-content-md-center">
                                 <p class="text-success">Finished</p>
+                                <a href="/review-course/{{ $course -> id }}" class="btn btn-light btn-nav m-0">Rate</a>
                             </div>
                         @elseif(!$isFinished[$index])
                             <cancel-button userid={{auth()->user()->id}} courseid={{$course->id}}></cancel-button>
