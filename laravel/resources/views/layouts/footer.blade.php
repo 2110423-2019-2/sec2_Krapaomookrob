@@ -28,7 +28,9 @@
             <div class="modal-body" style="color: black;">
                 <form action="/report" enctype="multipart/form-data" method="post">
                   @csrf
-                  <h6>Message</h6>
+                  <h6>Title</h6>
+                  <input class="form-control px-3" id="title" type="text" name="title" autofocus></input>
+                  <h6 style="padding-top:10px">Message</h6>
                   <textarea class="form-control px-3" id="message" type="text" name="message" autofocus></textarea>
                   <button class="btn ownbtn my-3 col-2 offset-9">Submit</button>
                 </form>

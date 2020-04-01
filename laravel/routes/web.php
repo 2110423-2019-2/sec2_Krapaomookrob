@@ -131,7 +131,7 @@ Route::get('/api/notification/markRead', 'NotificationController@markRead');
 
 // Admin panel
 Route::get('/admin-panel', function(){
-    return view('admin_panel');
+    return view('admin_panel'); 
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
