@@ -12,7 +12,7 @@
       <div class="card-header editt-bg m-0 p-0">
         <div class="container justify-content-center py-4">
           <div class="row justify-content-center">
-            <img src={{ $tutor -> getImage()}} class ="bg-white rounded-circle mb-3 mt-4" style = "width: 30%">
+            <img src={{ $tutor -> getImage()}} class ="bg-white rounded-circle mb-3 mt-4" style = "width: 150px; height: 150px;">
           </div>
           <div class="row justify-content-center">
             <div class="h4">{{ $tutor -> name }}</div>
