@@ -56,13 +56,18 @@
 @if($isAdvertisement)
 
                 <div class="row course-item mb-2 pb-2 bline">
-                  <div class="col-lg">Entries</div>
-                  <div class="col-lg"></div>
-                  <div class="col-lg"></div>
-                  <div class="col-lg"></div>
-                  <div class="col-lg"></div>
+                  <div class="col-4 text-center">Entries</div>
+                  <div class="col-4 text-center">Quantity</div>
+                  <div class="col-4 text-center">Unit Price</div>
                 </div>
-              <div>Ads for course {{$course_id}}</div>
+                <div class="row course-item mb-2 pb-2 border-bottom">
+                  <div class="col-4 text-center">
+                    <strong>Promote course {{$course_id}}</strong>
+                  </div>
+                  <div class="col-4 text-center">1</div>
+                  <div class="col-4 text-center">฿{{$totalprice}}</div>
+                </div>
+
 @endif
 
 

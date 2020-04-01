@@ -33,6 +33,11 @@ define('OMISE_SECRET_KEY', env("OMISE_SECRET_KEY", null));
 
 class paymentGatewayController extends Controller{
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function cartToPayment(Request $request){
         //create payment
         $payment = Payment::create([
@@ -222,6 +227,7 @@ class paymentGatewayController extends Controller{
         // Note: courseId is for ads
 
         $payment = Payment::find($paymentID);
+        $user = auth()->user();
 
 
         //chage status in payment
@@ -260,7 +266,7 @@ class paymentGatewayController extends Controller{
                     }
                 }
             }else{
-                $status = AdvertisementController::createAdvertisement($courseId,auth()->user()->id);
+                $status = AdvertisementController::createAdvertisement($courseId,$user->id);
                 if (!$status){
                     abort(500,'something went wrong');
                 }

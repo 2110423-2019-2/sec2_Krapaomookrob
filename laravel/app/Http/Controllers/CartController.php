@@ -112,7 +112,7 @@ class CartController extends Controller
             CourseRequesterController::removeRequest($request->input('course_id'));
         }
 
-        $value = join(',',$items).',';
+        $value = (join(',',$items).',' == ',') ? "":join(',',$items).',';
         $cookie = cookie($cartId, $value, self::MINUTES);
         return response(200)->cookie($cookie);
     }
