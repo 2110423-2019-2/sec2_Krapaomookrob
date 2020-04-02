@@ -4,10 +4,13 @@
 
 @section('topic', 'Report Message List')
 
-{{-- @section('menu') --}}
-{{-- <a class="btn ownbtn" href="#">Manage Admin</a>
-<a class="btn ownbtn" href="#">For etc</a> --}}
-{{-- @endsection --}}
+@section('menu')
+<a class="btn ownbtn" href="/admin-panel/">Manage Admin</a>
+<a class="btn ownbtn" href="/admin-panel/suspend">Suspend User</a>
+<a class="btn ownbtn" href="/admin-panel/reportList">Report List</a>
+<a class="btn ownbtn" href="/admin/payment-request">Payment Requests</a>
+<a class="btn ownbtn" href="/admin/log/1">Logging System</a>
+@endsection
 
 @section('content')
 <div class="row">
