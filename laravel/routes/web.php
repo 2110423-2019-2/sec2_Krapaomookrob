@@ -131,7 +131,7 @@ Route::get('/api/notification/markRead', 'NotificationController@markRead');
 
 // Admin panel
 Route::get('/admin-panel', function(){
-    return view('admin_panel'); 
+    return view('admin_panel');
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
@@ -183,7 +183,7 @@ Route::post('api/decline-request', 'CourseRequesterController@declineRequest');
 Route::post('api/accept-request', 'CourseRequesterController@acceptRequest');
 Route::post('/api/delete-request', 'CourseRequesterController@deleteRequest');
 
-// Advertisement 
+// Advertisement
 Route::get('/create-advertisement', function() {
     return view('advertisement');
 });
@@ -203,3 +203,7 @@ Route::get('/admin/log/{no}', 'Frontend\loggingController@index');
 Route::get('/api/classes-today', 'AttendanceController@getClassesToday');
 Route::post('/api/check-class', 'AttendanceController@checkClass');
 Route::get('/api/history-attendances', 'AttendanceController@getHistoryAttendances');
+
+//http_negotiate_charset
+Route::get('/api/chat-list', 'ChatController@fetchMessages');
+Route::post('/api/send-message', 'ChatController@sendMessage');
