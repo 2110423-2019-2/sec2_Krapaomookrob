@@ -14,6 +14,16 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         User::create([
+            'email' => 'AI' .'@gmail.com',
+            'name' => 'Superuser',
+            'image' => 'https://i.imgur.com/gXIzzvq.jpg',
+            'password' => bcrypt(rand(1000, 9999)),
+            'role' => 'superuser',
+            'education_level' => 'Chula Engineering',
+            'nickname' => 'AI'
+        ]);
+
+        User::create([
             'email' => 'Somying' .'@gmail.com',
             'name' => 'Somying Anaco',
             'image' => 'https://graph.facebook.com/v3.3/2685763254794575/picture?type=normal',
