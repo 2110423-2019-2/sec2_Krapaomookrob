@@ -204,6 +204,6 @@ Route::get('/api/classes-today', 'AttendanceController@getClassesToday');
 Route::post('/api/check-class', 'AttendanceController@checkClass');
 Route::get('/api/history-attendances', 'AttendanceController@getHistoryAttendances');
 
-//http_negotiate_charset
+//chat
 Route::get('/api/chat-list', 'ChatController@getChatList');
 Route::post('/api/send-message', 'ChatController@sendMessage');
