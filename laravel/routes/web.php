@@ -16,6 +16,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CalendarController;
+use App\User;
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -204,11 +205,10 @@ Route::get('/api/classes-today', 'AttendanceController@getClassesToday');
 Route::post('/api/check-class', 'AttendanceController@checkClass');
 Route::get('/api/history-attendances', 'AttendanceController@getHistoryAttendances');
 
-//
-Route::get('/chat', function () {
+//chat
+Route::get('/chat', function() {
     return view('chat');
 });
-//chat
 Route::post('/api/chat-list', 'ChatController@getChatList');
-Route::get('/api/receiver-list', 'ChatController@getReceiverList');
+Route::post('/api/receiver-list', 'ChatController@getReceiverList');
 Route::post('/api/send-message', 'ChatController@sendMessage');

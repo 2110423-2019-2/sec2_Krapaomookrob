@@ -2,7 +2,7 @@
       <v-layout row>
       <div class='col-4 pr-1'>
         <v-card  style="height:100%;">
-           <v-list subheader>
+           <v-list style="height:30rem; overflow-y:scroll;" subheader>
               <v-subheader>Recent chat</v-subheader>
         
               <v-list-item
@@ -19,7 +19,8 @@
                 </v-list-item-content>
         
                 <v-list-item-icon>
-                  <v-icon :color="item.active ? 'deep-purple accent-4' : 'grey'">chat_bubble</v-icon>
+                  <v-icon v-if='receiver!=null' :color="item.id==receiver.id ? 'blue' : 'grey'">chat_bubble</v-icon>
+                  <v-icon v-else color='grey'>chat_bubble</v-icon>
                 </v-list-item-icon>
               </v-list-item>
             </v-list>
@@ -27,12 +28,12 @@
       </div>
       <div class='col-8 pl-0'>
         <v-flex style="height:30rem">
-          <v-card class="chat-card" style="height:100%;">
+          <v-card class="chat-card" style="height:30rem;">
               <v-subheader>
-                  {{receiver.name}}
+                  {{receiver?receiver.name:null}}
                 </v-subheader>
                 <v-divider class='mt-0'></v-divider>
-                <v-flex ref='chatBox' style="height:59vh;overflow-y:scroll;">
+                <v-flex ref='chatBox' style="height:22rem;overflow-y:scroll;">
                 <v-list
                   class="p-3 pt-1 pb-1"
                   v-for="(message, index) in allMessages"
@@ -72,22 +73,21 @@
           </v-list>
                 </v-flex>
           <v-divider class='mb-0' style="align:bottom"></v-divider>
-          <v-layout row class="mx-2" style="align-self:flex-end">
-            <v-flex xs10 >
+          <div class='flex my-1 mx-8'>
+              <v-row>
                 <v-text-field
-                  class="pt-0"
-                  rows=2
-                  v-model="sendingMessage"
-                  label="Enter Message"
-                  single-line
-                  @keyup.enter="sendMessage"
+                placeholder="Enter Message"
+                filled
+                rounded
+                dense
+                v-model="sendingMessage"
+                @keyup.enter="sendMessage"
                 ></v-text-field>
-            </v-flex>
-
-            <v-flex xs2>
-                <v-btn @click="sendMessage" class="my-1 ml-2 white--text" small color="primary">send</v-btn>
-            </v-flex>
-          </v-layout>
+                <v-btn icon color="blue" @click='sendMessage()'>
+                  <v-icon>send</v-icon>
+                </v-btn>
+              </v-row>
+          </div>
           </v-card>
         </v-flex>
       </div>
@@ -100,7 +100,7 @@ import Pusher from "pusher-js";
 import Echo from 'laravel-echo';
 
 export default {
-  props:['item', 'userid'],
+  props:['userid'],
   data: function() {
     return {
         receiver: null,
@@ -112,12 +112,15 @@ export default {
   },
 
   mounted: function() {
-      axios.get('/api/receiver-list')
+      let url = new URL(window.location.href);
+      axios.post('/api/receiver-list', {receiver_id: url.searchParams.get("user-id")})
         .then( response => {
-          this.receiverList.push(...response.data)
-          this.receiver = this.receiverList[0];
+          this.receiverList.push(...response.data.receiver);
+          this.receiver = response.data.requestReceiver;
+          if(this.receiver && this.receiverList.findIndex(i => i.id === this.receiver.id) === -1){
+            this.receiverList.push(response.data.requestReceiver);
+          }
         });
-
 
       Pusher.logToConsole = true;
          
@@ -131,7 +134,7 @@ export default {
       
       window.Echo.private('to.' + this.userid)
       .listen('MessageSent', (e) => {
-          if(e.message.sender_id === this.receiver.id){
+          if(this.receiver && e.message.sender_id === this.receiver.id){
             this.allMessages.push(e.message);
           }
       });

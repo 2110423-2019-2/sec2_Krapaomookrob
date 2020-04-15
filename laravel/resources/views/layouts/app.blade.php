@@ -46,7 +46,7 @@
                       </li>
                     @endif
                     <li class="nav-item">
-                      <a class="btn btn-light btn-nav" href="#">Messages</a>
+                      <a class="btn btn-light btn-nav" href="/chat">Messages</a>
                     </li>
                     <li class="nav-item">
                       <a class="btn btn-light btn-nav" href="/profile">My Account</a>

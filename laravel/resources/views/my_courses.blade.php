@@ -30,15 +30,15 @@
                     <td scope="row" class='col-2'>
                         @if(auth()->user()->isTutor())
                             <p class='font-weight-bold mb-0'>Course ID {{$course->id}} </p>
-                            <p>Number of students {{$course->studentCount}} </p>
                             @foreach($students[$index] as $student)
                                 <p class='mb-0'>{{$student->name}}</p>
+                                <a href={{'/chat?user-id='.$student->id}} class='btn ownbtn'>Chat</a>
                             @endforeach
                         @else
                             <p class='font-weight-bold mb-0'> {{$course->user->nickname}} </p>
                             <p> {{$course->user->education_level}} </p>
+                            <a href={{'/chat?user-id='.$course->user->id}} class='btn ownbtn'>Chat</a>
                         @endif
-                        <a href='#' class='btn ownbtn'>Chat</a>
                     </td>
                     <td class='col-2'>{{implode(', ', $course->subjects->pluck('name')->toArray())}}</td>
                 <td class='col-2'> {{$course->location->name . ' ' . $course->location->address}}</td>

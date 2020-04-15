@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 
 class ChatController extends Controller
 {
+   
     public function getChatList(Request $request)
     {
         $receiver = $request->receiver;
@@ -45,12 +46,16 @@ class ChatController extends Controller
         return ['message' => $message ,'status' => 'Message sent!'];
     }
 
-    public function getReceiverList(){
+    public function getReceiverList(Request $request){
         $user_id = auth()->user()->id;
         $r1 = Message::where('receiver_id', $user_id)->distinct()->get(['sender_id'])->pluck('sender_id');
         $r2 = Message::where('sender_id', $user_id)->distinct()->get(['receiver_id'])->pluck('receiver_id');
-        $receiver_ids = array_unique($r1->concat($r2)->toArray());
+
+        $AI = 1;
+        $receiver_ids = array_unique($r1->concat($r2)->prepend($AI)->toArray());
         $receiver = User::find($receiver_ids, ['id', 'name', 'image']);
-        return $receiver;
+
+        $requestReceiver = $request->receiver_id ? User::find($request->receiver_id, ['id', 'name', 'image']) : null;
+        return ['receiver' => $receiver, 'requestReceiver' => $requestReceiver];
     }
 }
