@@ -205,5 +205,5 @@ Route::post('/api/check-class', 'AttendanceController@checkClass');
 Route::get('/api/history-attendances', 'AttendanceController@getHistoryAttendances');
 
 //http_negotiate_charset
-Route::get('/api/chat-list', 'ChatController@fetchMessages');
+Route::get('/api/chat-list', 'ChatController@getChatList');
 Route::post('/api/send-message', 'ChatController@sendMessage');
