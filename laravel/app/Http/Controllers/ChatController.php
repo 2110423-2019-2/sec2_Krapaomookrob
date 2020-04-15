@@ -29,7 +29,18 @@ class ChatController extends Controller
               'sender_id' => $sender,
               'receiver_id' => $receiver
             ]);
-        broadcast(new MessageSent($message))->toOthers();
+        //receiver == 1 is AI
+        if($receiver != 1){
+            broadcast(new MessageSent($message))->toOthers();
+        }else{
+          $dialogflow = "Sawadee";
+          $reply = Message::create([
+                'content' => $dialogflow,
+                'sender_id' => 1,
+                'receiver_id' => $sender
+              ]);
+          broadcast(new MessageSent($reply))->toOthers();
+        }
         return ['status' => 'Message Sent!'];
     }
 }
