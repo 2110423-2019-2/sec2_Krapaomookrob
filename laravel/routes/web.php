@@ -203,3 +203,8 @@ Route::get('/admin/log/{no}', 'Frontend\loggingController@index');
 Route::get('/api/classes-today', 'AttendanceController@getClassesToday');
 Route::post('/api/check-class', 'AttendanceController@checkClass');
 Route::get('/api/history-attendances', 'AttendanceController@getHistoryAttendances');
+
+//
+Route::get('/chat', function () {
+    return view('chat');
+});
