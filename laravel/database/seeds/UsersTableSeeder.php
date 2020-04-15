@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Superuser',
             'image' => 'https://i.imgur.com/gXIzzvq.jpg',
             'password' => bcrypt(rand(1000, 9999)),
-            'role' => 'superuser',
+            'role' => 'ai',
             'education_level' => 'Chula Engineering',
             'nickname' => 'AI'
         ]);
