@@ -209,5 +209,6 @@ Route::get('/chat', function () {
     return view('chat');
 });
 //chat
-Route::get('/api/chat-list', 'ChatController@getChatList');
+Route::post('/api/chat-list', 'ChatController@getChatList');
+Route::get('/api/receiver-list', 'ChatController@getReceiverList');
 Route::post('/api/send-message', 'ChatController@sendMessage');

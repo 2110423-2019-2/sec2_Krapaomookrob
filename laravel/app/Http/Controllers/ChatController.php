@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Message;
+use App\User;
 use Auth;
 use App\Events\MessageSent;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class ChatController extends Controller
 {
     public function getChatList(Request $request)
     {
-        $receiver = $request->$receiver;
+        $receiver = $request->receiver;
         $sender = Auth::user()->id;
         $m1 = Message::where('sender_id', $sender)->where('receiver_id', $receiver)->get();
         $m2 = Message::where('sender_id', $receiver)->where('receiver_id', $sender)->get();
@@ -21,8 +22,8 @@ class ChatController extends Controller
 
     public function sendMessage(Request $request)
     {
-        $content = $content->content;
-        $receiver = $request->$receiver;
+        $content = $request->content;
+        $receiver = $request->receiver;
         $sender = Auth::user()->id;
         $message = Message::create([
               'content' => $content,
@@ -41,6 +42,15 @@ class ChatController extends Controller
               ]);
           broadcast(new MessageSent($reply))->toOthers();
         }
-        return ['status' => 'Message Sent!'];
+        return ['message' => $message ,'status' => 'Message sent!'];
+    }
+
+    public function getReceiverList(){
+        $user_id = auth()->user()->id;
+        $r1 = Message::where('receiver_id', $user_id)->distinct()->get(['sender_id'])->pluck('sender_id');
+        $r2 = Message::where('sender_id', $user_id)->distinct()->get(['receiver_id'])->pluck('receiver_id');
+        $receiver_ids = array_unique($r1->concat($r2)->toArray());
+        $receiver = User::find($receiver_ids, ['id', 'name', 'image']);
+        return $receiver;
     }
 }

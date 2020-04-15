@@ -5,5 +5,5 @@
 @section('topic', 'Chat')
 
 @section('content')
-<chat-component></chat-component>
+<chat-component userid={{auth()->user()->id}}></chat-component>
 @endsection

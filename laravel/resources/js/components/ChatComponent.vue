@@ -2,35 +2,26 @@
       <v-layout row>
       <div class='col-4 pr-1'>
         <v-card  style="height:100%;">
-           <v-list style="height:30rem; overflow-y:scroll;" three-line>
-              <template v-for="(item, index) in responderList">
-                <v-subheader
-                  v-if="item.header"
-                  :key="item.header"
-                  v-text="item.header"
-                ></v-subheader>
+           <v-list subheader>
+              <v-subheader>Recent chat</v-subheader>
         
-                <v-divider
-                  v-else-if="item.divider"
-                  :key="index"
-                  :inset="item.inset"
-                ></v-divider>
+              <v-list-item
+                v-for="item in receiverList"
+                :key="item.id"
+                @click="selectReceiver(item)"
+              >
+                <v-list-item-avatar>
+                  <v-img :src="item.image"></v-img>
+                </v-list-item-avatar>
         
-                <v-list-item
-                  v-else
-                  :key="item.title"
-                  @click=""
-                >
-                  <v-list-item-avatar>
-                    <v-img :src="item.avatar"></v-img>
-                  </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.name"></v-list-item-title>
+                </v-list-item-content>
         
-                  <v-list-item-content>
-                    <v-list-item-title v-html="item.title"></v-list-item-title>
-                    <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </template>
+                <v-list-item-icon>
+                  <v-icon :color="item.active ? 'deep-purple accent-4' : 'grey'">chat_bubble</v-icon>
+                </v-list-item-icon>
+              </v-list-item>
             </v-list>
         </v-card>
       </div>
@@ -38,23 +29,23 @@
         <v-flex style="height:30rem">
           <v-card class="chat-card" style="height:100%;">
               <v-subheader>
-                  {{responder.name}}
+                  {{receiver.name}}
                 </v-subheader>
                 <v-divider class='mt-0'></v-divider>
-                <v-flex style="height:59vh;overflow-y:scroll;">
+                <v-flex ref='chatBox' style="height:59vh;overflow-y:scroll;">
                 <v-list
                   class="p-3 pt-1 pb-1"
                   v-for="(message, index) in allMessages"
                   :key="index">
               <div class="message-wrapper">
-                <template v-if="responder.id==message.sender_id">
+                <template v-if="receiver.id==message.sender_id">
                 <v-row class="ml-0">
                     <v-list-item-avatar>
-                        <v-img :src="responder.avatar"></v-img>
+                        <v-img :src="receiver.image"></v-img>
                     </v-list-item-avatar>
-                    <div v-if="message.message" class="text-message-container">
+                    <div v-if="message.content" class="text-message-container">
                         <v-chip :color="'blue'" text-color="white"  style="position: relative;top: 50%;transform: translateY(-50%);">
-                          {{message.message}}
+                          {{message.content}}
                         </v-chip>
                     </div>
                 </v-row>
@@ -65,10 +56,10 @@
 
                 <template v-else>
                 <v-row class="mr-0">
-                    <div v-if="message.message" class="text-message-container" style="margin-left:auto; margin-right:0;">
+                    <div v-if="message.content" class="text-message-container" style="margin-left:auto; margin-right:0;">
                         <v-chip :color="'blue'" text-color="white"  style="position: relative;top: 50%;transform: translateY(-50%);
                         margin-left:auto; margin-right:0;">
-                          {{message.message}}
+                          {{message.content}}
                         </v-chip>
                     </div>
                 </v-row>
@@ -86,7 +77,7 @@
                 <v-text-field
                   class="pt-0"
                   rows=2
-                  v-model="message"
+                  v-model="sendingMessage"
                   label="Enter Message"
                   single-line
                   @keyup.enter="sendMessage"
@@ -105,57 +96,70 @@
 
 <script>
 import Axios from "axios";
+import Pusher from "pusher-js";
+import Echo from 'laravel-echo';
 
 export default {
-  props:['item'],
+  props:['item', 'userid'],
   data: function() {
     return {
-        responder: {id:1,name:'Student1',avatar:'https://cdn.vuetifyjs.com/images/lists/2.jpg'},
-        allMessages: [ {message:"My name is Knot", created_at:"22:33 14 Apr 20", index:1,sender_id:1},
-        {message:"My name is KnotKnot", created_at:"22:38 14 Apr 20", index:2,sender_id:1},
-        {message:"My name is PaengPaeng", created_at:"22:53 14 Apr 20", index:4,sender_id:2},
-        {message:"My name is PaengPaengPaengPaeng", created_at:"23:55 14 Apr 20", index:3,sender_id:2},
+        receiver: null,
+        allMessages: [],
+        receiverList: [
         ],
-        responderList: [
-          { header: 'Chatter' },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            title: 'Brunch this weekend?',
-            subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-            subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.",
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            title: 'Oui oui',
-            subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?",
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-            title: 'Birthday gift',
-            subtitle: "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?",
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-            title: 'Recipe to try',
-            subtitle: "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
-          },
-        ],
-        
+        sendingMessage: '',
       }
   },
 
   mounted: function() {
+      axios.get('/api/receiver-list')
+        .then( response => {
+          this.receiverList.push(...response.data)
+          this.receiver = this.receiverList[0];
+        });
+
+
+      Pusher.logToConsole = true;
+         
+      window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: 'eaef6fa526d79c6c3766',
+        cluster: 'ap1',
+        encrypted: true,
+        logToConsole: true
+      });
+      
+      window.Echo.private('to.' + this.userid)
+      .listen('MessageSent', (e) => {
+          if(e.message.sender_id === this.receiver.id){
+            this.allMessages.push(e.message);
+          }
+      });
   },
   methods: {
+      sendMessage: function(){
+        axios.post('/api/send-message', {content: this.sendingMessage, receiver: this.receiver.id})
+          .then( response => {
+            this.allMessages.push(response.data.message);
+            this.sendingMessage = '';
+          });
+      },
+      selectReceiver: function(receiver){
+        axios.post('/api/chat-list', {receiver: receiver.id})
+          .then( response => {
+            this.allMessages = response.data;
+            this.receiver = receiver;
+          });
+      }
+  },
+  watch: {
+    allMessages: function(val) {
+      Vue.nextTick(() => {
+        this.$refs.chatBox.scrollTo(0, this.$refs.chatBox.scrollHeight);
+      });
+    }
   }
+
 };
 </script>
 
