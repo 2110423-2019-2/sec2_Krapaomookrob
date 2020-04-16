@@ -36,7 +36,7 @@ class UsersTableSeeder extends Seeder
         User::create([
             'email' => 'Somsak' .'@gmail.com',
             'name' => 'Somysak Sakoman',
-            'image' => 'https://graph.facebook.com/v3.3/2685763254794575/picture?type=normal',
+            'image' => 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
             'password' => bcrypt(rand(1000, 9999)),
             'role' => 'student',
             'education_level' => 'Chula Engineering',
@@ -46,7 +46,7 @@ class UsersTableSeeder extends Seeder
         User::create([
             'email' => 'Somchai' .'@gmail.com',
             'name' => 'Somchai Chesemanr',
-            'image' => 'https://graph.facebook.com/v3.3/2685763254794575/picture?type=normal',
+            'image' => 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
             'password' => bcrypt(rand(1000, 9999)),
             'role' => 'student',
             'education_level' => 'Chula Engineering',
@@ -90,7 +90,7 @@ class UsersTableSeeder extends Seeder
         User::create([
             'email' => 'Sommah' .'@gmail.com',
             'name' => 'Sommah Masweras',
-            'image' => 'https://graph.facebook.com/v3.3/2685763254794575/picture?type=normal',
+            'image' => 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
             'password' => bcrypt(rand(1000, 9999)),
             'role' => 'admin',
             'education_level' => 'Chula Engineering',
@@ -100,7 +100,7 @@ class UsersTableSeeder extends Seeder
         User::create([
             'email' => 'EDITT_Tutor' .'@gmail.com',
             'name' => 'Superuser',
-            'image' => 'https://graph.facebook.com/v3.3/2685763254794575/picture?type=normal',
+            'image' => 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
             'password' => bcrypt(rand(1000, 9999)),
             'role' => 'superuser',
             'education_level' => 'Chula Engineering',
