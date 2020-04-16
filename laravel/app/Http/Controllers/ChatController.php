@@ -41,21 +41,25 @@ class ChatController extends Controller
                 'sender_id' => 1,
                 'receiver_id' => $sender
               ]);
-          broadcast(new MessageSent($reply))->toOthers();
+          broadcast(new MessageSent($reply));
         }
-        return ['message' => $message ,'status' => 'Message sent!'];
+        return ['status' => 'Message sent!'];
     }
 
     public function getReceiverList(Request $request){
         $user_id = auth()->user()->id;
         $r1 = Message::where('receiver_id', $user_id)->distinct()->get(['sender_id'])->pluck('sender_id');
         $r2 = Message::where('sender_id', $user_id)->distinct()->get(['receiver_id'])->pluck('receiver_id');
-
         $AI = 1;
-        $receiver_ids = array_unique($r1->concat($r2)->prepend($AI)->toArray());
-        $receiver = User::find($receiver_ids, ['id', 'name', 'image']);
-
-        $requestReceiver = $request->receiver_id ? User::find($request->receiver_id, ['id', 'name', 'image']) : null;
-        return ['receiver' => $receiver, 'requestReceiver' => $requestReceiver];
+        if($request->receiver_id){
+            $receiver_ids = array_unique($r1->concat($r2)->prepend($AI)->prepend($request->receiver_id)->toArray());
+            $receiver = User::find($request->receiver_id, ['id', 'name', 'image']);
+        }
+        else{
+            $receiver_ids = array_unique($r1->concat($r2)->prepend($AI)->toArray());
+            $receiver = User::find($AI, ['id', 'name', 'image']);
+        }
+        $receiverList = User::find($receiver_ids, ['id', 'name', 'image']);
+        return ['receiverList' => $receiverList, 'receiver' => $receiver];
     }
 }

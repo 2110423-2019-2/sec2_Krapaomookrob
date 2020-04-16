@@ -8,7 +8,7 @@
               <v-list-item
                 v-for="item in receiverList"
                 :key="item.id"
-                @click="selectReceiver(item)"
+                @click="fetchChatList(item)"
               >
                 <v-list-item-avatar>
                   <v-img :src="item.image"></v-img>
@@ -113,14 +113,8 @@ export default {
 
   mounted: function() {
       let url = new URL(window.location.href);
-      axios.post('/api/receiver-list', {receiver_id: url.searchParams.get("user-id")})
-        .then( response => {
-          this.receiverList.push(...response.data.receiver);
-          this.receiver = response.data.requestReceiver;
-          if(this.receiver && this.receiverList.findIndex(i => i.id === this.receiver.id) === -1){
-            this.receiverList.push(response.data.requestReceiver);
-          }
-        });
+      let receiver_id = url.searchParams.get("user-id")
+      this.fetchReceiverList(receiver_id);
 
       Pusher.logToConsole = true;
          
@@ -137,22 +131,37 @@ export default {
           if(this.receiver && e.message.sender_id === this.receiver.id){
             this.allMessages.push(e.message);
           }
+          else{
+            this.fetchReceiverList(this.receiver.id)
+          }
       });
   },
   methods: {
       sendMessage: function(){
-        axios.post('/api/send-message', {content: this.sendingMessage, receiver: this.receiver.id})
-          .then( response => {
-            this.allMessages.push(response.data.message);
-            this.sendingMessage = '';
-          });
+        let content = this.sendingMessage;
+        let now = new Date();
+        this.allMessages.push({
+          content: this.sendingMessage, 
+          receiver_id: this.receiver.id, 
+          sender_id: this.userid, 
+          created_at: now.toISOString().slice(0, 19).replace('T', ' ')
+        });
+        this.sendingMessage = '';
+        axios.post('/api/send-message', {content: content, receiver: this.receiver.id})
       },
-      selectReceiver: function(receiver){
+      fetchChatList: function(receiver){
         axios.post('/api/chat-list', {receiver: receiver.id})
           .then( response => {
             this.allMessages = response.data;
             this.receiver = receiver;
-          });
+        });
+      },
+      fetchReceiverList: function(receiver_id){
+        axios.post('/api/receiver-list', {receiver_id: receiver_id})
+          .then( response => {
+            this.receiverList = response.data.receiverList;
+            this.receiver = response.data.receiver;
+        });
       }
   },
   watch: {
