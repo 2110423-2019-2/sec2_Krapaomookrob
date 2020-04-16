@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
     {
         User::create([
             'email' => 'AI' .'@gmail.com',
-            'name' => 'Superuser',
+            'name' => 'Bot AI',
             'image' => 'https://i.imgur.com/gXIzzvq.jpg',
             'password' => bcrypt(rand(1000, 9999)),
             'role' => 'ai',
