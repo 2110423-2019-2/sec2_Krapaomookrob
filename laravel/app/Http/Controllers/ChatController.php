@@ -7,7 +7,6 @@ use Auth;
 use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
 define('DIALOGFLOW_KEY' , env("DIALOGFLOW_KEY", null));
 
 class ChatController extends Controller
@@ -34,7 +33,6 @@ class ChatController extends Controller
         //receiver == 1 is AI
         if($receiver != 1){
             broadcast(new MessageSent($message))->toOthers();
-            return ['status' => 'Message Sent!'];
         }else{
           $dialogflow = $this->processOutput($content);
           $reply = Message::create([
@@ -42,8 +40,9 @@ class ChatController extends Controller
                 'sender_id' => 1,
                 'receiver_id' => $sender
               ]);
-          return $reply;
+          broadcast(new MessageSent($reply));
         }
+        return ['status' => 'Message Sent!'];
     }
 
     public function processOutput($msg){
