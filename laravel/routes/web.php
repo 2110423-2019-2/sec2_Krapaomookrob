@@ -16,6 +16,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CalendarController;
+use App\User;
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -131,7 +132,7 @@ Route::get('/api/notification/markRead', 'NotificationController@markRead');
 
 // Admin panel
 Route::get('/admin-panel', function(){
-    return view('admin_panel'); 
+    return view('admin_panel');
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
@@ -183,7 +184,7 @@ Route::post('api/decline-request', 'CourseRequesterController@declineRequest');
 Route::post('api/accept-request', 'CourseRequesterController@acceptRequest');
 Route::post('/api/delete-request', 'CourseRequesterController@deleteRequest');
 
-// Advertisement 
+// Advertisement
 Route::get('/create-advertisement', function() {
     return view('advertisement');
 });
@@ -203,3 +204,11 @@ Route::get('/admin/log/{no}', 'Frontend\loggingController@index');
 Route::get('/api/classes-today', 'AttendanceController@getClassesToday');
 Route::post('/api/check-class', 'AttendanceController@checkClass');
 Route::get('/api/history-attendances', 'AttendanceController@getHistoryAttendances');
+
+//chat
+Route::get('/chat', function() {
+    return view('chat');
+});
+Route::post('/api/chat-list', 'ChatController@getChatList');
+Route::post('/api/receiver-list', 'ChatController@getReceiverList');
+Route::post('/api/send-message', 'ChatController@sendMessage');
