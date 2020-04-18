@@ -44,9 +44,9 @@
                     <v-list-item-avatar>
                         <v-img :src="receiver.image"></v-img>
                     </v-list-item-avatar>
-                    <div v-if="message.content" class="text-message-container">
+                    <div v-if="message.content" class="text-message-container w-50">
                         <v-chip :color="'blue'" text-color="white"  style="position: relative;top: 50%;transform: translateY(-50%);">
-                          {{message.content}}
+                          <p class='chat-text'>{{message.content}}</p>
                         </v-chip>
                     </div>
                 </v-row>
@@ -57,10 +57,10 @@
 
                 <template v-else>
                 <v-row class="mr-0">
-                    <div v-if="message.content" class="text-message-container" style="margin-left:auto; margin-right:0;">
+                    <div v-if="message.content" class="text-message-container d-flex justify-content-right w-50" style="margin-left:auto; margin-right:0;">
                         <v-chip :color="'blue'" text-color="white"  style="position: relative;top: 50%;transform: translateY(-50%);
                         margin-left:auto; margin-right:0;">
-                          {{message.content}}
+                          <p class='chat-text'>{{message.content}}</p>
                         </v-chip>
                     </div>
                 </v-row>
@@ -176,6 +176,22 @@ export default {
 </script>
 
 <style>
+
+.v-chip {
+  height: auto !important;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  word-break: break-all !important;
+}
+
+.v-chip__content {
+  white-space: pre-line !important;
+}
+
+.chat-text {
+  margin-bottom: 0 !important;
+}
+
 </style>
 
 
