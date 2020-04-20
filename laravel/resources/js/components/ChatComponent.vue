@@ -160,7 +160,7 @@ export default {
         axios.post('/api/receiver-list', {receiver_id: receiver_id})
           .then( response => {
             this.receiverList = response.data.receiverList;
-            this.receiver = response.data.receiver;
+            this.fetchChatList(response.data.receiver);
         });
       }
   },
