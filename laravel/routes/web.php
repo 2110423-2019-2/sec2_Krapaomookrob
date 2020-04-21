@@ -24,6 +24,10 @@ Route::group(['middleware' => ['auth']], function () {
         return view('dashboard');
     });
 
+    Route::get('/chat', function () {
+        return view('chat');
+    });
+
     Route::get('/api/course/subjects','CourseController@fetchSubjects');
     Route::get('/api/course/days','CourseController@fetchDays');
     Route::post('/api/course/new','CourseController@newCourse');
@@ -88,7 +92,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/api/history-attendances', 'AttendanceController@getHistoryAttendances');
 
     //chat
-    Route::get('/api/chat-list', 'ChatController@getChatList');
+    Route::post('/api/chat-list', 'ChatController@getChatList');
+    Route::post('/api/receiver-list', 'ChatController@getReceiverList');
     Route::post('/api/send-message', 'ChatController@sendMessage');
 
 
