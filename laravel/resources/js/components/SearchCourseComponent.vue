@@ -159,7 +159,12 @@
       class="elevation-1"
     >
       <template v-slot:item.tutor="{ item }">
-        <b>{{item.tutor}}</b> <br>
+        <template v-if= "item.isAdvertised">
+          <b style="color:purple;">{{item.tutor}}</b> <br>
+        </template>
+        <template v-else>
+          <b style="color:black;">{{item.tutor}}</b> <br>
+        </template>
         <a :href="'/tutor/profile/'+item.user_id" class="btn profileBtn" style='margin-top: 3px;margin-bottom:5px;'>
             <div style='position:relative;top:-5px;'>Profile</div>
         </a>
