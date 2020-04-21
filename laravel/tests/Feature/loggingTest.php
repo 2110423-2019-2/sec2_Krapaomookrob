@@ -97,22 +97,22 @@ class loggingTest extends TestCase
     {
         $this->acting_as_a_student();
         //payment
-        $response = $this->call('GET','/admin/log/1')->assertStatus(401);
+        $response = $this->call('GET','/admin/log/1')->assertStatus(403);
          //report
          $response2 = $this->get('/admin/log/2');
-         $response2->assertStatus(401);
+         $response2->assertStatus(403);
         //course
         $response3 = $this->get('/admin/log/3');
-        $response3->assertStatus(401);
+        $response3->assertStatus(403);
         //Postponement
         $response4 = $this->get('/admin/log/4');
-        $response4->assertStatus(401);
+        $response4->assertStatus(403);
         //admin-attendance
         $response6 = $this->get('/admin/log/6');
-        $response6->assertStatus(401);
+        $response6->assertStatus(403);
         //user
         $response5 = $this->get('/admin/log/5');
-        $response5->assertStatus(401);
+        $response5->assertStatus(403);
 
     }
     /** @test invalid access */
@@ -120,22 +120,22 @@ class loggingTest extends TestCase
     {
         $this->acting_as_a_tutor();
         //payment
-        $response = $this->call('GET','/admin/log/1')->assertStatus(401);
+        $response = $this->call('GET','/admin/log/1')->assertStatus(403);
          //report
          $response2 = $this->get('/admin/log/2');
-         $response2->assertStatus(401);
+         $response2->assertStatus(403);
         //course
         $response3 = $this->get('/admin/log/3');
-        $response3->assertStatus(401);
+        $response3->assertStatus(403);
         //Postponement
         $response4 = $this->get('/admin/log/4');
-        $response4->assertStatus(401);
+        $response4->assertStatus(403);
         //admin-attendance
         $response6 = $this->get('/admin/log/6');
-        $response6->assertStatus(401);
+        $response6->assertStatus(403);
         //user
         $response5 = $this->get('/admin/log/5');
-        $response5->assertStatus(401);
+        $response5->assertStatus(403);
 
     }
 

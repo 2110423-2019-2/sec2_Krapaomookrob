@@ -1,5 +1,5 @@
 <template>
-  
+
   <v-card>
   <div class="alert alert-warning alert-dismissible fade show" v-if="errorMessage">
     {{ errorMessage }}
@@ -25,11 +25,12 @@
     >
       <template v-slot:item="row">
         <tr>
+          <td>{{row.item.id}}</td>
           <td>{{row.item.timestamp}}</td>
           <td>{{row.item.subject}}</td>
           <td>{{row.item.location}}</td>
           <td>{{row.item.user}}</td>
-          <td>{{row.item.action}}</td>
+
         </tr>
       </template>
     </v-data-table>
@@ -45,15 +46,16 @@ export default {
         search: '',
         headers: [
           {
-            text: 'Timestamp',
+            text: 'ID',
             align: 'start',
             sortable: false,
-            value: 'timestamp',
+            value: 'id',
           },
+          { text: 'Timestamp', value: 'timestamp' },
           { text: 'Subject', value: 'subject' },
           { text: 'Location', value: 'location' },
           { text: 'User', value: 'user' },
-          { text: 'Action', value: 'action' },
+
         ],
         requests: [
         ],
@@ -67,7 +69,7 @@ export default {
       this.requests = response.data;
     });
   },
-  methods: {    
+  methods: {
   }
 };
 </script>
