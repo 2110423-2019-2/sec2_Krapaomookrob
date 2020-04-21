@@ -96,13 +96,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/api/receiver-list', 'ChatController@getReceiverList');
     Route::post('/api/send-message', 'ChatController@sendMessage');
 
+    // new course
+    Route::get('/new-course', function () {
+        return view('new_course');
+    });
 
+    // payment result 
+    Route::get('/result/{paymentID}/{isAdvertisement}/{courseId}', 'Frontend\paymentGatewayController@returnPage');
 
     //-------------student--------------------------//
     Route::group(['middleware' => ['student']], function(){
-      Route::get('/new-course', function () {
-          return view('new_course');
-      });
 
       Route::get('/cart', function(){
           // route to cart oage
@@ -205,10 +208,6 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
-Route::group(['middleware' => 'web'], function () {
-    Route::auth();
-    Route::get('/result/{paymentID}/{isAdvertisement}/{courseId}', 'Frontend\paymentGatewayController@returnPage');
-});
 
 //Login for developers
 Route::get('/login-dev/{id}', 'Auth\LoginController@loginDeveloper');
@@ -230,3 +229,14 @@ Route::prefix('login')->group(function () {
     Route::get('/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('login.provider.callback');
 });
 Route::post('/user-role', 'UserController@updateRole');
+
+
+//privacy policy
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+});
+
+//term of service
+Route::get('/tos', function () {
+    return view('tos');
+});
