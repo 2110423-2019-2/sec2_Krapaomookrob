@@ -67,9 +67,21 @@ class searchTest extends TestCase
         // $noClass = $request->input('noClass');
         // $maxPrice = $request->input('maxPrice');
 
-        // $response = $this->get("/api/search-courses",[
+        $response = $this->json('get',"/api/search-courses",[
+            'tutor' => 'Ou',
+            'area' => '[{"lat":13.7384627,"lng":100.5320458}]',
+            'subject' => 'Mathematics',
+            'day' => '',
+            'time' => '',
+            'hour' => '',
+            'noClass' => '1',
+            'maxPrice' => '100000'
+        ])->dump();
+        //'[{"a":"b"},{"c":"d"},{"e":"f"}]'
+
+        // $response = $this->json('get',"/api/search-courses",[
         //     'tutor' => 'Ou',
-        //     'area' => '[{"lat":13.7384627},{"lng":100.5320458}]',
+        //     'area' => ["lat" => 13.7384627,"lng" => 100.5320458],
         //     'subject' => 'Mathematics',
         //     'day' => '',
         //     'time' => '',
@@ -78,29 +90,6 @@ class searchTest extends TestCase
         //     'maxPrice' => '100000'
         // ])->dump();
 
-        // $response = $this->json('get','/api/search-courses', ['{
-        //     "tutor":"Ou",
-        //     "area": "{"lat":"13.7384627", "lng":"100.5320458"}",
-        //     "subject":"Mathematics",
-        //     "day":"",
-        //     "time":"",
-        //     "hour":"",
-        //     "noClass":"1",
-        //     "maxPrice":"100000"
-        // }'])->dump();
-
-        $response = $this->json('get','/api/search-courses', '
-        {
-            tutor: "tutor",
-            area: "",
-            subject: "this.chooseSubject",
-            day: "this.chooseDay",
-            time: "this.time",
-            hour: "this.hour",
-            noClass: "this.noClass",
-            maxPrice: "this.maxPrice"
-        }
-        ')->dump();
     }
 
 }

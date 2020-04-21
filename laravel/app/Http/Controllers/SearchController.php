@@ -36,7 +36,7 @@ class SearchController extends Controller
     public function searchCourses(Request $request) {
         $tutor = $request->input('tutor');
         $area = json_decode($request->input('area'));
-        return response($tutor, 200);
+        return response($area, 200);
         $subjects = $request->input('subject');
         $lat = $area->lat;
         $long = $area->lng;
@@ -46,7 +46,7 @@ class SearchController extends Controller
         $hour = $request->input('hour');
         $noClass = $request->input('noClass');
         $maxPrice = $request->input('maxPrice');
-        return response('OK', 200);
+        //return response('OK', 200);
         $query = DB::table('courses')
             ->leftjoin('course_subject', 'courses.id', '=', 'course_subject.course_id')
             ->leftjoin('subjects', 'course_subject.subject_id', '=', 'subjects.id')
@@ -95,7 +95,6 @@ class SearchController extends Controller
         // for filtering only not registered course
         $registered_course = CourseStudent::all()->pluck('course_id');
         $query_2 = $query_2->whereNotIn('courses.id', $registered_course);
-        return response('OK', 200);
         return $query_2->get();
         
     }
