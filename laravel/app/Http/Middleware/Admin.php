@@ -16,7 +16,7 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if( Auth::check() && Auth::user()->isStudent() ) {
+        if( Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isSuperuser() )) {
             return $next($request);
         } else {
             abort(403, 'Unauthorized action.');
