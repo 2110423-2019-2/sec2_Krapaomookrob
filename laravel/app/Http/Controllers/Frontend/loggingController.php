@@ -21,7 +21,7 @@ class loggingController extends Controller{
     public function getAllVeritiedReport(Request $request){
         $user = auth()->user();
         if($user->isAdmin() || $user->isSuperuser()){
-             $report = DB::table('reports')->where('status', 'read')->orderBy('id','ASC')->get();
+            $report = DB::table('reports')->orderBy('id','DESC')->get();
             return response($report,200);
         }
         else{
@@ -32,7 +32,7 @@ class loggingController extends Controller{
     public function getAllPaymentLog(Request $request){
         $user = auth()->user();
         if($user->isAdmin() || $user->isSuperuser()){
-             $report = DB::table('payments')->orderBy('id','ASC')->get();
+            $report = DB::table('payments')->orderBy('id','DESC')->get();
             return response($report,200);
         }
         else{

@@ -1,5 +1,5 @@
 <template>
-    <button class="chatBtn" @click="popUpChat(userid)">Chat</button>
+    <button class="chatBtn" @click="popUpChat()">Chat</button>
 </template>
 
 <script>
@@ -18,10 +18,11 @@
     },
 
     methods: {
-        popUpChat: function(userid) {
-            window.location.href = '/chat?user-id='+userid;
+        popUpChat: function(event) {
+            // this.userId += 1;
+            // TODO:
         }
-
+        
     }
   }
 </script>

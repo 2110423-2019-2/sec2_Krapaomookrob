@@ -17,7 +17,7 @@ class UpdateUsersTable extends Migration
             $table->string('nickname')->nullable();
             $table->char('phone', 100)->nullable();
             $table->string('image')->nullable();
-            $table->enum('role', ['student', 'tutor', 'admin', 'superuser', 'ai'])->nullable();
+            $table->enum('role', ['student', 'tutor', 'admin', 'superuser'])->nullable();
             $table->string('education_level')->nullable();
             $table->boolean('is_suspended')->default(false);
         });
