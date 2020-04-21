@@ -55,6 +55,8 @@
                       <li class="nav-item">
                         <notification-bar></notification-bar>
                       </li>
+                    @endif
+                    @if($user->isStudent())
                       <li class="nav-item">
                         <a class="btn ownbtn" href="/cart">🛒 Cart</a>
                       </li>
