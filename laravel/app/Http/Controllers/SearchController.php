@@ -72,7 +72,8 @@ class SearchController extends Controller
             ->leftjoin('course_day', 'courses.id', '=', 'course_day.course_id')
             ->leftjoin('days', 'days.id', '=', 'course_day.day_id')
             ->leftjoin('users', 'users.id', '=', 'courses.user_id')
-            ->leftjoin('locations', 'locations.id', '=', 'courses.location_id');
+            ->leftjoin('locations', 'locations.id', '=', 'courses.location_id')
+            ->leftjoin('advertisements','courses.id','=','advertisements.course_id');
 
         $query_2 = $query_2->select(
             'courses.id',
@@ -87,8 +88,9 @@ class SearchController extends Controller
             DB::raw("GROUP_CONCAT(DISTINCT days.name SEPARATOR ', ') as days"),
             'locations.name as area',
             'users.name as tutor',
-            'users.education_level'
-            )->groupBy('courses.id');
+            'users.education_level',
+            'advertisements.id as isAdvertised'
+            )->groupBy('courses.id')->orderByRaw('-advertisements.id DESC');
 
         // for filtering only not registered course
         $registered_course = CourseStudent::all()->pluck('course_id');
