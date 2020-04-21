@@ -5,7 +5,7 @@ namespace Tests\Feature;
 // use Illuminate\Console\Scheduling\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Event; 
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 use App\User;
 
@@ -37,8 +37,8 @@ class calendarTest extends TestCase
         $response = $this->get("/my-calendar")->assertOk();
     }
 
-    /** @test guest access */
-    public function guest_cannot_access_calendar(){
-        $response = $this->get("/my-calendar")->assertRedirect("/login");
-    }
+    // /** @test guest access */
+    // public function guest_cannot_access_calendar(){
+    //     $response = $this->get("/my-calendar")->assertRedirect("/login");
+    // }
 }

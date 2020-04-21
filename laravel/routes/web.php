@@ -86,9 +86,9 @@ Route::post('/api/cart/add', 'CartController@addToCart');
 Route::get('/api/cart/current', 'CartController@getCurrentCart');
 
 // Route for payment
-Route::get('/payment', function () {
-    return view('payment');
-});
+// Route::get('/payment', function () {
+//     return view('payment');
+// });
 
 Route::get('/search-courses/search', 'SearchController@liveSearch')->name('search-courses.search');
 // Route for payment
@@ -131,7 +131,7 @@ Route::get('/api/notification/markRead', 'NotificationController@markRead');
 
 // Admin panel
 Route::get('/admin-panel', function(){
-    return view('admin_panel'); 
+    return view('admin_panel');
 });
 Route::get('/admin-panel/fetchUsers', 'AdminController@fetchUsers');
 Route::get('/admin-panel/fetchAdmins', 'AdminController@fetchAdmins');
@@ -183,7 +183,7 @@ Route::post('api/decline-request', 'CourseRequesterController@declineRequest');
 Route::post('api/accept-request', 'CourseRequesterController@acceptRequest');
 Route::post('/api/delete-request', 'CourseRequesterController@deleteRequest');
 
-// Advertisement 
+// Advertisement
 Route::get('/create-advertisement', function() {
     return view('advertisement');
 });
