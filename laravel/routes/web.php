@@ -225,3 +225,14 @@ Route::prefix('login')->group(function () {
     Route::get('/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('login.provider.callback');
 });
 Route::post('/user-role', 'UserController@updateRole');
+
+
+//privacy policy
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+});
+
+//term of service
+Route::get('/tos', function () {
+    return view('tos');
+});
