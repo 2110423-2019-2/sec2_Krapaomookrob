@@ -22,11 +22,11 @@ class AdminController extends Controller
             return $admins;
         // }
     }
-
+    
     public function fetchAttendanceLogs(){
         // if (auth()->user()->can('???????????')){
             $attendances = DB::select("SELECT attendances.updated_at AS timestamp, GROUP_CONCAT(DISTINCT subjects.name SEPARATOR ', ') AS subject,
-                                            locations.name AS location, u1.name AS tutor, u2.name AS student
+                                            locations.name AS location, u1.name AS tutor, u2.name AS student 
                                         FROM attendances
                                         LEFT JOIN course_classes ON attendances.course_classes_id = course_classes.id
                                         LEFT JOIN courses ON courses.id = course_classes.course_id
@@ -37,25 +37,24 @@ class AdminController extends Controller
                                         LEFT JOIN subjects on subjects.id = course_subject.subject_id
                                         GROUP BY timestamp, locations.name, student, tutor
                                         ORDER BY timestamp DESC");
-
-            return response($attendances,200);
+            return $attendances;
         // }
     }
 
     public function fetchCourseLogs(){
         // if (auth()->user()->can('???????????')){
-            $course_logs = DB::select("SELECT courses.id as id,courses.created_at AS timestamp,
+            $course_logs = DB::select("SELECT loggings.created_at AS timestamp, loggings.level,
                                         GROUP_CONCAT(DISTINCT subjects.name SEPARATOR ', ') AS subject,
-                                        locations.name as location, users.name as user
-                                        FROM courses
+                                        locations.name as location, users.name as user, loggings.action as action
+                                        FROM loggings
+                                        LEFT JOIN courses ON courses.id = loggings.course_id
                                         LEFT JOIN locations ON locations.id = courses.location_id
                                         LEFT JOIN users ON users.id = courses.user_id
                                         LEFT JOIN course_subject on course_subject.course_id = courses.id
                                         LEFT JOIN subjects on subjects.id = course_subject.subject_id
-                                        GROUP BY courses.id,timestamp, locations.name, users.name
-                                        ORDER BY courses.id ASC");
-
-            return response($course_logs,200);
+                                        GROUP BY timestamp, locations.name, users.name, loggings.action
+                                        ORDER BY timestamp DESC");
+            return $course_logs;
         // }
     }
 
@@ -73,7 +72,7 @@ class AdminController extends Controller
         // }
     }
 
-    public function suspend($id){
+    public function suspend($id){ 
         $user = DB::table('users')->where('id','=',$id)->first();
         $is_suspended = $user->is_suspended;
         if ($is_suspended == 0){
@@ -85,12 +84,12 @@ class AdminController extends Controller
         }
     }
 
-    public function suspendUser($id){
+    public function suspendUser($id){ 
         $user = DB::table('users')->where('id','=',$id)->update(['is_suspended' => '1']);
         return $user;
     }
 
-    public function unsuspendUser($id){
+    public function unsuspendUser($id){ 
         $user = DB::table('users')->where('id','=',$id)->update(['is_suspended' => '0']);
         return $user;
     }

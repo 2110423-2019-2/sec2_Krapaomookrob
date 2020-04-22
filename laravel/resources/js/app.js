@@ -53,16 +53,17 @@ Vue.component('star-display', require('./components/StarRatingDisplayComponent.v
 Vue.component('tutor-search-course-component', require('./components/TutorSearchCourseComponent.vue').default);
 Vue.component('courses-card', require('./components/CoursesCard.vue').default);
 Vue.component('admin-refund-request', require('./components/AdminRefundRequest.vue').default);
+Vue.component('chat-component', require('./components/ChatComponent.vue').default);
 
 //according https://github.com/vuetifyjs/vuetify/issues/9999
 const ignoreWarnMessage = 'The .native modifier for v-on is only valid on components but it was used on <div>.';
 Vue.config.warnHandler = function (msg, vm, trace) {
-  // `trace` is the component hierarchy trace
-  if (msg === ignoreWarnMessage) {
-    msg = null;
-    vm = null;
-    trace = null;
-  }
+    // `trace` is the component hierarchy trace
+    if (msg === ignoreWarnMessage) {
+        msg = null;
+        vm = null;
+        trace = null;
+    }
 }
 
 Vue.prototype.$eventHub = new Vue();

@@ -71,26 +71,10 @@ class paymentGatewayController extends Controller{
 
 
     public function chargeCard(Request $request){
-
-        $pay1 = Payment::where('id',$request->input('paymentID'))->count();
-        $pay2 = Payment::where('id',$request->input('paymentID'))->first();
-
-        if(!$request->input('isAdvertisement')){
-            if($pay1 <= 0){
-                return view('dashboard')->with('error','This payment is incorrect');
-            }
-            if( $pay2->status=="successful"|| $pay2->status == 'pending'){
-                return view('dashboard')->with('error','This payment has already paid.');
-            }
-            if( $this->checkBeforeCharge($request->input('paymentID'))){
-                return view('dashboard')->with('error','Some course is taken');
-            }
-            if($request->input('p')==0 || $this->checkPrice($request->input('paymentID'),$request->input('p'))){
-                return view('dashboard')->with('error','Total price is incorrect');
-            }
+        if(!$request->input('isAdvertisement') && $this->checkBeforeCharge($request->input('paymentID'))){
+            return view('dashboard')->with('error','Some course is taken');
 
         }
-
         $paymentId = $request->input('paymentID');
         $charge = OmiseCharge::create(array('amount'      => $request->input('p'),
                                             'currency'    => 'thb',
@@ -127,37 +111,13 @@ class paymentGatewayController extends Controller{
         }
         return false;
     }
-    public function checkPrice($pid,$totalprice){
-          $carts=Cart::where('payment_id',$pid)->get();
-          $tp = 0;
-          foreach ($carts as $value){
-            $tp = $tp + (Course::find($value->course_id))->price;
-          }
-
-        return $tp*100 == $totalprice ? false:true;
-    }
 
     public function checkout(Request $request){
 
-        $pay1 = Payment::where('id',$request->input('paymentID'))->count();
-        $pay2 = Payment::where('id',$request->input('paymentID'))->first();
-
-        if(!$request->input('isAdvertisement')){
-            if($pay1 <= 0){
-                return view('dashboard')->with('error','This payment is incorrect');
-            }
-            if( $pay2->status=="successful"|| $pay2->status == 'pending'){
-                return view('dashboard')->with('error','This payment has already paid.');
-            }
-            if( $this->checkBeforeCharge($request->input('paymentID'))){
-                return view('dashboard')->with('error','Some course is taken');
-            }
-            if($request->input('p')==0 || $this->checkPrice($request->input('paymentID'),$request->input('p'))){
-                return view('dashboard')->with('error','Total price is incorrect');
-            }
+        if(!$request->input('isAdvertisement') && $this->checkBeforeCharge($request->input('paymentID'))){
+            return view('dashboard')->with('error','Some course is taken');
 
         }
-
         $paymentId = $request->input('paymentID');
         $source = OmiseSource::create(array(
             'type'     => $request->input('internet_bnk'),
@@ -178,7 +138,7 @@ class paymentGatewayController extends Controller{
             'return_uri' => url(sprintf("http://localhost:8000/result/%s/%s/%s",$paymentId,$request->input('isAdvertisement')==null ? 0:1,$request->input('courseId')==null ? 0:$request->input('courseId'))),
             'source' => $source['id']
           ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
-
+          
           $payment = Payment::find($paymentId);
           $payment->charge_id = $charge['id'];
           $payment->pay_by_card = false;
@@ -266,7 +226,7 @@ class paymentGatewayController extends Controller{
 
     }
 
-    public function returnPage($paymentID, $isAdvertisement,$courseId){
+    public function returnPage($paymentID, $isAdvertisement,$courseId){ 
         // Note: courseId is for ads
 
         $payment = Payment::find($paymentID);
