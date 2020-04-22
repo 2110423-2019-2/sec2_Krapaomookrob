@@ -68,8 +68,8 @@ services:
     image: "node:latest"
     container_name: node
     working_dir: /var/www
-    environment:
-      - NODE_ENV=production
+    # environment:
+    #   - NODE_ENV=production
     volumes:
       - ./laravel:/var/www
     command: bash -c "npm install && npm run dev"
@@ -79,8 +79,8 @@ services:
     image: adferrand/letsencrypt-dns:2.5.3
     container_name: certbot
     restart: unless-stopped
-    # env_file:
-    #   - ./certbot/build/env
+    env_file:
+      - ./certbot/build/env
     volumes:
       - ./certbot/dist/domains.conf:/etc/letsencrypt/domains.conf
       - ./tmp/letsencrypt:/etc/letsencrypt
