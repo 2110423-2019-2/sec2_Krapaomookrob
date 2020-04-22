@@ -51,6 +51,7 @@ class searchTest extends TestCase
 
     /** @test */
     public function test_case_1_2(){
+        $this -> acting_as_a_guest();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "Somry Reswaeq",
             'area' => '[{"lat":"13.7384627","lng":"100.5320458"}]',
@@ -65,6 +66,7 @@ class searchTest extends TestCase
 
     /** @test */
     public function test_case_1_3(){
+        $this -> acting_as_a_guest();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "Krit Kruaykitanon",
             'area' => '[{"lat":"13.7384627","lng":"100.5320458"}]',
@@ -79,6 +81,7 @@ class searchTest extends TestCase
 
     /** @test */
     public function test_case_1_4(){
+        $this -> acting_as_a_guest();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "",
             'area' => '[{"lat":"13.7384627","lng":"100.5320458"}]',
@@ -93,6 +96,7 @@ class searchTest extends TestCase
 
     /** @test */
     public function test_case_1_5(){
+        $this -> acting_as_a_guest();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "Somry Reswaeq",
             'area' => '[{"lat":"13.7384627","lng":"100.5320458"}]',
