@@ -3,8 +3,11 @@
 namespace Tests\Feature;
 
 // use Illuminate\Console\Scheduling\Event;
-use Illuminate\Http\Response;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
@@ -15,6 +18,7 @@ use Illuminate\Foundation\Testing\TestResponse;
 class paymentTest extends TestCase
 {
     use RefreshDatabase;
+    use WithoutMiddleware;
 
     protected function setUp(): void{
         parent::setUp();
@@ -32,23 +36,42 @@ class paymentTest extends TestCase
             'role' => 'tutor'
         ]));
     }
+
+    private function action_as_a_admin(){
+        $this->actingAs(factory(User::class)->create([
+            'role' => 'admin'
+        ]));
+    }
      /** @test student add to cart */
     public function studentAddToCartTest()
     {
         $this->acting_as_a_student();
-        $this->get('/api/cart/add', ['course_id' => 2]);
-        $this->get('/api/cart/add', ['course_id' => 1]);
-        $this->get('/cart')->assertStatus(200);
 
+        // $this->get('/api/cart/add', ['course_id' => 2])->assertOK();
+        // $this->get('/api/cart/add', ['course_id' => 1])->assertOK();
+       $this->withCookies(['course_id' => 2])->get('/cart')->assertStatus(200);
+       $this->withCookies(['course_id' => 1])->get('/cart')->assertStatus(200);
+        $this->get('/cart')->press('CheckOut');
+        $this->post('/api/getPayment')->assertOK();
        // $response = $this->get('/api/getPayment')->assertOK();
       //  $this->assertEquals($response.data,['payment_id'=>'1','totalprice'=> '1500']);
        // $this->get(sprintf('/payment/%s/%s',$response.data.payment_id,$response.data.totalprice))->assertStatus(200);
     }
 
+
+    /** @test tutor add to cart */
     public function tutorAddToCartTest()
     {
         $this->acting_as_a_tutor();
 
+        $this->get('/cart')->assertStatus(403);
+    }
+
+    /** @test admin with paymnet */
+    public function adminCantPayment()
+    {
+        $this->action_as_a_admin();
+        $this->get('/cart')->assertStatus(403);
     }
     // public function testBasicTest()
     // {

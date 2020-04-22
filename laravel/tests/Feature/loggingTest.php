@@ -42,17 +42,17 @@ class loggingTest extends TestCase
         ]));
     }
 
-    // public function paymentLogAdminTest()
-    // {
-    //     $this->action_as_a_admin();
-    //     $response = $this->get('/admin/log/1');
+    public function paymentLogAdminTest()
+    {
+        $this->action_as_a_admin();
+        $this->get('/admin/log/1');
+        $this->assertCount(0,Payment::all());
+       // $response->assertViewHas('Payer id');
+        // $res2 = $response->assertEquals('Status',$response['status']);
+        // $res3 =$response->assertViewHas('Charge id');
+        // $res4 =$response->assertViewHas('Updated at');
 
-    //    // $response->assertViewHas('Payer id');
-    //     $res2 = $response->assertEquals('Status',$response['status']);
-    //     $res3 =$response->assertViewHas('Charge id');
-    //     $res4 =$response->assertViewHas('Updated at');
-
-    // }
+    }
 
     // /** @test  */
     // public function testPaymentLog()
