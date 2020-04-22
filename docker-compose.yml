@@ -25,19 +25,20 @@ services:
 
   #Nginx Service
   webserver:
-    image: nginx:alpine
+    image: staticfloat/nginx-certbot
     container_name: nginxwebserver
     restart: unless-stopped
     tty: true
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80/tcp
+      - 443:443/tcp
+    environment:
+      CERTBOT_EMAIL: 6031031221@student.chula.ac.th
     volumes:
       - ./laravel:/var/www
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-      - ./tmp/letsencrypt:/etc/letsencrypt
+      - ./nginx/conf.d:/etc/nginx/user.conf.d:ro
+      - letsencrypt:/etc/letsencrypt
     depends_on:
-      - certbot
       - app
     networks:
       - app-network
@@ -74,20 +75,6 @@ services:
       - ./laravel:/var/www
     command: bash -c "npm install && npm run dev"
 
-  #certbot
-  certbot:
-    image: adferrand/letsencrypt-dns:2.5.3
-    container_name: certbot
-    restart: unless-stopped
-    env_file:
-      - ./certbot/build/.env
-    volumes:
-      - ./certbot/dist/domains.conf:/etc/letsencrypt/domains.conf
-      - ./tmp/letsencrypt:/etc/letsencrypt
-    networks:
-      - app-network
-
-    
 
 #Docker Networks
 networks:
