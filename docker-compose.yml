@@ -31,11 +31,14 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "8083:80"
+      - "80:80"
       - "443:443"
     volumes:
       - ./laravel:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./tmp/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - certbot
     networks:
       - app-network
 
@@ -70,6 +73,19 @@ services:
     volumes:
       - ./laravel:/var/www
     command: bash -c "npm install && npm run dev"
+
+  #certbot
+  certbot:
+    image: adferrand/letsencrypt-dns:2.5.3
+    container_name: certbot
+    restart: unless-stopped
+    # env_file:
+    #   - ./certbot/build/env
+    volumes:
+      - ./certbot/dist/domains.conf:/etc/letsencrypt/domains.conf
+      - ./tmp/letsencrypt:/etc/letsencrypt
+    networks:
+      - app-network
 
     
 
