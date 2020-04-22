@@ -37,7 +37,7 @@ services:
     volumes:
       - ./laravel:/var/www
       - ./nginx/conf.d:/etc/nginx/user.conf.d:ro
-      - letsencrypt:/etc/letsencrypt
+      # - letsencrypt:/etc/letsencrypt
     depends_on:
       - app
     networks:
