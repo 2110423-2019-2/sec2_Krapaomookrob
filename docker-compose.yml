@@ -14,7 +14,6 @@ services:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
     depends_on: 
-      - webserver
       - db
       - node
     working_dir: /var/www
@@ -39,6 +38,7 @@ services:
       - ./tmp/letsencrypt:/etc/letsencrypt
     depends_on:
       - certbot
+      - app
     networks:
       - app-network
 
@@ -80,7 +80,7 @@ services:
     container_name: certbot
     restart: unless-stopped
     env_file:
-      - ./certbot/build/env
+      - ./certbot/build/.env
     volumes:
       - ./certbot/dist/domains.conf:/etc/letsencrypt/domains.conf
       - ./tmp/letsencrypt:/etc/letsencrypt
