@@ -13,10 +13,7 @@ services:
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
-      VIRTUAL_HOST: se.tongplw.codes
-      LETSENCRYPT_HOST: se.tongplw.codes
-      LETSENCRYPT_EMAIL: kuyniti@hotmail.com
-    depends_on:
+    depends_on: 
       - webserver
       - db
       - node
@@ -29,30 +26,18 @@ services:
 
   #Nginx Service
   webserver:
-    image: jwilder/nginx-proxy:latest
+    image: nginx:alpine
     container_name: nginxwebserver
     restart: unless-stopped
     tty: true
     ports:
-      - "80:80"
+      - "8083:80"
       - "443:443"
     volumes:
       - ./laravel:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
-      - "/etc/nginx/vhost.d"
-      - "/usr/share/nginx/html"
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "/etc/nginx/certs"
     networks:
       - app-network
-
-  letsencrypt-nginx-proxy-companion:
-    image: jrcs/letsencrypt-nginx-proxy-companion:latest
-    container_name: letsencrypt-nginx-proxy-companion
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    volumes_from:
-      - "nginx-proxy"
 
   #MySQL Service
   db:
@@ -86,7 +71,7 @@ services:
       - ./laravel:/var/www
     command: bash -c "npm install && npm run dev"
 
-
+    
 
 #Docker Networks
 networks:
