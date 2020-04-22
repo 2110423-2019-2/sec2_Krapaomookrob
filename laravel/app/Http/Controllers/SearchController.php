@@ -12,10 +12,11 @@ use App\User;
 use App\Location;
 use App\Subject;
 use App\CourseStudent;
-
+use Illuminate\Validation\Rule;
 
 class SearchController extends Controller
 {
+    //use Validator;
     public function fetchTutors(){
         $tutors = User::all()
             ->where('role', '=', 'tutor')
@@ -36,17 +37,59 @@ class SearchController extends Controller
     public function searchCourses(Request $request) {
         $tutor = $request->input('tutor');
         $area = json_decode($request->input('area'));
-        return response($area, 200);
+        //return response(json_decode($request->input());
         $subjects = $request->input('subject');
-        $lat = $area->lat;
-        $long = $area->lng;
+        //return response($subjects, 200);
+        //$lat = $area->lat;
+        //$long = $area->lng;
+        $lat = 13.7384627;
+        $long = 100.5320458;
         //return response($area, 200);
         $days = $request->input('day');
         $time = $request->input('time');
         $hour = $request->input('hour');
         $noClass = $request->input('noClass');
         $maxPrice = $request->input('maxPrice');
-        //return response('OK', 200);
+
+        $data = request()->validate([
+            'subject' => 'nullable',
+            'day' => 'nullable',
+            'time' => 'nullable|date_format:H:i',
+            'hour' => 'nullable',
+            'noClass' => 'gt:0|nullable',
+            'maxPrice' => 'gte:0|nullable'
+        ]);
+
+        // Validate if each day is days in a week
+        $daysinweek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        if(!empty($days)){
+            foreach($days as $day){
+                if(!in_array($day, $daysinweek) && $day != null){
+                    return response($day,422);
+                }
+            }
+        }
+
+        // Validate if each subject is in the subjectlist
+        $subjectlist = ['Mathematics', 'Economic', 'History', 'Technology', 'Science', 'Biology', 'Chemistry', 'English', 'Thai', 'Geography', 'Physics', 'Music'];
+        if(!empty($subjects)){
+            foreach($subjects as $subject){
+                if(!in_array($subject, $subjectlist) && $subject != null){
+                    return response($subject,422);
+                }
+            }
+        }
+
+        // Validate if hour is in the hour list
+        $hourlist = ['1','2','3','4'];
+        if(!empty($hour)){
+            foreach($hour as $number){
+                if(!in_array($number, $hourlist)  && $number != null){
+                    return response($number,422);
+                }
+            }
+        }
+
         $query = DB::table('courses')
             ->leftjoin('course_subject', 'courses.id', '=', 'course_subject.course_id')
             ->leftjoin('subjects', 'course_subject.subject_id', '=', 'subjects.id')
@@ -63,6 +106,7 @@ class SearchController extends Controller
         if ($hour) {$query = $query->where('courses.hours', '=', $hour);}
         if ($noClass) {$query = $query->where('courses.noClasses', '=', $noClass);}
         if ($maxPrice) {$query = $query->where('courses.price', '<=', $maxPrice);}
+        //return response('OK', 200);
 
         $query = $this->scopeDistance($query, $lat, $long);
         $query = $query->select('courses.id')->distinct()->pluck('courses.id');
@@ -91,6 +135,7 @@ class SearchController extends Controller
             'users.name as tutor',
             'users.education_level'
             )->groupBy('courses.id');
+        //return response('OK', 200);
 
         // for filtering only not registered course
         $registered_course = CourseStudent::all()->pluck('course_id');
