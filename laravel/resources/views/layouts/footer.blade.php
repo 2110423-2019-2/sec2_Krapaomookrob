@@ -3,11 +3,17 @@
   <div class="container d-flex">
     <div class="row">
       <div class="col-2">
-        <div class="font-weight-regular">EDITT</div>
+        <div class="font-weight-regular"><a href="/" class="font-weight-light" style="color:white">EDITT</a></div>
       </div>
       <div class="col-2">
         {{-- <a href="#" class="font-weight-light">Contact Admin</a> --}}
         <button type="submit"  class="font-weight-light" data-toggle="modal"  data-backdrop="static" data-keyboard="false" data-target="#myModalContactAdmin">Contact Admin</button>
+      </div>
+      <div class="col-2">
+        <div class="font-weight-regular"><a href="/privacy-policy" class="font-weight-light" style="color:white">Privacy Policy</a></div>
+      </div>
+      <div class="col-2">
+        <div class="font-weight-regular"><a href="/tos" class="font-weight-light" style="color:white">Terms and Conditions</a></div>
       </div>
       @if($user != null && $user->isTutor())
       <div class="col-2">
