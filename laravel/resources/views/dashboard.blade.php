@@ -35,21 +35,6 @@
   </div>
   <div class="col-lg-3">
     <div class="card">
-      <div class="card-header">New Messages</div>
-      <div class="card-body px-0 py-0">
-        <div class="border-bottom px-3 pt-3 position-relative">
-          <h6>P'Taan</h6>
-          <div class="ellipsis"><small>Hi my son. Hi my son. Hi my son. Hi my son. Hi my son. Hi my son.</small></div>
-          <a href="#" class="stretched-link"></a>
-        </div>
-        <div class="border-bottom px-3 pt-3 position-relative">
-          <h6>P'Taan</h6>
-          <div class="ellipsis"><small>Hi my son. Hi my son. Hi my son. Hi my son. Hi my son. Hi my son.</small></div>
-          <a href="#" class="stretched-link"></a>
-        </div>
-      </div>
-    </div>
-    <div class="card">
       <div class="card-header">Tutor Requests</div>
       <div class="card-body px-0 py-0">
         <div class="p-3"><small>There are currently no tutor requests, pleases check back later.</small></div>
