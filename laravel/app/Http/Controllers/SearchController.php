@@ -51,6 +51,7 @@ class SearchController extends Controller
         $noClass = $request->input('noClass');
         $maxPrice = $request->input('maxPrice');
 
+        //  Validator
         $data = request()->validate([
             'subject' => 'nullable',
             'day' => 'nullable',
@@ -60,7 +61,7 @@ class SearchController extends Controller
             'maxPrice' => 'gte:0|nullable'
         ]);
 
-        // Validate if each day is days in a week
+        //  Validate if each day is days in a week
         $daysinweek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         if(!empty($days)){
             foreach($days as $day){
@@ -70,7 +71,7 @@ class SearchController extends Controller
             }
         }
 
-        // Validate if each subject is in the subjectlist
+        //  Validate if each subject is in the subjectlist
         $subjectlist = ['Mathematics', 'Economic', 'History', 'Technology', 'Science', 'Biology', 'Chemistry', 'English', 'Thai', 'Geography', 'Physics', 'Music'];
         if(!empty($subjects)){
             foreach($subjects as $subject){
@@ -80,7 +81,7 @@ class SearchController extends Controller
             }
         }
 
-        // Validate if hour is in the hour list
+        //  Validate if hour is in the hour list
         $hourlist = ['1','2','3','4'];
         if(!empty($hour)){
             foreach($hour as $number){

@@ -41,14 +41,15 @@ class CourseController extends Controller
 
     public function newCourse(Request $request){
 
+        // Allow only tutor
         if(!(auth()->user()) || !(auth()->user()->isTutor())){
             return response('Unauthorized', 401);
         }
 
         $daysinweek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         $subjectlist = ['Mathematics', 'Economic', 'History', 'Technology', 'Science', 'Biology', 'Chemistry', 'English', 'Thai', 'Geography', 'Physics', 'Music'];
-        $hourlist = ['1','2','3','4'];
 
+        // Validator
         $data = request()->validate([
             'subjects' => 'required',
             'days' => 'required',
@@ -85,26 +86,10 @@ class CourseController extends Controller
             }
         }
 
-        // // Validate if hour is in the hour list
-        // $hour = $request -> hours;
-        // if(!empty($hour)){
-        //     foreach($hour as $number){
-        //         if(!in_array($number, $hourlist)  && $number != null){
-        //             return response($number,422);
-        //         }
-        //     }
-        // }
-
-        //return response('OK', 200);
-
-
-
         $location = Location::firstOrCreate(
           ['locationId' => $request->locationId],
           ['name' => $request->area, 'address' => $request->address, 'latitude' => $request->center['lat'],'longitude' =>$request->center['lng']]
         );
-
-        //return response('OK', 200);
 
         $course = new Course;
         $course->time = $request->time;
@@ -117,17 +102,12 @@ class CourseController extends Controller
         $course->location()->associate($location);
         $course->save();
 
-        //return response('OK', 200);
-
         $days = Day::whereIn('name', $request->days)->get()->pluck('id');
-        //return response('OK', 200);
         $subjects = Subject::whereIn('name', $request->subjects)->get()->pluck('id');
         $course->subjects()->sync($subjects);
         $course->days()->sync($days);
         $course->save();
         $this->newClasses($course);
-
-        //return response('OK', 200);
 
         $course_log = new Logging;
         $course_log->level = 'info';
