@@ -37,7 +37,6 @@ services:
     volumes:
       - ./laravel:/var/www
       - ./nginx/conf.d:/etc/nginx/user.conf.d:ro
-      # - letsencrypt:/etc/letsencrypt
     depends_on:
       - app
     networks:
@@ -69,11 +68,21 @@ services:
     image: "node:12"
     container_name: node
     working_dir: /var/www
-    # environment:
-    #   - NODE_ENV=production
     volumes:
       - ./laravel:/var/www
     command: bash -c "npm install && npm run prod"
+
+  #Phpmyadmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links: 
+        - db:db
+    ports:
+        - 8081:80
+    environment:
+        MYSQL_USER: dbuser
+        MYSQL_PASSWORD: p455w0rd
+        MYSQL_ROOT_PASSWORD: p455w0rd
 
 
 #Docker Networks
