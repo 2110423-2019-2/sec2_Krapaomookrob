@@ -13,12 +13,12 @@ services:
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
-    depends_on: 
+    depends_on:
       - db
       - node
     working_dir: /var/www
     volumes:
-      # - ./laravel:/var/www
+      - ./laravel:/var/www
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network
@@ -71,19 +71,6 @@ services:
     volumes:
       - ./laravel:/var/www
     command: bash -c "npm install && npm run prod"
-
-  #Phpmyadmin
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    links: 
-        - db:db
-    ports:
-        - 8081:80
-    environment:
-        MYSQL_USER: dbuser
-        MYSQL_PASSWORD: p455w0rd
-        MYSQL_ROOT_PASSWORD: p455w0rd
-
 
 #Docker Networks
 networks:
