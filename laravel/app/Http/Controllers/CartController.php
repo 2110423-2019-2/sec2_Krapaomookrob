@@ -105,7 +105,7 @@ class CartController extends Controller
         $items = explode(',', substr($value,0,-1));
         $cid = strval($request->input('course_id'));
         $key = array_search($cid,$items);
-        if( ($key !== FALSE || in_array($cid,$items)) ){
+        if(in_array($cid,$items) ){
             unset($items[$key]);
         }
 

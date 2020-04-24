@@ -20,6 +20,7 @@ use App\Http\Controllers\AdvertisementController;
 use App\OmiseRecipientAccount;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseRequesterController;
 use App\RefundRequest;
 
 require_once dirname(__FILE__).'/../../../../vendor/autoload.php';
@@ -265,7 +266,7 @@ class paymentGatewayController extends Controller{
                     NotificationController::createNotification($user_id, $title, $user_message);
                     NotificationController::createNotification($tutor_id, $title, $tutor_message);
                     if ($course->isMadeByStudent()){
-                        CourseRequester::confirmAcceptedRequest($course->id);
+                        CourseRequesterController::confirmAcceptedRequest($course->id);
                     }
                 }
             }else{
