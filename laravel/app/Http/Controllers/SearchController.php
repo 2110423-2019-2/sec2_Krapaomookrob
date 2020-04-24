@@ -151,7 +151,9 @@ class SearchController extends Controller
         if ($noClass) {$query = $query->where('courses.noClasses', '=', $noClass);}
         if ($maxPrice) {$query = $query->where('courses.price', '<=', $maxPrice);}
 
-        $query = $this->scopeDistance($query, $lat, $long);
+        if ($subjects || $days || $time || $hour || $noClass || $maxPrice) {
+            $query = $this->scopeDistance($query, $lat, $long);
+        }
         $query = $query->select('courses.id')->distinct()->pluck('courses.id');
 
         $query_2 = DB::table('courses')
