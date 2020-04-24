@@ -53,10 +53,12 @@ class CartController extends Controller
             $value = $request->cookie($cartId);
             $items = explode(',', substr($value,0,-1));
             $cid = strval($request->input('course_id'));
+
             $key = array_search($cid,$items);
-            if (!$key){
+            if (!in_array($cid,$items)){
                 $value .= strval($request->input('course_id')).',';
             }
+
         }else{
             $value = $request->input('course_id').',';
         }
@@ -103,7 +105,7 @@ class CartController extends Controller
         $items = explode(',', substr($value,0,-1));
         $cid = strval($request->input('course_id'));
         $key = array_search($cid,$items);
-        if( ( $key !== FALSE) ){
+        if( ($key !== FALSE || in_array($cid,$items)) ){
             unset($items[$key]);
         }
 
