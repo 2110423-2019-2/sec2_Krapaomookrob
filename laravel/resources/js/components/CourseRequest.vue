@@ -109,7 +109,7 @@ export default {
               course_id: item.courseId
           })
           .then(
-            setTimeout(() => window.location.href='/cart', 500)
+            setTimeout(() => window.location.href='/cart', 2000)
           );
       }
     },
