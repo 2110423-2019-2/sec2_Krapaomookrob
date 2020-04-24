@@ -10,6 +10,7 @@
 <a class="btn ownbtn" href="/admin-panel/reportList">Report List</a>
 <a class="btn ownbtn" href="/admin/payment-request">Payment Requests</a>
 <a class="btn ownbtn" href="/admin/log/1">Logging System</a>
+<a class="btn ownbtn" href="/admin/refund-request">Refund Requests</a>
 @endsection
 
 @section('content')
