@@ -66,7 +66,7 @@ class UserController extends Controller
                 $course = Course::find($review->course_id);
                 $subjects = $course->subjects->pluck('name');
                 array_push($reviewsWithSubjects,(object) ['review' => $review,'subjects'=>$subjects]);
-            }return view('dashboard');
+            }
             return view('profile.tutor_view',compact('user','phone','education_level','nickname','username','role','email','password',
             'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects','hasAds','banner'));
         }
