@@ -84,7 +84,6 @@ class CartController extends Controller
             $items = explode(',', $cartString);
             foreach($items as $course_id){
                 if ($course_id != null || $course_id != ''){
-                    if(Course::find($course_id)->count()) continue;
                     $course = CourseController::getCourseInfo(intval($course_id));
                     array_push($courses,$course);
                     $totalPrice += $course['price'];

@@ -72,33 +72,21 @@ class paymentGatewayController extends Controller{
 
 
     public function chargeCard(Request $request){
-
-        if($request->input('paymentID') <= 0){
-            return view('dashboard')->with('error','This payment is incorrect');
-        }
-        $pay1 = Payment::where('id',$request->input('paymentID'))->count();
         $pay2 = Payment::where('id',$request->input('paymentID'))->first();
 
         if(!$request->input('isAdvertisement')){
-            if($pay1 <= 0){
-                return view('dashboard')->with('error','This payment is incorrect');
-            }
-            if( $pay2->status=="successful"|| $pay2->status == 'pending'){
+            if( $pay2->status=="successful"){
                 return view('dashboard')->with('error','This payment has already been paid');
+            }
+            if($pay2->status == 'pending'){
+                this.returnPage($request->input('paymentID'),$request->input('isAdvertisement'),$request->input('courseId'));
             }
             if( $this->checkBeforeCharge($request->input('paymentID'))){
                 return view('dashboard')->with('error','Some course is taken');
             }
-            if($request->input('p')==0 || $this->checkPrice($request->input('paymentID'),$request->input('p'))){
-                return view('dashboard')->with('error','Totalprice is incorrect');
-            }
-            if($pay2->user_id != auth()->user()->id){
-                return view('dashboard')->with('error','this is not your payment');
-            }
         }
         else{
-
-            if($request->input('p')==0){
+            if($request->input('p')==0 || $request->input('p') != 50000){
                 return view('dashboard')->with('error','Totalprice is incorrect');
             }
         }
@@ -138,19 +126,21 @@ class paymentGatewayController extends Controller{
         }
         return false;
     }
+    public function checkPrice($pid,$totalprice){
+        $carts=Cart::where('payment_id',$pid)->get();
+        $tp = 0;
+        foreach ($carts as $value){
+          $tp = $tp + (Course::find($value->course_id))->price;
+        }
+
+      return $tp == $totalprice ? false:true;
+  }
 
     public function checkout(Request $request){
 
-        if($request->input('paymentID') <= 0){
-            return view('dashboard')->with('error','This payment is incorrect');
-        }
-        $pay1 = Payment::where('id',$request->input('paymentID'))->count();
         $pay2 = Payment::where('id',$request->input('paymentID'))->first();
 
         if(!$request->input('isAdvertisement')){
-            if($pay1 <= 0){
-                return view('dashboard')->with('error','This payment is incorrect');
-            }
             if( $pay2->status=="successful"){
                 return view('dashboard')->with('error','This payment has already been paid');
             }
@@ -160,16 +150,9 @@ class paymentGatewayController extends Controller{
             if( $this->checkBeforeCharge($request->input('paymentID'))){
                 return view('dashboard')->with('error','Some course is taken');
             }
-            if($request->input('p')==0 || $this->checkPrice($request->input('paymentID'),$request->input('p'))){
-                return view('dashboard')->with('error','Totalprice is incorrect');
-            }
-            if($pay2->user_id != auth()->user()->id){
-                return view('dashboard')->with('error','this is not your payment');
-            }
         }
         else{
-
-            if($request->input('p')==0 || $request->input('p') != 500){
+            if($request->input('p')==0 || $request->input('p') != 50000){
                 return view('dashboard')->with('error','Totalprice is incorrect');
             }
         }
@@ -291,7 +274,7 @@ class paymentGatewayController extends Controller{
         $user = auth()->user();
 
 
-        //chage status in payment
+        //change status in payment
         $result = OmiseCharge::retrieve($payment->charge_id);
         $payment->status = $result['status'];
         $payment->save();
@@ -329,7 +312,7 @@ class paymentGatewayController extends Controller{
             }else{
                 $status = AdvertisementController::createAdvertisement($courseId,$user->id);
                 if (!$status){
-                    abort(500,'something went wrong');
+                    abort(500,'something went wrong please create report to admin.');
                 }
             }
             return view('dashboard')->with('alert','Successful');
@@ -340,6 +323,19 @@ class paymentGatewayController extends Controller{
         if($payment_id <= 0){
             return view('dashboard')->with('error','This payment is incorrect');
         }
+        $pay1 = Payment::where('id',$payment_id)->count();
+        if($pay1 <= 0){
+            return view('dashboard')->with('error','This payment is incorrect');
+        }
+        $pay2 = Payment::where('id',$payment_id)->first();
+        if($pay2->user_id != auth()->user()->id){
+            return view('dashboard')->with('error','this is not your payment');
+        }
+        if($totalprice<0 || $this->checkPrice($payment_id,$totalprice)){
+            return view('dashboard')->with('error','Totalprice is incorrect');
+        }
+
+
         $cartList =  Cart::where('payment_id',$payment_id)->get();
 
         $courses = array();

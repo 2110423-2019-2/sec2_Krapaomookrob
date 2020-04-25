@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Advertisement;
 use App\User;
-use App\course;
+use App\Course;
 use Illuminate\Http\Request;
 
 class AdvertisementController extends Controller
