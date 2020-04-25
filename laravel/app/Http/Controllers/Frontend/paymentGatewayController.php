@@ -20,6 +20,7 @@ use App\Http\Controllers\AdvertisementController;
 use App\OmiseRecipientAccount;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseRequesterController;
 use App\RefundRequest;
 
 require_once dirname(__FILE__).'/../../../../vendor/autoload.php';
@@ -101,7 +102,6 @@ class paymentGatewayController extends Controller{
                 return view('dashboard')->with('error','Totalprice is incorrect');
             }
         }
-
         $paymentId = $request->input('paymentID');
         $charge = OmiseCharge::create(array('amount'      => $request->input('p'),
                                             'currency'    => 'thb',
@@ -138,15 +138,6 @@ class paymentGatewayController extends Controller{
         }
         return false;
     }
-    public function checkPrice($pid,$totalprice){
-          $carts=Cart::where('payment_id',$pid)->get();
-          $tp = 0;
-          foreach ($carts as $value){
-            $tp = $tp + (Course::find($value->course_id))->price;
-          }
-
-        return $tp*100 == $totalprice ? false:true;
-    }
 
     public function checkout(Request $request){
 
@@ -182,7 +173,6 @@ class paymentGatewayController extends Controller{
                 return view('dashboard')->with('error','Totalprice is incorrect');
             }
         }
-
         $paymentId = $request->input('paymentID');
         $source = OmiseSource::create(array(
             'type'     => $request->input('internet_bnk'),
@@ -333,7 +323,7 @@ class paymentGatewayController extends Controller{
                     NotificationController::createNotification($user_id, $title, $user_message);
                     NotificationController::createNotification($tutor_id, $title, $tutor_message);
                     if ($course->isMadeByStudent()){
-                        CourseRequester::confirmAcceptedRequest($course->id);
+                        CourseRequesterController::confirmAcceptedRequest($course->id);
                     }
                 }
             }else{

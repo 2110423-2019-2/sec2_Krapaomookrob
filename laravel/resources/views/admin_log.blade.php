@@ -5,6 +5,7 @@
 @section('topic', 'Admin logging')
 
 @section('menu')
+<a class="btn ownbtn" href="/admin-panel/">Manage Admin</a>
 <a class="btn ownbtn" href="/admin/log/1">Payment logs</a>
 <a class="btn ownbtn" href="/admin/log/2">Report logs</a>
 <a class="btn ownbtn" href="/admin/log/3">Course logs</a>

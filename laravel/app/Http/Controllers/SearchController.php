@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Advertisement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -62,7 +63,9 @@ class SearchController extends Controller
         if ($noClass) {$query = $query->where('courses.noClasses', '=', $noClass);}
         if ($maxPrice) {$query = $query->where('courses.price', '<=', $maxPrice);}
 
-        $query = $this->scopeDistance($query, $lat, $long);
+        if ($subjects || $days || $time || $hour || $noClass || $maxPrice) {
+            $query = $this->scopeDistance($query, $lat, $long);
+        }
         $query = $query->select('courses.id')->distinct()->pluck('courses.id');
 
         $query_2 = DB::table('courses')
@@ -73,7 +76,8 @@ class SearchController extends Controller
             ->leftjoin('days', 'days.id', '=', 'course_day.day_id')
             ->leftjoin('users', 'users.id', '=', 'courses.user_id')
             ->leftjoin('locations', 'locations.id', '=', 'courses.location_id')
-            ->leftjoin('advertisements','courses.id','=','advertisements.course_id');
+            // left join with advertisements table.
+            ->leftjoin('advertisements', 'courses.id', '=', 'advertisements.course_id');
 
         $query_2 = $query_2->select(
             'courses.id',
@@ -90,11 +94,20 @@ class SearchController extends Controller
             'users.name as tutor',
             'users.education_level',
             'advertisements.id as isAdvertised'
-            )->groupBy('courses.id')->orderByRaw('-advertisements.id DESC');
+            )
+            ->groupBy('courses.id')
+            // if there exist an advertisement put it to the top if null last (priority advertisement first).
+            ->orderByRaw('-advertisements.id DESC');
+
+        //dd();
+
+        // $advertisement_course = Advertisement::all()->pluck('course_id');
+        // $query_3 = 
 
         // for filtering only not registered course
         $registered_course = CourseStudent::all()->pluck('course_id');
         $query_2 = $query_2->whereNotIn('courses.id', $registered_course);
+
         return $query_2->get();
     }
 
@@ -140,7 +153,9 @@ class SearchController extends Controller
         if ($noClass) {$query = $query->where('courses.noClasses', '=', $noClass);}
         if ($maxPrice) {$query = $query->where('courses.price', '<=', $maxPrice);}
 
-        $query = $this->scopeDistance($query, $lat, $long);
+        if ($subjects || $days || $time || $hour || $noClass || $maxPrice) {
+            $query = $this->scopeDistance($query, $lat, $long);
+        }
         $query = $query->select('courses.id')->distinct()->pluck('courses.id');
 
         $query_2 = DB::table('courses')
