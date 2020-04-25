@@ -62,7 +62,7 @@ class CartController extends Controller
         }
 
         $cookie = cookie($cartId, $value, self::MINUTES);
-        
+
         return $hasCart ? response(200)->withCookie($cookie) : response(200)->withCookie($res)->withCookie($cookie);
     }
 
@@ -82,6 +82,7 @@ class CartController extends Controller
             $items = explode(',', $cartString);
             foreach($items as $course_id){
                 if ($course_id != null || $course_id != ''){
+                    if(Course::find($course_id)->count()) continue;
                     $course = CourseController::getCourseInfo(intval($course_id));
                     array_push($courses,$course);
                     $totalPrice += $course['price'];
@@ -153,12 +154,12 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $course_ids = $request->cookie('course_ids');
 
         $payment = Payment::create([
             'user_id' => auth()->user()->id,
-            
+
         ]);
 
         foreach ($course_ids as $course_id) {

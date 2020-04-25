@@ -72,6 +72,9 @@ class paymentGatewayController extends Controller{
 
     public function chargeCard(Request $request){
 
+        if($request->input('paymentID') <= 0){
+            return view('dashboard')->with('error','This payment is incorrect');
+        }
         $pay1 = Payment::where('id',$request->input('paymentID'))->count();
         $pay2 = Payment::where('id',$request->input('paymentID'))->first();
 
@@ -80,15 +83,23 @@ class paymentGatewayController extends Controller{
                 return view('dashboard')->with('error','This payment is incorrect');
             }
             if( $pay2->status=="successful"|| $pay2->status == 'pending'){
-                return view('dashboard')->with('error','This payment has already paid.');
+                return view('dashboard')->with('error','This payment has already been paid');
             }
             if( $this->checkBeforeCharge($request->input('paymentID'))){
                 return view('dashboard')->with('error','Some course is taken');
             }
             if($request->input('p')==0 || $this->checkPrice($request->input('paymentID'),$request->input('p'))){
-                return view('dashboard')->with('error','Total price is incorrect');
+                return view('dashboard')->with('error','Totalprice is incorrect');
             }
+            if($pay2->user_id != auth()->user()->id){
+                return view('dashboard')->with('error','this is not your payment');
+            }
+        }
+        else{
 
+            if($request->input('p')==0){
+                return view('dashboard')->with('error','Totalprice is incorrect');
+            }
         }
 
         $paymentId = $request->input('paymentID');
@@ -139,6 +150,9 @@ class paymentGatewayController extends Controller{
 
     public function checkout(Request $request){
 
+        if($request->input('paymentID') <= 0){
+            return view('dashboard')->with('error','This payment is incorrect');
+        }
         $pay1 = Payment::where('id',$request->input('paymentID'))->count();
         $pay2 = Payment::where('id',$request->input('paymentID'))->first();
 
@@ -146,16 +160,27 @@ class paymentGatewayController extends Controller{
             if($pay1 <= 0){
                 return view('dashboard')->with('error','This payment is incorrect');
             }
-            if( $pay2->status=="successful"|| $pay2->status == 'pending'){
-                return view('dashboard')->with('error','This payment has already paid.');
+            if( $pay2->status=="successful"){
+                return view('dashboard')->with('error','This payment has already been paid');
+            }
+            if($pay2->status == 'pending'){
+                this.returnPage($request->input('paymentID'),$request->input('isAdvertisement'),$request->input('courseId'));
             }
             if( $this->checkBeforeCharge($request->input('paymentID'))){
                 return view('dashboard')->with('error','Some course is taken');
             }
             if($request->input('p')==0 || $this->checkPrice($request->input('paymentID'),$request->input('p'))){
-                return view('dashboard')->with('error','Total price is incorrect');
+                return view('dashboard')->with('error','Totalprice is incorrect');
             }
+            if($pay2->user_id != auth()->user()->id){
+                return view('dashboard')->with('error','this is not your payment');
+            }
+        }
+        else{
 
+            if($request->input('p')==0 || $request->input('p') != 500){
+                return view('dashboard')->with('error','Totalprice is incorrect');
+            }
         }
 
         $paymentId = $request->input('paymentID');
@@ -189,9 +214,12 @@ class paymentGatewayController extends Controller{
     }
     public function createTransferOmise(Request $request){
         $payReq = PaymentRequest::find($request->input('paymentReqID'));
+        if($payReq = null) {
+            return response('Request ID is incorrect' , 403);
+        }
         if($payReq['omise_id']!=null){
             if($payReq['status'] == 'successful'){
-            return response('Request ID ' . $payReq['id'] . ' is already transfer' , 403);
+            return response('Request ID ' . $payReq['id'] . ' is already transferred' , 403);
             }
             else{
                 $http = sprintf("https://dashboard.omise.co/test/transfers/%s",$payReq['omise_id']);
@@ -319,6 +347,9 @@ class paymentGatewayController extends Controller{
     }
 
     public function getPaymentPage($payment_id,$totalprice){
+        if($payment_id <= 0){
+            return view('dashboard')->with('error','This payment is incorrect');
+        }
         $cartList =  Cart::where('payment_id',$payment_id)->get();
 
         $courses = array();

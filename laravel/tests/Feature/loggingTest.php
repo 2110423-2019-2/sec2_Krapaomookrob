@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 use App\User;
 use App\Payment;
+use App\Report;
+use Illuminate\Support\Facades\DB;
 
 
 class loggingTest extends TestCase
@@ -42,54 +44,50 @@ class loggingTest extends TestCase
         ]));
     }
 
-    public function paymentLogAdminTest()
-    {
+
+
+     /** @test invalid access */
+     public function cantAccessLog()
+     {
         $this->action_as_a_admin();
-        $this->get('/admin/log/1');
-        $this->assertCount(0,Payment::all());
-       // $response->assertViewHas('Payer id');
-        // $res2 = $response->assertEquals('Status',$response['status']);
-        // $res3 =$response->assertViewHas('Charge id');
-        // $res4 =$response->assertViewHas('Updated at');
+        $this->get('/admin/log/0')->assertSeeText('Page 404 NOT FOUND');
+        $this->get('/admin/log/7')->assertSeeText('Page 404 NOT FOUND');
+     }
 
-    }
-
-    // /** @test  */
-    // public function testPaymentLog()
-    // {
-    //     $this->action_as_a_admin();
-    //    // $response1 = $this->call('GET','/admin/log/1');
-    //     $this->get('/admin/log/1')->assertSee($factory['updated_at']);
-    // }
-
-    //   /** @test  */
-    // public function reportLogAdminTest()
-    // {
-    //     $this->action_as_a_admin();
-    //     $response2 = $this->get('/getAllVeritiedReport');
-    //     $this->assertDatabaseHas('reports', $response2);
-    // }
      /** @test valid access */
-    public function adminAcessLog()
+    public function adminAccessLog()
     {
         $this->action_as_a_admin();
         //payment
+        $p = Payment::count();
         $response = $this->call('GET','/admin/log/1')->assertStatus(200);
+        $this->assertCount($p,Payment::all());
          //report
+         $p = Report::count();
          $response2 = $this->get('/admin/log/2');
          $response2->assertStatus(200);
+        $this->assertCount($p,Report::all());
         //course
+        $p =  DB::table('courses')->count();
         $response3 = $this->get('/admin/log/3');
         $response3->assertStatus(200);
+        $this->assertCount($p,DB::table('courses')->get());
         //Postponement
+        $p =  DB::table('course_classes')->where('status', 'Postponed')->count();
         $response4 = $this->get('/admin/log/4');
         $response4->assertStatus(200);
+        $this->assertCount($p,DB::table('course_classes')->where('status', 'Postponed')->get());
         //admin-attendance
+        $p =  DB::table('attendances')->count();
         $response6 = $this->get('/admin/log/6');
         $response6->assertStatus(200);
+        $this->assertCount($p,DB::table('attendances')->get());
         //user
+        $p =  DB::table('users')->count();
         $response5 = $this->get('/admin/log/5');
         $response5->assertStatus(200);
+        $this->assertCount($p,DB::table('users')->get());
+
 
     }
     /** @test invalid access */
