@@ -22,6 +22,6 @@
             </div>
             <cart-item button-type="cancelbtn"></cart-item>
         </div>
-        
+
     </div>
 @endsection
