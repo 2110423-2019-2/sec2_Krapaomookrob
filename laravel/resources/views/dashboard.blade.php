@@ -12,7 +12,13 @@
 @else
   <a class="btn ownbtn" href="/search-courses">Search Courses</a>
 @endif
-<a class="btn ownbtn" href="/new-course">New Course Request</a>
+<a class="btn ownbtn" href="/new-course">
+    @if($user->isTutor())
+        Create New Course
+    @else
+        New Course Request
+    @endif
+</a>
 @endsection
 
 @section('content')
