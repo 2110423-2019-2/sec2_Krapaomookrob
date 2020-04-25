@@ -57,7 +57,7 @@ export default {
         { text: "Actions", value: "action", sortable: false }
       ],
       requests: [
-        
+
       ],
       myRequestHeaders: [
         { text: "My Course ID", align: "start", value: "myCourseId" },
@@ -71,7 +71,7 @@ export default {
         { text: "Status", sortable: false, value: "status", align: "center" }
       ],
       myRequests: [
-        
+
       ],
     };
   },
@@ -109,11 +109,8 @@ export default {
               course_id: item.courseId
           })
           .then(
-            response=> console.log(200)  
-          )
-          .then(
-            window.location.href='/cart'
-          );          
+            setTimeout(() => window.location.href='/cart', 2000)
+          );
       }
     },
     decline: function(item) {

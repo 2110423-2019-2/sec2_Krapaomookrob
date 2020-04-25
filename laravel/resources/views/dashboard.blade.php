@@ -29,17 +29,13 @@
 </div>
 @endif
 <div class="row">
-  <div class="col-lg-9">
+  <div class="col-lg-12">
     <attendance-today-component></attendance-today-component>
-    <attendance-history-component></attendance-history-component>
   </div>
-  <div class="col-lg-3">
-    <div class="card">
-      <div class="card-header">Tutor Requests</div>
-      <div class="card-body px-0 py-0">
-        <div class="p-3"><small>There are currently no tutor requests, pleases check back later.</small></div>
-      </div>
-    </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <attendance-history-component></attendance-history-component>
   </div>
 </div>
 @endsection

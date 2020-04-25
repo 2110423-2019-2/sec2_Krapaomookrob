@@ -16,9 +16,10 @@ services:
     depends_on:
       - db
       - node
+    command: bash -c "composer install && php artisan key:generate && php artisan migrate && docker-php-entrypoint php-fpm"
     working_dir: /var/www
     volumes:
-      # - ./laravel:/var/www
+      - ./laravel:/var/www
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network

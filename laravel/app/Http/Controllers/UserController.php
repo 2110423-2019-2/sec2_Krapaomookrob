@@ -129,7 +129,6 @@ class UserController extends Controller
     public function updateProfile(User $user){
         $user=  auth() -> user();
         $data = request()->validate([ //need to workout the validation
-            'role' => '',
             'name' => '',
             'phone' => '',
             'education_level' => '',

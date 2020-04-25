@@ -41,6 +41,6 @@ RUN chown -R www-data:www-data /var/www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-RUN ["/bin/bash", "-c", "composer install"]
-CMD ["/bin/bash", "-c", "php artisan key:generate && php artisan migrate && docker-php-entrypoint php-fpm"]
+# RUN ["/bin/bash", "-c", "composer install"]
+# CMD ["/bin/bash", "-c", "php artisan key:generate && php artisan migrate && docker-php-entrypoint php-fpm"]
 # && npm install && npm run dev
