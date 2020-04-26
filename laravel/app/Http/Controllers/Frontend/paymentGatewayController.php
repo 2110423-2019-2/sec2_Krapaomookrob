@@ -186,7 +186,6 @@ class paymentGatewayController extends Controller{
 
     }
     public function createTransferOmise(Request $request){
-
         $payReq = PaymentRequest::find($request->input('paymentReqID'));
         if($payReq == null) {
             return response('Request ID is incorrect' , 403);
@@ -353,12 +352,13 @@ class paymentGatewayController extends Controller{
     }
 
     public function getAdsPaymentPage(Request $request) {
+        $courseId = $request->input('courseId');
         $course = Course::find($courseId);
         if($course==null || $course->user_id != auth()->user()->id){
             return view('dashboard')->with('error','Your payment is incorrect. Please do it again.');;
         }
         $latestEntry = Payment::latest('created_at')->first();
-        $courseId = $request->input('courseId');
+
         return view('/payment', [
             'isAdvertisement' => true,
             'totalprice' => 500,
