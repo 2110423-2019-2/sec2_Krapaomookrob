@@ -31,8 +31,8 @@ class SearchController extends Controller
     }
 
     public function fetchSubjects(){
-        $days = Subject::all()->pluck('name');
-        return $days;
+        $subjects = Subject::all()->pluck('name');
+        return $subjects;
     }
 
     public function searchCourses(Request $request) {
