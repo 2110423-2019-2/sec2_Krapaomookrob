@@ -355,7 +355,7 @@ class paymentGatewayController extends Controller{
         $courseId = $request->input('courseId');
         $course = Course::find($courseId);
         if($course==null || $course->user_id != auth()->user()->id){
-            return view('dashboard')->with('error','Your payment is incorrect. Please do it again.');;
+            return view('dashboard')->with('error','Your payment is incorrect. Please do it again.');
         }
         $latestEntry = Payment::latest('created_at')->first();
 
