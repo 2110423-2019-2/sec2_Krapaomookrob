@@ -11,6 +11,7 @@ use App\Cart;
 use App\User;
 use App\CourseStudent;
 use App\PaymentRequest;
+use App\Advertisement;
 
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Cookie;
@@ -356,6 +357,9 @@ class paymentGatewayController extends Controller{
         $course = Course::find($courseId);
         if($course==null || $course->user_id != auth()->user()->id){
             return view('dashboard')->with('error','Your payment is incorrect. Please do it again.');
+        }
+        if (!Advertisement::where('course_id','=',$courseId)->get()->isEmpty()){
+            return view('dashboard')->with('error','This course has already been promoted.');
         }
         $latestEntry = Payment::latest('created_at')->first();
 
