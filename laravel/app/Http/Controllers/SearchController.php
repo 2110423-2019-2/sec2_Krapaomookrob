@@ -64,7 +64,7 @@ class SearchController extends Controller
         ]);
 
         //  Validate if each day is days in a week
-        $daysinweek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        $daysinweek = $this->fetchDays()->toArray();
         if(!empty($days)){
             foreach($days as $day){
                 if(!in_array($day, $daysinweek) && $day != null){
@@ -74,7 +74,7 @@ class SearchController extends Controller
         }
 
         //  Validate if each subject is in the subjectlist
-        $subjectlist = ['Mathematics', 'Economic', 'History', 'Technology', 'Science', 'Biology', 'Chemistry', 'English', 'Thai', 'Geography', 'Physics', 'Music'];
+        $subjectlist = $this->fetchSubjects()->toArray();
         if(!empty($subjects)){
             foreach($subjects as $subject){
                 if(!in_array($subject, $subjectlist) && $subject != null){
