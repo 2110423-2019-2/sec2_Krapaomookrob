@@ -131,7 +131,6 @@ class UserController extends Controller
         //  Commend Line needed for test case. (try, catch);
         // try{ 
         $data = request()->validate([
-            //'role' => ['required', Rule::in(['tutor','student'])],
             'name' => 'required|regex:/^[\pL\s\-]+$/u',
             'nickname' => 'regex:/^[a-zA-Z ]+$/|nullable',
             'phone' => 'numeric|digits_between:9,10|starts_with:0|nullable',
