@@ -64,7 +64,7 @@ class CartController extends Controller
         }
 
         $cookie = cookie($cartId, $value, self::MINUTES);
-        
+
         return $hasCart ? response(200)->withCookie($cookie) : response(200)->withCookie($res)->withCookie($cookie);
     }
 
@@ -155,12 +155,12 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $course_ids = $request->cookie('course_ids');
 
         $payment = Payment::create([
             'user_id' => auth()->user()->id,
-            
+
         ]);
 
         foreach ($course_ids as $course_id) {

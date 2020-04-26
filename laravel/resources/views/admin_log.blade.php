@@ -29,6 +29,9 @@
     <user-log-component></user-log-component>
     @elseif($l==6)
     <admin-attendance-logs></admin-attendance-logs>
+    @else
+    <br>
+    <h1>Page 404 NOT FOUND</h1>
     @endif
     </div>
   </div>
