@@ -36,7 +36,7 @@ class profileTest extends TestCase
     }
 
     /** @test */
-    public function test_case_7_1(){
+    public function test_case_7_01(){
         $response = $this->call('patch',"/profile",[
             'role' => 'student',
             'name' => 'Krit Kruaykitanon',
@@ -50,7 +50,7 @@ class profileTest extends TestCase
     }
 
     /** @test */
-    public function test_case_7_2(){
+    public function test_case_7_02(){
         $this -> acting_as_a_student();
         $response = $this->call('patch',"/profile",[
             'role' => 'tutor',
@@ -68,7 +68,7 @@ class profileTest extends TestCase
     }
 
     /** @test */
-    public function test_case_7_3(){
+    public function test_case_7_03(){
         $this -> acting_as_a_student();
         $response = $this->call('patch',"/profile",[
             'role' => 'tutor',
@@ -86,7 +86,7 @@ class profileTest extends TestCase
     }
 
     /** @test */
-    public function test_case_7_4(){
+    public function test_case_7_04(){
         $this -> acting_as_a_tutor();
         $response = $this->call('patch',"/profile",[
             'role' => 'student',
@@ -104,7 +104,7 @@ class profileTest extends TestCase
     }
 
     /** @test */
-    public function test_case_7_5(){
+    public function test_case_7_05(){
         $this -> acting_as_a_student();
         $response = $this->call('patch',"/profile",[
             'role' => 'student',
@@ -122,7 +122,7 @@ class profileTest extends TestCase
     }
 
     /** @test */
-    public function test_case_7_6(){
+    public function test_case_7_06(){
         $this -> acting_as_a_student();
         $response = $this->call('patch',"/profile",[
             'role' => null,
@@ -140,7 +140,7 @@ class profileTest extends TestCase
     }
 
     /** @test */
-    public function test_case_7_7(){
+    public function test_case_7_07(){
         $this -> acting_as_a_student();
         $response = $this->call('patch',"/profile",[
             'role' => 'teacher',
@@ -158,7 +158,7 @@ class profileTest extends TestCase
     }
    
     /** @test */
-    public function test_case_7_8(){
+    public function test_case_7_08(){
         $this -> acting_as_a_student();
         $response = $this->call('patch',"/profile",[
             'role' => 'student',
@@ -176,7 +176,7 @@ class profileTest extends TestCase
     }
 
     /** @test */
-    public function test_case_7_9(){
+    public function test_case_7_09(){
         $this -> acting_as_a_student();
         $response = $this->call('patch',"/profile",[
             'role' => 'student',
