@@ -33,28 +33,23 @@
                 <div class="form-group row">
                 <h6 class = "my-0" style = "color: lightgrey;">ROLE</h6>
                 <input id="role"
-                    type="text" 
-                    class="form-control @error('role') is-invalid @enderror" 
-                    name="role" 
-                    value="{{ old('role') ?? $user -> role }}" 
-                    autocomplete="role" 
-                    autofocus>
-
-                    @error('role')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors -> first('role') }}</strong>
-                        </span>
-                    @enderror
+                    type="text"
+                    class="form-control @error('role') is-invalid @enderror"
+                    name="role"
+                    value="{{ old('role') ?? $user -> role }}"
+                    autocomplete="role"
+                    autofocus
+                    disabled>
                 </div>
 
                 <div class="form-group row">
                   <h6 class = "my-0" style = "color: lightgrey;">NAME</h6>
                   <input id="name"
-                      type="text" 
-                      class="form-control @error('name') is-invalid @enderror" 
-                      name="name" 
-                      value="{{ old('name') ?? $user -> name }}" 
-                      autocomplete="name" 
+                      type="text"
+                      class="form-control @error('name') is-invalid @enderror"
+                      name="name"
+                      value="{{ old('name') ?? $user -> name }}"
+                      autocomplete="name"
                       autofocus>
 
                       @error('name')
@@ -63,15 +58,15 @@
                           </span>
                       @enderror
                   </div>
-                
+
                 <div class="form-group row">
                 <h6 class = "my-0" style = "color: lightgrey;">NICKNAME</h6>
                   <input id="nickname"
-                      type="text" 
-                      class="form-control @error('nickname') is-invalid @enderror" 
-                      name="nickname" 
-                      value="{{ old('nickname') ?? $user -> nickname }}" 
-                      autocomplete="nickname" 
+                      type="text"
+                      class="form-control @error('nickname') is-invalid @enderror"
+                      name="nickname"
+                      value="{{ old('nickname') ?? $user -> nickname }}"
+                      autocomplete="nickname"
                       autofocus>
 
                       @error('nickname')
@@ -84,11 +79,11 @@
                 <div class="form-group row">
                   <h6 class = "my-0" style = "color: lightgrey;">PHONE</h6>
                   <input id="phone"
-                      type="text" 
-                      class="form-control @error('phone') is-invalid @enderror" 
-                      name="phone" 
-                      value="{{ old('phone') ?? $user -> phone }}" 
-                      autocomplete="phone" 
+                      type="text"
+                      class="form-control @error('phone') is-invalid @enderror"
+                      name="phone"
+                      value="{{ old('phone') ?? $user -> phone }}"
+                      autocomplete="phone"
                       autofocus>
 
                       @error('phone')
@@ -97,15 +92,15 @@
                           </span>
                       @enderror
                 </div>
-  
+
                 <div class="form-group row">
                   <h6 class = "my-0" style = "color: lightgrey;">EDUCATION LEVEL</h6>
                   <input id="education_level"
-                      type="text" 
-                      class="form-control @error('education_level') is-invalid @enderror" 
-                      name="education_level" 
-                      value="{{ old('education_level') ?? $user -> education_level }}" 
-                      autocomplete="education_level" 
+                      type="text"
+                      class="form-control @error('education_level') is-invalid @enderror"
+                      name="education_level"
+                      value="{{ old('education_level') ?? $user -> education_level }}"
+                      autocomplete="education_level"
                       autofocus>
 
                       @error('education_level')
@@ -121,7 +116,7 @@
             <div class="card p-2 border-0">
                 <h6 class = "my-0" style = "color: lightgrey;">EMAIL</h6>
                 <span class = "mb-3" style = "color: grey;">{{ $user -> email }}</span>
-  
+
                 {{-- <h6 class = "my-0" style = "color: lightgrey;">PASSWORD</h6>
                 <span class = "mb-3" style = "color: grey;">{{ $user -> getSecret() }}</span> --}}
             </div>
@@ -133,11 +128,11 @@
               <div class="form-group row">
                 <h6 class = "my-0" style = "color: lightgrey;">ACCOUNT NUMBER</h6>
                 <input id="account_number"
-                    type="text" 
-                    class="form-control @error('account_number') is-invalid @enderror" 
-                    name="account_number" 
-                    value="{{ old('account_number') ?? $account_number }}" 
-                    autocomplete="account_number" 
+                    type="text"
+                    class="form-control @error('account_number') is-invalid @enderror"
+                    name="account_number"
+                    value="{{ old('account_number') ?? $account_number }}"
+                    autocomplete="account_number"
                     autofocus>
                     @error('account_number')
                         <span class="invalid-feedback" role="alert">
@@ -149,11 +144,11 @@
               <div class="form-group row">
                 <h6 class = "my-0" style = "color: lightgrey;">ACCOUNT NAME</h6>
                 <input id="account_name"
-                    type="text" 
-                    class="form-control @error('account_name') is-invalid @enderror" 
-                    name="account_name" 
-                    value="{{ old('account_name') ?? $account_name }}" 
-                    autocomplete="account_name" 
+                    type="text"
+                    class="form-control @error('account_name') is-invalid @enderror"
+                    name="account_name"
+                    value="{{ old('account_name') ?? $account_name }}"
+                    autocomplete="account_name"
                     autofocus>
                     @error('account_name')
                         <span class="invalid-feedback" role="alert">
@@ -165,11 +160,11 @@
               <div class="form-group row">
                 <h6 class = "my-0" style = "color: lightgrey;">BANK</h6>
                 <input id="bank"
-                    type="text" 
-                    class="form-control @error('bank') is-invalid @enderror" 
-                    name="bank" 
-                    value="{{ old('bank') ?? $bank }}" 
-                    autocomplete="bank" 
+                    type="text"
+                    class="form-control @error('bank') is-invalid @enderror"
+                    name="bank"
+                    value="{{ old('bank') ?? $bank }}"
+                    autocomplete="bank"
                     autofocus>
                     @error('bank')
                         <span class="invalid-feedback" role="alert">
@@ -180,14 +175,14 @@
             </div>
           </div>
         </div>
-        
+
         <div class="container">
 
           {{-- image uploader --}}
           @if($user -> isTutor())
           <div class="row">
             <label for = "AdsImage" class="p-0 col-6 offset-1 col-form-lable" style = "color: #55B3E0;">Post Ads Banner (1000x300 px)</label>
-        
+
               <input type = "file" class="offset-1 form-control-file" id="AdsImage" name ="AdsImage">
               @error('AdsImage')
                       <strong>{{ $errors -> first('AdsImage') }}</strong>

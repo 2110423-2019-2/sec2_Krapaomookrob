@@ -211,7 +211,7 @@
             noClasses: this.noClasses,
             studentCount: this.studentCount
           })
-          .then(response => window.location.href = "/my-courses")
+          .then(response => window.location.href = "/")
           .catch(error => console.log(error))
         },
         setPlace(place) {

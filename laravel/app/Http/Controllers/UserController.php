@@ -22,7 +22,7 @@ class UserController extends Controller
     {
         $this -> middleware('auth');
     }
-    
+
     public function updateRole(Request $request){
         if(auth()->user()){
             $user = auth()->user();
@@ -38,8 +38,8 @@ class UserController extends Controller
         $role = ($user -> role)?($user -> role):"-";
         $username = ($user -> name)?($user -> name):"-";
         $phone = ($user -> phone)?($user -> phone):"-";
-        $education_level = ($user -> education_level)?($user -> education_level):"-"; 
-        $nickname = ($user -> nickname)?($user -> nickname):"-"; 
+        $education_level = ($user -> education_level)?($user -> education_level):"-";
+        $nickname = ($user -> nickname)?($user -> nickname):"-";
         $email = ($user -> email)?($user -> email):"-";
         $password = str_repeat("*",strlen($user -> password));
         $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"-";
@@ -71,7 +71,7 @@ class UserController extends Controller
             return view('profile.tutor_view',compact('user','phone','education_level','nickname','username','role','email','password',
             'account_number', 'account_name', 'bank', 'rating', 'reviewsWithSubjects','hasAds','banner'));
         }
-        else if($user -> isStudent()){
+        else{
             return view('profile.view',compact('user','phone','education_level','nickname','username','role','email','password',
                                             'account_number', 'account_name', 'bank'));
         }
@@ -104,7 +104,7 @@ class UserController extends Controller
                 $hasAds = false;
             }
 
-            //  Reviews 
+            //  Reviews
             foreach ($reviews as $review){
                 $course = Course::find($review->course_id);
                 $subjects = $course->subjects->pluck('name');
@@ -206,7 +206,7 @@ class UserController extends Controller
         }
         abort(401, 'Login required');
     }
-    
+
     public function getBalance(){
         if(auth()->user()){
             $user = auth()->user();

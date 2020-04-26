@@ -12,7 +12,13 @@
 @else
   <a class="btn ownbtn" href="/search-courses">Search Courses</a>
 @endif
-<a class="btn ownbtn" href="/new-course">New Course Request</a>
+<a class="btn ownbtn" href="/new-course">
+    @if($user->isTutor())
+        Create New Course
+    @else
+        New Course Request
+    @endif
+</a>
 @endsection
 
 @section('content')
@@ -29,32 +35,13 @@
 </div>
 @endif
 <div class="row">
-  <div class="col-lg-9">
+  <div class="col-lg-12">
     <attendance-today-component></attendance-today-component>
-    <attendance-history-component></attendance-history-component>
   </div>
-  <div class="col-lg-3">
-    <div class="card">
-      <div class="card-header">New Messages</div>
-      <div class="card-body px-0 py-0">
-        <div class="border-bottom px-3 pt-3 position-relative">
-          <h6>P'Taan</h6>
-          <div class="ellipsis"><small>Hi my son. Hi my son. Hi my son. Hi my son. Hi my son. Hi my son.</small></div>
-          <a href="#" class="stretched-link"></a>
-        </div>
-        <div class="border-bottom px-3 pt-3 position-relative">
-          <h6>P'Taan</h6>
-          <div class="ellipsis"><small>Hi my son. Hi my son. Hi my son. Hi my son. Hi my son. Hi my son.</small></div>
-          <a href="#" class="stretched-link"></a>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">Tutor Requests</div>
-      <div class="card-body px-0 py-0">
-        <div class="p-3"><small>There are currently no tutor requests, pleases check back later.</small></div>
-      </div>
-    </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <attendance-history-component></attendance-history-component>
   </div>
 </div>
 @endsection

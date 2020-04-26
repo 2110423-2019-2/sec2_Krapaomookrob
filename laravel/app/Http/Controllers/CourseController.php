@@ -309,7 +309,10 @@ class CourseController extends Controller
             $courses = $user->registeredCourses()->with(['days', 'subjects', 'location'])->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
         }
         else if($user->isTutor()){
-            $courses = Course::with(['days', 'subjects', 'location'])->where('user_id', auth()->user()->id)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
+            $courses_own = Course::with(['days', 'subjects', 'location'])->where('user_id', auth()->user()->id);
+            $requester_ids = CourseRequester::where('requester_id', $user->id)->where('status', 'Accepted')->pluck('course_id')->all();
+            $course_request = Course::with(['days', 'subjects', 'location'])->whereIn('id', $requester_ids);
+            $courses = $courses_own->unionAll($course_request)->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
         }
         foreach($courses as $course){
             array_push($students,$course->students);
