@@ -37,16 +37,14 @@ class SearchController extends Controller
 
     public function searchCourses(Request $request) {
         $tutor = $request->input('tutor');
-        $area = json_decode($request->input('area'));
         //  Default Area.
-        //return response(json_decode($request->input());
+        $area = json_decode($request->input('area'));
+        $lat = $area->lat;
+        $long = $area->lng;
+        // $lat = 13.7384627;
+        // $long = 100.5320458;
+
         $subjects = $request->input('subject');
-        //return response($subjects, 200);
-        //  $lat = $area->lat;
-        //  $long = $area->lng;
-        //  $lat = 13.7384627;
-        //  $long = 100.5320458;
-        //return response($area, 200);
         $days = $request->input('day');
         $time = $request->input('time');
         $hour = $request->input('hour');
