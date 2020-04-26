@@ -128,26 +128,24 @@ class UserController extends Controller
 
     public function updateProfile(User $user){
         $user =  auth() -> user();
-        try{
-            $data = request()->validate([
-                'role' => ['required', Rule::in(['tutor','student'])],
-                'name' => 'required|regex:/^[\pL\s\-]+$/u',
-                'nickname' => 'regex:/^[a-zA-Z ]+$/|nullable',
-                'phone' => 'numeric|digits_between:9,10|starts_with:0|nullable',
-                'education_level' => 'nullable',
-                //'AdsImage' => '',
-
-                'account_number' => 'numeric|digits_between:10,15|nullable',
-                'account_name' => 'regex:/^[\pL\s\-]+$/u|nullable',
-                'bank' => 'regex:/^[a-zA-Z ]+$/|nullable'
-            ]);
-        }catch(\Exception $e)
-        {
-            return redirect()->to('/profile',302);
-        }
-        //dd($data);
-        //return redirect("/profile");
-        //return redirect("/profile");
+        //  Commend Line needed for test case. (try, catch);
+        // try{ 
+        $data = request()->validate([
+            //'role' => ['required', Rule::in(['tutor','student'])],
+            'name' => 'required|regex:/^[\pL\s\-]+$/u',
+            'nickname' => 'regex:/^[a-zA-Z ]+$/|nullable',
+            'phone' => 'numeric|digits_between:9,10|starts_with:0|nullable',
+            'education_level' => 'nullable',
+            //'AdsImage' => '',
+            'account_number' => 'numeric|digits_between:10,15|nullable',
+            'account_name' => 'regex:/^[\pL\s\-]+$/u|nullable',
+            'bank' => 'regex:/^[a-zA-Z ]+$/|nullable'
+        ]);
+        // }catch(\Exception $e)
+        // {
+        //     return redirect()->to('/profile',302);
+        // }
+        
         
         $user -> update($data);
         $bank = BankAccount::updateOrCreate(
@@ -160,10 +158,6 @@ class UserController extends Controller
                 'bank' => $data['bank']
             ]
         );
-
-        //dd($bank);
-        //return $bank;
-        //return redirect("/profile");
 
         if(request('AdsImage') && $user -> isTutor())
         {

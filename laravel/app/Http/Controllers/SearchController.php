@@ -38,13 +38,14 @@ class SearchController extends Controller
     public function searchCourses(Request $request) {
         $tutor = $request->input('tutor');
         $area = json_decode($request->input('area'));
+        //  Default Area.
         //return response(json_decode($request->input());
         $subjects = $request->input('subject');
         //return response($subjects, 200);
-        //$lat = $area->lat;
-        //$long = $area->lng;
-        $lat = 13.7384627;
-        $long = 100.5320458;
+        //  $lat = $area->lat;
+        //  $long = $area->lng;
+        //  $lat = 13.7384627;
+        //  $long = 100.5320458;
         //return response($area, 200);
         $days = $request->input('day');
         $time = $request->input('time');
@@ -145,11 +146,6 @@ class SearchController extends Controller
             ->groupBy('courses.id')
             // if there exist an advertisement put it to the top if null last (priority advertisement first).
             ->orderByRaw('-advertisements.id DESC');
-
-        //dd();
-
-        // $advertisement_course = Advertisement::all()->pluck('course_id');
-        // $query_3 = 
 
         // for filtering only not registered course
         $registered_course = CourseStudent::all()->pluck('course_id');
