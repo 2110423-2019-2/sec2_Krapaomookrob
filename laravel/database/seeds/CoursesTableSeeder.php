@@ -1,3 +1,4 @@
+@@ -1,202 +0,0 @@
 <?php
 
 use Illuminate\Database\Seeder;

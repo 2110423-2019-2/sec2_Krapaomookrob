@@ -188,7 +188,7 @@ class paymentGatewayController extends Controller{
     public function createTransferOmise(Request $request){
 
         $payReq = PaymentRequest::find($request->input('paymentReqID'));
-        if($payReq = null) {
+        if($payReq == null) {
             return response('Request ID is incorrect' , 403);
         }
         if($payReq['omise_id']!=null){
