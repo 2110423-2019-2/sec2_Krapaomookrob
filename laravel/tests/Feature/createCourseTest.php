@@ -11,7 +11,7 @@ use App\User;
 
 class createCourseTest extends TestCase
 {
-    use RefreshDatabase;
+    //use RefreshDatabase;
 
     protected function setUp(): void{
         parent::setUp();
@@ -32,29 +32,6 @@ class createCourseTest extends TestCase
 
     private function acting_as_a_guest(){
         $this->actingAs(factory(User::class)->create());
-    }
-
-    /** @test */
-    public function test_case_10_basic(){
-        $this -> acting_as_a_tutor();
-        $response = $this->json('post',"/api/course/new",[
-            'subjects' => ['Mathematics'],
-            'days' => ['Wednesday'],
-            'time' => '23:00',
-            'hours' => '2',
-            'startDate' => '2020-05-23',
-            'price' => '1500',
-            'noClasses' => '1',
-            'studentCount' => '3',
-
-            'locationId' => '1',
-            'area' => 'Siam',
-            'address' => 'Bangkok',
-            'center' => [
-                'lat' => '20.00',
-                'lng' => '50.00'
-            ],
-        ])->assertStatus(200);
     }
 
     /** @test */
