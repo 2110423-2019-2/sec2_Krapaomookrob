@@ -35,8 +35,8 @@ class CourseController extends Controller
     }
 
     public function fetchSubjects(){
-        $days = Subject::all()->pluck('name');
-        return $days;
+        $subjects = Subject::all()->pluck('name');
+        return $subjects;
     }
 
     public function newCourse(Request $request){
@@ -46,8 +46,10 @@ class CourseController extends Controller
             return response('Unauthorized', 401);
         }
 
-        $daysinweek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        $subjectlist = ['Mathematics', 'Economic', 'History', 'Technology', 'Science', 'Biology', 'Chemistry', 'English', 'Thai', 'Geography', 'Physics', 'Music'];
+        $daysinweek = $this->fetchDays()->toArray();
+        //['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        $subjectlist = $this->fetchSubjects()->toArray();
+        //['Mathematics', 'Economic', 'History', 'Technology', 'Science', 'Biology', 'Chemistry', 'English', 'Thai', 'Geography', 'Physics', 'Music'];
 
         // Validator
         $data = request()->validate([
