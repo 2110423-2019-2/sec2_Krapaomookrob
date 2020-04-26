@@ -35,11 +35,11 @@ class searchTest extends TestCase
     }
 
     /** @test */
-    public function test_case_1_1(){
+    public function test_case_1_01(){
         $this -> acting_as_a_tutor();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "Somry Reswaeq",
-            'area' => '[{"lat":"13.7384627","lng":"100.5320458"}]',
+            'area' => ['lat' => '13.7384627','lng' => '100.5320458'],
             'subject' => ['Mathematics'],
             'day' => ['Sunday'],
             'time' => '12:00',
@@ -50,7 +50,7 @@ class searchTest extends TestCase
     }
 
     /** @test */
-    public function test_case_1_2(){
+    public function test_case_1_02(){
         $this -> acting_as_a_guest();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "Somry Reswaeq",
@@ -65,7 +65,7 @@ class searchTest extends TestCase
     }
 
     /** @test */
-    public function test_case_1_3(){
+    public function test_case_1_03(){
         $this -> acting_as_a_guest();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "Krit Kruaykitanon",
@@ -80,7 +80,7 @@ class searchTest extends TestCase
     }
 
     /** @test */
-    public function test_case_1_4(){
+    public function test_case_1_04(){
         $this -> acting_as_a_guest();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "",
@@ -95,7 +95,7 @@ class searchTest extends TestCase
     }
 
     /** @test */
-    public function test_case_1_5(){
+    public function test_case_1_05(){
         $this -> acting_as_a_guest();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "Somry Reswaeq",
@@ -110,7 +110,7 @@ class searchTest extends TestCase
     }
 
     /** @test */
-    public function test_case_1_6(){
+    public function test_case_1_06(){
         $this->acting_as_a_student();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "Somry Reswaeq",
@@ -125,7 +125,7 @@ class searchTest extends TestCase
     }
 
     /** @test */
-    public function test_case_1_7(){
+    public function test_case_1_07(){
         $this->acting_as_a_student();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "Somry Reswaeq",
@@ -140,7 +140,7 @@ class searchTest extends TestCase
     }
 
     /** @test */
-    public function test_case_1_8(){
+    public function test_case_1_08(){
         $this->acting_as_a_student();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "",
@@ -155,7 +155,7 @@ class searchTest extends TestCase
     }
 
     /** @test */
-    public function test_case_1_9(){
+    public function test_case_1_09(){
         $this->acting_as_a_student();
         $response = $this->json('get',"/api/search-courses",[
             'tutor' => "",
