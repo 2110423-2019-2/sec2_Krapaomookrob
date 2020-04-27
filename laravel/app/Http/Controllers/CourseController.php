@@ -57,7 +57,7 @@ class CourseController extends Controller
             'time' => 'date_format:H:i|required',
             'hours' => ['required',Rule::in(['1','2','3','4','5'])],
             'startDate' => 'date_format:Y-m-d|required',
-            'dateTime' => 'date_format:Y-m-d-H:i|after_or_equal:now',
+            //'dateTime' => 'date_format:Y-m-d-H:i|after_or_equal:now',
             'price' => 'required|gte:0',
             'noClasses' => 'required|gt:0',
             'studentCount' => ['required',Rule::in(['1','2','3','4','5'])],
