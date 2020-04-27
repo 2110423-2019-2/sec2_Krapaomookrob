@@ -18,7 +18,7 @@ class AttendanceController extends Controller
       $result = collect();
       $classes = collect();
       if($user->isTutor()){
-        $classes = DB::select('select classes.id as clid,users.id as uid,courses.id as coid,classes.date,courses.user_id as user_id,classes.time,classes.hours,users.nickname,attendances.checked from course_classes classes
+        $classes = DB::select('select classes.id as clid,classes.date,courses.user_id as user_id,classes.time,classes.hours,users.nickname,attendances.checked from course_classes classes
                                 inner join courses on classes.course_id = courses.id
                                 inner join course_student student on courses.id = student.course_id
                                 left join users on student.user_id = users.id
@@ -30,7 +30,7 @@ class AttendanceController extends Controller
             'class_id' => $class->clid,
             'checked' => $class->checked,
             'user_id' => $class->user_id,
-            'name' => "N'{$this->getTutorName($class->uid,$class->coid)}",
+            'name' => "N'{$class->nickname}",
             'date' => Carbon::parse($class->date)->isoFormat('dddd, D MMM YYYY'),
             'time' => date_format(date_create($class->time),'H:i').'-'.date_format(date_create($nTime),'H:i').'('.$class->hours.'hrs)',
           ]);
@@ -73,7 +73,7 @@ class AttendanceController extends Controller
       $result = collect();
       $classes = collect();
       if($user->isTutor()){
-        $classes = DB::select('select course_classes.date, users.id as uid, courses.id as coid, course_classes.time, course_classes.hours, users.nickname from attendances
+        $classes = DB::select('select course_classes.date, course_classes.time, course_classes.hours, users.nickname from attendances
                                 inner join course_classes on course_classes.id = attendances.course_classes_id
                                 inner join courses on course_classes.course_id = courses.id
                                 inner join course_student student on courses.id = student.course_id
@@ -83,7 +83,7 @@ class AttendanceController extends Controller
         foreach($classes as $class){
           $nTime = Carbon::parse("{$class->date} {$class->time}")->addHour($class->hours);
           $temp = collect([
-            'name' => "N'{$this->getTutorName($class->uid,$class->coid)}",
+            'name' => "N'{$class->nickname}",
             'date' => Carbon::parse($class->date)->isoFormat('dddd, D MMM YYYY'),
             'time' => date_format(date_create($class->time),'H:i').'-'.date_format(date_create($nTime),'H:i').'('.$class->hours.'hrs)',
           ]);
