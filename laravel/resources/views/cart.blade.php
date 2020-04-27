@@ -5,7 +5,7 @@
 @section('topic', 'Cart')
 
 @section('menu')
-<a href="#" class="btn ownbtn px-5">Back</a>
+<a class="btn ownbtn px-5" href="javascript:history.go(-1)">Back</a>
 @endsection
 
 @section('content')
@@ -22,6 +22,6 @@
             </div>
             <cart-item button-type="cancelbtn"></cart-item>
         </div>
-        
+
     </div>
 @endsection

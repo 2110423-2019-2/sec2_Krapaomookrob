@@ -73,7 +73,7 @@ class CourseRequesterController extends Controller
         $message = $name.' has declined your request.';
         $requests = CourseRequester::where('course_id','=',$courseId)->get();
         foreach($requests as $rq){
-            if ($rq->status != 'Declined' && $rq->requester_id != $courseId){
+            if ($rq->status != 'Declined' && $rq->status != 'Pending' && $rq->requester_id != $courseId){
                 $receiver_id = $rq->requester_id;
                 $rq->update(['status'=>'Declined']);
                 NotificationController::createNotification($receiver_id,$title,$message);

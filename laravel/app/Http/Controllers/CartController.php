@@ -53,16 +53,18 @@ class CartController extends Controller
             $value = $request->cookie($cartId);
             $items = explode(',', substr($value,0,-1));
             $cid = strval($request->input('course_id'));
+
             $key = array_search($cid,$items);
-            if (!$key){
+            if (!in_array($cid,$items)){
                 $value .= strval($request->input('course_id')).',';
             }
+
         }else{
             $value = $request->input('course_id').',';
         }
 
         $cookie = cookie($cartId, $value, self::MINUTES);
-        
+
         return $hasCart ? response(200)->withCookie($cookie) : response(200)->withCookie($res)->withCookie($cookie);
     }
 
@@ -103,7 +105,7 @@ class CartController extends Controller
         $items = explode(',', substr($value,0,-1));
         $cid = strval($request->input('course_id'));
         $key = array_search($cid,$items);
-        if( ( $key !== FALSE) ){
+        if(in_array($cid,$items) ){
             unset($items[$key]);
         }
 
@@ -153,12 +155,12 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $course_ids = $request->cookie('course_ids');
 
         $payment = Payment::create([
             'user_id' => auth()->user()->id,
-            
+
         ]);
 
         foreach ($course_ids as $course_id) {
