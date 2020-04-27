@@ -33,6 +33,7 @@ use OmiseRecipient;
 define('OMISE_API_VERSION' , env("OMISE_API_VERSION", null));
 define('OMISE_PUBLIC_KEY' , env("OMISE_PUBLIC_KEY", null));
 define('OMISE_SECRET_KEY', env("OMISE_SECRET_KEY", null));
+define('WEBSITE', env("APP_URL", null));
 
 class paymentGatewayController extends Controller{
 
@@ -174,7 +175,7 @@ class paymentGatewayController extends Controller{
         $charge = OmiseCharge::create(array(
             'amount' => $request->input('p'),
             'currency' => 'thb',
-            'return_uri' => url(sprintf("http://localhost:8000/result/%s/%s/%s",$paymentId,$request->input('isAdvertisement')==null ? 0:1,$request->input('courseId')==null ? 0:$request->input('courseId'))),
+            'return_uri' => url(sprintf("%s/result/%s/%s/%s",WEBSITE,$paymentId,$request->input('isAdvertisement')==null ? 0:1,$request->input('courseId')==null ? 0:$request->input('courseId'))),
             'source' => $source['id']
           ),OMISE_PUBLIC_KEY,OMISE_SECRET_KEY);
 
