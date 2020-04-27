@@ -23,6 +23,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseRequesterController;
 use App\RefundRequest;
+use App\Http\Controllers\UserController;
 
 require_once dirname(__FILE__).'/../../../../vendor/autoload.php';
 
@@ -309,6 +310,11 @@ class paymentGatewayController extends Controller{
                     NotificationController::createNotification($tutor_id, $title, $tutor_message);
                     if ($course->isMadeByStudent()){
                         CourseRequesterController::confirmAcceptedRequest($course->id);
+                        $realUserId = CourseRequester::where('course_id','=',$course->id)->where('status','=','Accepted')->get()->first()->requester_id;
+                        UserController::addBalance($realUserId, $course->price);
+                    }
+                    else{
+                        UserController::addBalance($course->user_id, $course->price);
                     }
                 }
             }else{

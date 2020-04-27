@@ -209,7 +209,7 @@ class UserController extends Controller
     }
 
 
-    public function addBalance($id,$amount){
+    public static function addBalance($id,$amount){
         $user = User::findOrFail($id);
         if ($amount >= 0){
             $user->balance = $user->balance + $amount;
