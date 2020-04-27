@@ -18,22 +18,25 @@ class CalendarController extends Controller
       $result = collect();
       $classes = collect();
       if($user->isTutor()){
-        $classes = DB::select('select classes.id as clid,courses.id as coid,courses.user_id as couid,classes.date,classes.time,classes.hours,users.nickname,locations.name as location,classes.status from course_classes classes
+        $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.nickname,locations.name as location,classes.status from course_classes classes
                                 inner join courses on classes.course_id = courses.id
                                 inner join course_student student on courses.id = student.course_id
                                 inner join locations on locations.id = courses.location_id
                                 left join users on student.user_id = users.id
                                 where courses.user_id = ? and student.status = ?', [$user->id, 'registered']);
-        //{"date":"2021-02-18","time":"13:00:00","hours":1,"nickname":"Somsak"}
-        //{"name":"Holiday","start":"2020-3-5 7:45","end":"2020-3-5 8:30","color":"indigo"}
+
+      $classes2 = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.nickname,locations.name as location,classes.status from course_classes classes
+                              inner join courses on classes.course_id = courses.id
+                              inner join course_student student on courses.id = student.course_id
+                              inner join locations on locations.id = courses.location_id
+                              inner join course_requesters on courses.id = course_requesters.course_id
+                              left join users on student.user_id = users.id
+                              where course_requesters.requester_id = ? and student.status = ? and course_requesters.status = ?', [$user->id, 'registered', 'Accepted']);
+      $classes = collect($classes)->concat(collect($classes2));
+
         foreach($classes as $class){
           $nTime = Carbon::parse("{$class->date} {$class->time}")->addHour($class->hours);
-
           $nn = $class->nickname;
-          /*if($this->isMadeByStudent($class->couid)){
-              $nn = User::find($class->couid)->nickname;
-          }*/
-
           $temp = collect([
             'class_id' => $class->clid,
             'course_id' => $class->coid,

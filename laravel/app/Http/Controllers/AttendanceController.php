@@ -24,6 +24,7 @@ class AttendanceController extends Controller
                                 left join users on student.user_id = users.id
                                 left join attendances on classes.id = attendances.course_classes_id and attendances.user_id = ?
                                 where courses.user_id = ? and student.status = ? and classes.date= ?', [$user->id, $user->id, 'registered',Carbon::today()]);
+
         foreach($classes as $class){
           $nTime = Carbon::parse("{$class->date} {$class->time}")->addHour($class->hours);
           $temp = collect([
@@ -80,6 +81,7 @@ class AttendanceController extends Controller
                                 left join users on student.user_id = users.id
                                 where attendances.user_id = ?
                                 order by course_classes.date desc, course_classes.time desc', [$user->id]);
+
         foreach($classes as $class){
           $nTime = Carbon::parse("{$class->date} {$class->time}")->addHour($class->hours);
           $temp = collect([
