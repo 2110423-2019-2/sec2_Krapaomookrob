@@ -226,7 +226,7 @@
         ],
         search_result: [],
         // G-MAP
-        center: {lat: 13.7384627, lng: 100.5320458},
+        center: {lat: 13.7384627, lng: 100.5320457},
         markers: [],
         areaAddress: '',
         areaLocationId: '',

@@ -109,7 +109,7 @@ class SearchController extends Controller
         if ($maxPrice) {$query = $query->where('courses.price', '<=', $maxPrice);}
         //return response('OK', 200);
 
-        if ($subjects || $days || $time || $hour || $noClass || $maxPrice) {
+        if ($lat != 13.7384627 || $long != 100.5320457) {
             $query = $this->scopeDistance($query, $lat, $long);
         }
         $query = $query->select('courses.id')->distinct()->pluck('courses.id');
@@ -195,7 +195,7 @@ class SearchController extends Controller
         if ($noClass) {$query = $query->where('courses.noClasses', '=', $noClass);}
         if ($maxPrice) {$query = $query->where('courses.price', '<=', $maxPrice);}
 
-        if ($subjects || $days || $time || $hour || $noClass || $maxPrice) {
+        if ($lat != 13.7384627 || $long != 100.5320457) {
             $query = $this->scopeDistance($query, $lat, $long);
         }
         $query = $query->select('courses.id')->distinct()->pluck('courses.id');
