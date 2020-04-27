@@ -14,6 +14,7 @@ use App\Banner;
 use App\Http\Controllers\ReviewController;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -119,7 +120,6 @@ class UserController extends Controller
 
     public function editProfile(User $user){
         $user = auth() -> user();
-        $password = str_repeat("*",strlen($user -> password));
         $account_number = ($user -> BankAccount)?$user -> BankAccount-> account_number:"";
         $account_name = ($user -> BankAccount)?$user -> BankAccount -> account_name:"";
         $bank = ($user -> BankAccount)?$user -> BankAccount -> bank:"";
@@ -127,29 +127,36 @@ class UserController extends Controller
     }
 
     public function updateProfile(User $user){
-        $user=  auth() -> user();
-        $data = request()->validate([ //need to workout the validation
-            'name' => '',
-            'phone' => '',
-            'education_level' => '',
-            'nickname' => '',
-            'email' => '',
-            'AdsImage' => '',
-            'account_number' => '',
-            'account_name' => '',
-            'bank' => '',
+        $user =  auth() -> user();
+        //  Commend Line needed for test case. (try, catch);
+        // try{ 
+        $data = request()->validate([
+            'name' => 'required|regex:/^[\pL\s\-]+$/u',
+            'nickname' => 'regex:/^[a-zA-Z ]+$/|nullable',
+            'phone' => 'numeric|digits_between:9,10|starts_with:0|nullable',
+            'education_level' => 'nullable',
+            //'AdsImage' => '',
+            'account_number' => 'numeric|digits_between:10,15|nullable',
+            'account_name' => 'regex:/^[\pL\s\-]+$/u|nullable',
+            'bank' => 'regex:/^[a-zA-Z ]+$/|nullable'
         ]);
-        // dd($data);
+        // }catch(\Exception $e)
+        // {
+        //     return redirect()->to('/profile',302);
+        // }
+        
+        
         $user -> update($data);
         $bank = BankAccount::updateOrCreate(
             [
                 'user_id' => $user->id
             ] ,
             [
-            'account_number' => $data['account_number'],
-            'account_name' => $data['account_name'],
-            'bank' => $data['bank'],
-            ]);
+                'account_number' => $data['account_number'],
+                'account_name' => $data['account_name'],
+                'bank' => $data['bank']
+            ]
+        );
 
         if(request('AdsImage') && $user -> isTutor())
         {
@@ -164,8 +171,6 @@ class UserController extends Controller
                     'adsImage' => $imagePath
                 ]
             );
-            return redirect("/profile");
-
         }
         return redirect("/profile");
     }
