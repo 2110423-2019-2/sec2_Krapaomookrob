@@ -102,7 +102,7 @@ class SearchController extends Controller
         //dd();
 
         // $advertisement_course = Advertisement::all()->pluck('course_id');
-        // $query_3 = 
+        // $query_3 =
 
         // for filtering only not registered course
         $registered_course = CourseStudent::all()->pluck('course_id');
@@ -186,6 +186,8 @@ class SearchController extends Controller
         // for filtering only not requested course
         $requested_course = CourseRequester::all()->where('requester_id', '=', auth()->user()->id)->pluck('course_id');
         $query_2 = $query_2->whereNotIn('courses.id', $requested_course);
+        $accepted_course = CourseRequester::all()->where('status', '=', 'Accepted')->pluck('course_id');
+        $query_2 = $query_2->whereNotIn('courses.id', $accepted_course);
         return $query_2->get();
     }
 
