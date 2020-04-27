@@ -41,15 +41,8 @@ class CourseController extends Controller
 
     public function newCourse(Request $request){
 
-        // Allow only tutor
-        if(!(auth()->user()) || !(auth()->user()->isTutor())){
-            return response('Unauthorized', 401);
-        }
-
         $daysinweek = $this->fetchDays()->toArray();
-        //['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         $subjectlist = $this->fetchSubjects()->toArray();
-        //['Mathematics', 'Economic', 'History', 'Technology', 'Science', 'Biology', 'Chemistry', 'English', 'Thai', 'Geography', 'Physics', 'Music'];
 
         // Validator
         $data = request()->validate([
@@ -259,8 +252,8 @@ class CourseController extends Controller
         }
 
         $title = 'Postponement';
-        $message = 'The class on ' . date("j F Y", strtotime($class->date)) 
-                    . ' has been postponed.'; 
+        $message = 'The class on ' . date("j F Y", strtotime($class->date))
+                    . ' has been postponed.';
                     // 'by ' . auth()->user()->name
                     // . ', the extended class will be in ' . date("j F Y", strtotime($date));
         NotificationController::multiNotify($course_id, $title, $message);
@@ -278,7 +271,7 @@ class CourseController extends Controller
     public function getCourseStatus($course_id){
         if(auth()->user()->role == 'student'){
             $status = CourseStudent::where('user_id', auth()->user()->id)->where('course_id', '=', $course_id)->first()->status;
-            $refundInfo = $this->getRefundInfo($course_id); 
+            $refundInfo = $this->getRefundInfo($course_id);
             return response(['status' => $status, 'isFullRefund' => $refundInfo['isFullRefund'], 'refundAmount' => $refundInfo['refundAmount']], 200);
         }
         else{
