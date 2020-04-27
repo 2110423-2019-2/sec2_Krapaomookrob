@@ -263,7 +263,7 @@
       },
 
       getDateFormat(date){
-        return moment(String(date)).format('d MMM YYYY')
+        return moment(String(date)).format('D MMM YYYY')
       },
 
       // G-MAP
