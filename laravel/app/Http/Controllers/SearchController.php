@@ -109,7 +109,7 @@ class SearchController extends Controller
         if ($maxPrice) {$query = $query->where('courses.price', '<=', $maxPrice);}
         //return response('OK', 200);
 
-        if ($subjects || $days || $time || $hour || $noClass || $maxPrice) {
+        if ($lat != 13.7384627 || $long != 100.5320457) {
             $query = $this->scopeDistance($query, $lat, $long);
         }
         $query = $query->select('courses.id')->distinct()->pluck('courses.id');
@@ -195,7 +195,7 @@ class SearchController extends Controller
         if ($noClass) {$query = $query->where('courses.noClasses', '=', $noClass);}
         if ($maxPrice) {$query = $query->where('courses.price', '<=', $maxPrice);}
 
-        if ($subjects || $days || $time || $hour || $noClass || $maxPrice) {
+        if ($lat != 13.7384627 || $long != 100.5320457) {
             $query = $this->scopeDistance($query, $lat, $long);
         }
         $query = $query->select('courses.id')->distinct()->pluck('courses.id');
@@ -228,6 +228,8 @@ class SearchController extends Controller
         // for filtering only not requested course
         $requested_course = CourseRequester::all()->where('requester_id', '=', auth()->user()->id)->pluck('course_id');
         $query_2 = $query_2->whereNotIn('courses.id', $requested_course);
+        $accepted_course = CourseRequester::all()->where('status', '=', 'Accepted')->pluck('course_id');
+        $query_2 = $query_2->whereNotIn('courses.id', $accepted_course);
         return $query_2->get();
     }
 
