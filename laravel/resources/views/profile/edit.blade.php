@@ -179,6 +179,7 @@
         <div class="container">
 
           {{-- image uploader --}}
+          @if($user -> isTutor())
           <div class="row">
             <label for = "AdsImage" class="p-0 col-6 offset-1 col-form-lable" style = "color: #55B3E0;">Post Ads Banner (1000x300 px)</label>
 
@@ -187,6 +188,7 @@
                       <strong>{{ $errors -> first('AdsImage') }}</strong>
               @enderror
           </div>
+          @endif
 
           <div class="row">
             <button class="btn ownbtn mb-3 col-2 offset-9">Save Profile</button>

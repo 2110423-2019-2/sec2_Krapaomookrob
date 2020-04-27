@@ -19,7 +19,7 @@ use App\Http\Controllers\CalendarController;
 use App\User;
 
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth','suspenduser']], function () {
     Route::get('/', function () {
         return view('dashboard');
     });
@@ -105,7 +105,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/result/{paymentID}/{isAdvertisement}/{courseId}', 'Frontend\paymentGatewayController@returnPage');
 
     //-------------student--------------------------//
-    Route::group(['middleware' => ['student']], function(){
+    Route::group(['middleware' => ['student','suspenduser']], function(){
 
       Route::get('/cart', function(){
           // route to cart oage
@@ -134,7 +134,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     //-------------tutor--------------------------//
-    Route::group(['middleware' => ['tutor']], function(){
+    Route::group(['middleware' => ['tutor','suspenduser']], function(){
       Route::get('/tutor/payment-request', 'PaymentRequestController@tutorIndex');
 
       //Tutor Search and Request
@@ -165,7 +165,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     //-------------admin--------------------------//
-    Route::group(['middleware' => ['admin']], function(){
+    Route::group(['middleware' => ['admin','suspenduser']], function(){
       Route::get('/admin/refund-request', 'AdminController@getRefundRequestPage');
       Route::get('/admin/payment-request', 'PaymentRequestController@adminIndex');
 
