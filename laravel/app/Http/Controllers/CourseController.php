@@ -258,6 +258,9 @@ class CourseController extends Controller
         $classesLeft = [];
         if($user->isStudent()){
             $courses = $user->registeredCourses()->with(['days', 'subjects', 'location'])->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
+            foreach($courses as $course){
+                $course->user->name = $course->getTutorName();
+            }
         }
         else if($user->isTutor()){
             $courses_own = Course::with(['days', 'subjects', 'location'])->where('user_id', auth()->user()->id);
