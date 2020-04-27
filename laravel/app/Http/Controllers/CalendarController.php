@@ -8,6 +8,7 @@ use Auth;
 use Carbon\Carbon;
 use App\User;
 use App\CourseRequester;
+use Illuminate\Support\Facades\Log;
 
 class CalendarController extends Controller
 {
@@ -17,7 +18,7 @@ class CalendarController extends Controller
       $result = collect();
       $classes = collect();
       if($user->isTutor()){
-        $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.id as uid,locations.name as location,classes.status from course_classes classes
+        $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.nickname,locations.name as location,classes.status from course_classes classes
                                 inner join courses on classes.course_id = courses.id
                                 inner join course_student student on courses.id = student.course_id
                                 inner join locations on locations.id = courses.location_id
@@ -30,7 +31,7 @@ class CalendarController extends Controller
           $temp = collect([
             'class_id' => $class->clid,
             'course_id' => $class->coid,
-            'name' => "P'{$this->getTutorName($class->uid,$class->coid)}",
+            'name' => "P'{$class->nickname}",
             'start' => "{$class->date} {$class->time}",
             'end' => $nTime->toDateTimeString(),
             'color' => $colors[$class->coid%7],
@@ -43,7 +44,7 @@ class CalendarController extends Controller
           $result->push($temp);
         }
       }else{
-        $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.id as uid,locations.name as location,classes.status from course_classes classes
+        $classes = DB::select('select classes.id as clid,courses.id as coid,classes.date,classes.time,classes.hours,users.nickname,locations.name as location,classes.status from course_classes classes
                                 inner join courses on classes.course_id = courses.id
                                 inner join course_student student on courses.id = student.course_id
                                 inner join locations on locations.id = courses.location_id
@@ -54,7 +55,7 @@ class CalendarController extends Controller
           $temp = collect([
             'class_id' => $class->clid,
             'course_id' => $class->coid,
-            'name' => "P'{$this->getTutorName($class->uid,$class->coid)}",
+            'name' => "P'{$class->nickname}",
             'start' => "{$class->date} {$class->time}",
             'end' => $nTime->toDateTimeString(),
             'color' => $colors[$class->coid%7],
