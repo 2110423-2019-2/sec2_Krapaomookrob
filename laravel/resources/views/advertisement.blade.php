@@ -5,7 +5,6 @@
 @section('topic', 'Create Advertisement')
 
 @section('menu')
-<a href="#" class="btn ownbtn px-5">Back</a>
 @endsection
 
 @section('content')
