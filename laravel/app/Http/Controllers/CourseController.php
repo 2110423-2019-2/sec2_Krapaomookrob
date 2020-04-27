@@ -23,6 +23,9 @@ use App\CourseRequester;
 use App\Http\Controllers\Frontend\paymentGatewayController;
 use App\Logging;
 use App\RefundRequest;
+use Illuminate\Validation\Rule;
+
+use function GuzzleHttp\Promise\exception_for;
 
 class CourseController extends Controller
 {
@@ -32,11 +35,59 @@ class CourseController extends Controller
     }
 
     public function fetchSubjects(){
-        $days = Subject::all()->pluck('name');
-        return $days;
+        $subjects = Subject::all()->pluck('name');
+        return $subjects;
     }
 
     public function newCourse(Request $request){
+
+        // Allow only tutor
+        if(!(auth()->user()) || !(auth()->user()->isTutor())){
+            return response('Unauthorized', 401);
+        }
+
+        $daysinweek = $this->fetchDays()->toArray();
+        //['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        $subjectlist = $this->fetchSubjects()->toArray();
+        //['Mathematics', 'Economic', 'History', 'Technology', 'Science', 'Biology', 'Chemistry', 'English', 'Thai', 'Geography', 'Physics', 'Music'];
+
+        // Validator
+        $data = request()->validate([
+            'subjects' => 'required',
+            'days' => 'required',
+            'time' => 'date_format:H:i|required',
+            'hours' => ['required',Rule::in(['1','2','3','4','5'])],
+            'startDate' => 'date_format:Y-m-d|required|after_or_equal:now',
+            'price' => 'required|gte:0',
+            'noClasses' => 'required|gt:0',
+            'studentCount' => ['required',Rule::in(['1','2','3','4','5'])],
+
+            'locationId' => 'nullable',
+            'area' => 'nullable',
+            'address' => 'nullable',
+            'center' => 'nullable',
+        ]);
+
+        // Validate if each day is days in a week
+        $days = $request -> days;
+        if(!empty($days)){
+            foreach($days as $day){
+                if(!in_array($day, $daysinweek) && $day != null){
+                    return response($day,422);
+                }
+            }
+        }
+
+        // Validate if each subject is in the subjectlist
+        $subjects = $request -> subjects;
+        if(!empty($subjects)){
+            foreach($subjects as $subject){
+                if(!in_array($subject, $subjectlist) && $subject != null){
+                    return response($subject,422);
+                }
+            }
+        }
+
         $location = Location::firstOrCreate(
           ['locationId' => $request->locationId],
           ['name' => $request->area, 'address' => $request->address, 'latitude' => $request->center['lat'],'longitude' =>$request->center['lng']]
@@ -258,6 +309,9 @@ class CourseController extends Controller
         $classesLeft = [];
         if($user->isStudent()){
             $courses = $user->registeredCourses()->with(['days', 'subjects', 'location'])->orderBy('startDate', 'DESC')->paginate(10)->onEachSide(1);
+            foreach($courses as $course){
+                $course->user->name = $course->getTutorName();
+            }
         }
         else if($user->isTutor()){
             $courses_own = Course::with(['days', 'subjects', 'location'])->where('user_id', auth()->user()->id);

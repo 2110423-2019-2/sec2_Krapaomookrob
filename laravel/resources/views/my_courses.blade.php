@@ -35,7 +35,7 @@
                                 <a href={{'/chat?user-id='.$student->id}} class='btn ownbtn'>Chat</a>
                             @endforeach
                         @else
-                            <p class='font-weight-bold mb-0'> {{$course->user->nickname}} </p>
+                            <p class='font-weight-bold mb-0'> {{$course->user->name}} </p>
                             <p> {{$course->user->education_level}} </p>
                             <a href={{'/chat?user-id='.$course->user->id}} class='btn ownbtn'>Chat</a>
                         @endif
