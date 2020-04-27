@@ -21,6 +21,7 @@
     "require-dev": {
         "facade/ignition": "^1.4",
         "fzaninotto/faker": "^1.4",
+        "laravel/browser-kit-testing": "^6.0",
         "mockery/mockery": "^1.0",
         "mpociot/laravel-apidoc-generator": "^4.7",
         "nunomaduro/collision": "^3.0",
