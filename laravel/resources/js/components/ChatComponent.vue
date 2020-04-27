@@ -140,6 +140,8 @@ export default {
       sendMessage: function(){
         let content = this.sendingMessage;
         let now = new Date();
+        now.setHours(now.getHours() + 7);
+        if(content.length == 0) return;
         this.allMessages.push({
           content: this.sendingMessage, 
           receiver_id: this.receiver.id, 
