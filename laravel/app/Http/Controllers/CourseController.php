@@ -45,12 +45,19 @@ class CourseController extends Controller
         $subjectlist = $this->fetchSubjects()->toArray();
 
         // Validator
+
+        $dateTime = $request->input('startDate').'-'.$request->input('time');
+        $request->merge([
+            'dateTime' => $dateTime,
+        ]);
+
         $data = request()->validate([
             'subjects' => 'required',
             'days' => 'required',
             'time' => 'date_format:H:i|required',
             'hours' => ['required',Rule::in(['1','2','3','4','5'])],
-            'startDate' => 'date_format:Y-m-d|required|after_or_equal:now',
+            'startDate' => 'date_format:Y-m-d|required',
+            'dateTime' => 'date_format:Y-m-d-H:i|after_or_equal:now',
             'price' => 'required|gte:0',
             'noClasses' => 'required|gt:0',
             'studentCount' => ['required',Rule::in(['1','2','3','4','5'])],
