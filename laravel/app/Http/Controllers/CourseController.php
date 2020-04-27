@@ -282,7 +282,7 @@ class CourseController extends Controller
             return response(['status' => $status, 'isFullRefund' => $refundInfo['isFullRefund'], 'refundAmount' => $refundInfo['refundAmount']], 200);
         }
         else{
-            return response("access denied", 401);
+            return response("No information for this role.", 200);
         }
     }
 
