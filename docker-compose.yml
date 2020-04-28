@@ -1,0 +1,83 @@
+version: '3'
+services:
+
+  #PHP Service
+  app:
+    build:
+      context: ./laravel
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    container_name: application
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    depends_on:
+      - db
+      - node
+    command: bash -c "composer install && php artisan key:generate && php artisan migrate && docker-php-entrypoint php-fpm"
+    working_dir: /var/www
+    volumes:
+      - ./laravel:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  #Nginx Service
+  webserver:
+    image: staticfloat/nginx-certbot
+    container_name: nginxwebserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 80:80/tcp
+      - 443:443/tcp
+    environment:
+      CERTBOT_EMAIL: 6031031221@student.chula.ac.th
+    volumes:
+      - ./laravel:/var/www
+      - ./nginx/conf.d:/etc/nginx/user.conf.d:ro
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  #MySQL Service
+  db:
+    image: mysql:5.7.22
+    container_name: dbsql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: dbname
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: p455w0rd
+      MYSQL_ROOT_PASSWORD: p455w0rd
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql/
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app-network
+
+  #Nodejs
+  node:
+    image: "node:12"
+    container_name: node
+    working_dir: /var/www
+    volumes:
+      - ./laravel:/var/www
+    command: bash -c "npm install && npm run prod"
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local
