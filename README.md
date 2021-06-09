@@ -45,5 +45,5 @@ The database can be managed by phpmyadmin on http://localhost:8081/
 * Thanawat Jierawatanakanok
 * Nithipud Tunticharoenviwat
 * Krit Kruaykitanon
-* Nuttanai Kijviwattanakarn
+* Nuttanai K.
 * Wiwanna Phaithoonmongkon
