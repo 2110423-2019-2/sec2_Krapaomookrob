@@ -35,6 +35,6 @@
         "vue-cookie": "^1.1.4",
         "vue-star-rating": "^1.6.1",
         "vue2-google-maps": "^0.10.7",
-        "vuetify": "^2.2.12"
+        "vuetify": "^2.6.10"
     }
 }
